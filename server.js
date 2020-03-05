@@ -1,9 +1,9 @@
 var express = require('express');
 var dotenv = require('dotenv');
-var db = require("./models");
+var db = require('./models');
 
 //Load environment variables if present for development
-if(process.env.NODE_ENV !== "production") {
+if(process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 
@@ -12,7 +12,7 @@ var PORT = process.env.PORT || 3000;
 var app = express();
 
 // Serve static content for the app from the "public" directory in the application directory
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 // Parse application body as JSON
 app.use(express.urlencoded({extended: true}));
@@ -27,13 +27,13 @@ app.use(express.json());
 // ======================================
 
 // Import routes and give the server access to them
-require("./routes/routes")(app);
+require('./routes/routes')(app);
 
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
 // { force: true }
 db.sequelize.sync().then(function () {
     app.listen(PORT, function() {
-        console.log("App listening on PORT " + PORT);
-    })
+        console.log('App listening on PORT ' + PORT);
+    });
 });

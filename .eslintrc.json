@@ -24,10 +24,10 @@
         "no-unused-vars": "warn",
         "no-use-before-define": "error",
         "no-redeclare": "error",
-        "camelcase": "warn",
+        "camelcase": 1,
         "brace-style": "error",
         "indent": [
-            "warn",
+            2,
             4
         ],
         "quotes": [

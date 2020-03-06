@@ -1,5 +1,5 @@
 module.exports = function (seqeuelize, DataTypes) {
-    var SatScore = seqeuelize.define("SatScore", {
+    var SatScore = seqeuelize.define('SatScore', {
         sat_test: {
             type: DataTypes.STRING,
             allowNull: false,

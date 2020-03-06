@@ -19,10 +19,10 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 // Set Handlebars view engine:
-var exphbs = require("express-handlebars");
+var exphbs = require('express-handlebars');
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
 // Import routes and give the server access to them
 require('./routes/routes')(app);

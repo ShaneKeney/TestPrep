@@ -1,5 +1,5 @@
 module.exports = function (seqeuelize, DataTypes) {
-    var SatScore = seqeuelize.define("SatScore", {
+    var SatScore = seqeuelize.define('SatScore', {
         sat_test: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -34,7 +34,7 @@ module.exports = function (seqeuelize, DataTypes) {
 
     SatScore.associate = function (models) {
         models.SatScore.belongsTo(models.Test, {
-            onDelete: "CASCADE",
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }

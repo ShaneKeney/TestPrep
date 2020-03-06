@@ -1,5 +1,5 @@
 module.exports = function (seqeuelize, DataTypes) {
-    var Question = seqeuelize.define("Question", {
+    var Question = seqeuelize.define('Question', {
         key: {
             type: DataTypes.STRING,
             allowNull: false
@@ -28,21 +28,21 @@ module.exports = function (seqeuelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isIn: [["e", "m", "h"]]
+                isIn: [['e', 'm', 'h']]
             }
         },
         question_type: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isIn: [["mc", "arr", "range"]]
+                isIn: [['mc', 'arr', 'range']]
             }
         },
         answer_mc: {
             type: DataTypes.STRING,
             allowNull: true,
             validate: {
-                isIn: [["A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f", "G", "g", "H", "h", "J", "j", "K", "k"]]
+                isIn: [['A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', 'K', 'k']]
             }
         },
         ans_num: {
@@ -89,7 +89,7 @@ module.exports = function (seqeuelize, DataTypes) {
 
     Question.associate = function (models) {
         models.Question.belongsTo(models.Test, {
-            onDelete: "CASCADE",
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }
@@ -97,4 +97,4 @@ module.exports = function (seqeuelize, DataTypes) {
     };
 
     return Question;
-}
+};

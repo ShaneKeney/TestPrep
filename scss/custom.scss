@@ -1,0 +1,18 @@
+//////////////////////////////////////
+// OUR PARIAL IMPORTS GO HERE
+//////////////////////////////////////
+@import 'partial';
+
+$theme-colors: (
+  "primary": #0074d9,
+  "danger": #ff4136,
+  "custom-color": #900
+);
+
+@function color($key: "custom-color") {
+    @return map-get($colors, $key);
+}
+
+// Include all of Bootstrap
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+

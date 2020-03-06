@@ -1,8 +1,5 @@
 
 // Require routers here
-// ....
-
-
 
 module.exports = (app) => {
     app.use('/');

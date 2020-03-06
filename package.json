@@ -2,7 +2,7 @@
   "name": "testprep",
   "version": "1.0.0",
   "description": "Test Prep application for electronically completing SAT/ACT practice tests and getting relevant results on a per question basis",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "npm run lint",
     "watch": "nodemon server.js",
@@ -22,9 +22,13 @@
   "homepage": "https://github.com/ShaneKeney/TestPrep#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "eslint": "^6.8.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
     "mysql2": "^2.1.0",
-    "nodemon": "^2.0.2",
     "sequelize": "^5.21.5"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2"
   }
 }

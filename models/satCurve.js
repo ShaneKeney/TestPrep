@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    var SatCurve = sequelize.define("SatCurve", {
+    var SatCurve = sequelize.define('SatCurve', {
         sat_test: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
 
     SatScore.associate = function (models) {
         models.SatCurve.belongsTo(models.Test, {
-            onDelete: "CASCADE",
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }

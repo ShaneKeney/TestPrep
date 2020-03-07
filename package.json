@@ -7,7 +7,6 @@
     "test": "npm run lint",
     "watch": "nodemon server.js && gulp style",
     "start": "node server.js",
-    "lint": "eslint --quiet .",
     "fix": "eslint --fix ."
   },
   "repository": {

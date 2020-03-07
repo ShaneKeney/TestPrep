@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    var SectionResults = sequelize.define("SectionResults", {
+    var SectionResults = sequelize.define('SectionResults', {
         answer_response: {
             type: DataTypes.STRING,
             allowNull: false
@@ -12,7 +12,7 @@ module.exports = function (sequelize, DataTypes) {
 
     SectionResults.associate = function (models) {
         models.SectionResults.belongsTo(models.Students, {
-            onDelete: "CASCADE",
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }
@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
 
     SectionResults.associate = function (models) {
         models.SectionResults.belongsTo(models.Test, {
-            onDelete: "CASCADE",
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }

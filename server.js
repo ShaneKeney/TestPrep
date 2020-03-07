@@ -25,7 +25,11 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 // Import routes and give the server access to them
-require('./routes/routes')(app);
+require('./controllers/routes')(app);
+require('./controllers/api-results-routes')(app);
+require('./controllers/api-user-routes')(app);
+require('./controllers/html-app-routes')(app);
+require('./controllers/html-user-routes')(app);
 
 // Default route for testing and setup:
 app.get('/', (req, res) => {

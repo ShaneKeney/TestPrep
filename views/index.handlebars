@@ -1,0 +1,20 @@
+{{> nav/navbar}}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-4">
+            {{> nav/side-nav}}
+        </div>
+
+        <div class="col-lg-9 col-md-8">
+            <div class="container">
+                <form id="answer-sheet" class="mt-5">
+                    {{> question-types/multiple-choice}}
+                    {{> question-types/number}}
+                    {{> question-types/array}}
+                    {{> question-types/range}}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

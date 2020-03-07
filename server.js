@@ -18,16 +18,23 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-// TODO: Possibly set up handlebars
-// ======================================
-// var exphbs = require("express-handlebars");
+// Set Handlebars view engine:
+var exphbs = require('express-handlebars');
 
-// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-// app.set("view engine", "handlebars");
-// ======================================
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
 // Import routes and give the server access to them
-require('./routes/routes')(app);
+// require('./controllers/routes')(app);
+// require('./controllers/api-results-routes')(app);
+// require('./controllers/api-user-routes')(app);
+// require('./controllers/html-app-routes')(app);
+// require('./controllers/html-user-routes')(app);
+
+// Default route for testing and setup:
+app.get('/', (req, res) => {
+    res.render('index');
+});
 
 // Syncing our sequelize models and then starting our Express app
 // =============================================================

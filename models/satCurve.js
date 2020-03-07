@@ -1,5 +1,5 @@
-module.exports = function (seqeuelize, DataTypes) {
-    var SatScore = seqeuelize.define("SatScore", {
+module.exports = function (sequelize, DataTypes) {
+    var SatCurve = sequelize.define('SatCurve', {
         sat_test: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -32,14 +32,14 @@ module.exports = function (seqeuelize, DataTypes) {
         }
     });
 
-    SatScore.associate = function (models) {
-        models.SatScore.belongsTo(models.Test, {
-            onDelete: "CASCADE",
+    SatCurve.associate = function (models) {
+        models.SatCurve.belongsTo(models.Test, {
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }
         });
     };
 
-    return SatScore;
+    return SatCurve;
 };

@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
 
-    SatScore.associate = function (models) {
+    SatCurve.associate = function (models) {
         models.SatCurve.belongsTo(models.Test, {
             onDelete: 'CASCADE',
             foreignKey: {

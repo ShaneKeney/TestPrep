@@ -1,5 +1,7 @@
 
-// Require routers here
+// Require db models
+const db = require('../models');
+
 
 module.exports = (app) => {
     app.use('/');

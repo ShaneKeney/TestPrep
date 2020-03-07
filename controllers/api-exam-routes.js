@@ -13,32 +13,17 @@ module.exports = (app) => {
                 res.json(tests);
             });
     });
-    // get all questions of one  section of specific exam
-    app.get('/api/exams/:examID/:section', (req, res) => {
-        db.Test.findAll({
-            where: {
-                id: req.params.examID
-            },
-            // include: [{
-            //     model: db.Question,
-            //     where: {
-            //         section: req.params.section
-            //     }
-            // }]
-            include: [db.Question]
-        }).then((questions) => {
-            res.json(questions);
-        },
-        (error)=>{
-            console.log(error);
-        });
-    });
 
-    app.get('/api/questions',(req,res)=>{
+    // get list of questions for a specific exam and section
+    app.get('/api/questions/:testID/:section', (req, res) => {
         db.Question.findAll({
-            include: [db.Test]
+            include: [db.Test],
+            where: {
+                testID: req.params.testID,
+                section: req.params.section
+            }
         })
-            .then(questions=>{
+            .then(questions => {
                 res.json(questions);
             });
     });

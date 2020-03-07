@@ -45,24 +45,9 @@ module.exports = function (seqeuelize, DataTypes) {
                 isIn: [['A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', 'K', 'k']]
             }
         },
-        ans_num: {
+        ans: {
             type: DataTypes.STRING,
-            allowNull: true
-        },
-        ans_array: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                is: /^[0-9]([,][0-9]{1,3})$/
-            }
-        },
-        ans_min: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        ans_max: {
-            type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false
         },
         tag_category: {
             type: DataTypes.STRING,

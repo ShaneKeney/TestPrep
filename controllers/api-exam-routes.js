@@ -15,6 +15,16 @@ module.exports = (app) => {
     });
 
     // get list of questions for a specific exam and section
+    app.get('/api/exams', (req, res) => {
+        db.Test.findAll({
+            include: [db.Question]
+        })
+            .then(questions => {
+                res.json(questions);
+            });
+    });
+
+    // get list of questions for a specific exam and section
     app.get('/api/questions/:testID/:section', (req, res) => {
         db.Question.findAll({
             include: [db.Test],
@@ -27,5 +37,4 @@ module.exports = (app) => {
                 res.json(questions);
             });
     });
-
 };

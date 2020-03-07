@@ -15,12 +15,17 @@
           </div>
           <div class="form-group">
             <label for="register-phone">Phone Number</label>
-            <input type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control" id="register-phone">
+            <input type="tel" class="form-control" id="register-phone">
           </div>
           <div class="form-group">
             <label for="register-password">Password</label>
             <input type="password" class="form-control" id="register-password">
           </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm Your Password</label>
+            <input type="password" class="form-control" id="confirm-password">
+          </div>
+          <p id="password-mismatch" class="text-danger d-none">Your passwords do not match.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

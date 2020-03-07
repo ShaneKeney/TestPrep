@@ -7,12 +7,14 @@
         </div>
 
         <div class="col-lg-9 col-md-8">
-            <form class="text-center mt-5">
-                {{> question-types/multiple-choice}}
-                {{> question-types/number}}
-                {{> question-types/array}}
-                {{> question-types/range}}
-            </form>
+            <div class="container">
+                <form id="answer-sheet" class="mt-5">
+                    {{> question-types/multiple-choice}}
+                    {{> question-types/number}}
+                    {{> question-types/array}}
+                    {{> question-types/range}}
+                </form>
+            </div>
         </div>
     </div>
 </div>

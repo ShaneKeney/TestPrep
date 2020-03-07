@@ -38,13 +38,6 @@ module.exports = function (seqeuelize, DataTypes) {
                 isIn: [['mc', 'arr', 'range']]
             }
         },
-        answer_mc: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                isIn: [['A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', 'K', 'k']]
-            }
-        },
         ans: {
             type: DataTypes.STRING,
             allowNull: false

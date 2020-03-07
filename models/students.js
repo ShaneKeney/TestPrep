@@ -30,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Students.associate = function (models) {
-        models.Students.hasMany(models.SectionResults, {
+        models.Student.hasMany(models.SectionResults, {
             onDelete: 'CASCADE'
         });
     };

@@ -19,11 +19,5 @@ module.exports = function (seqeuelize, DataTypes) {
         });
     };
 
-    Test.associate = function(models) {
-        models.Test.hasMany(models.SatScore, {
-            onDelete: 'CASCADE'
-        });
-    };
-
     return Test;
 };

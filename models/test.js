@@ -17,9 +17,7 @@ module.exports = function (seqeuelize, DataTypes) {
         models.Test.hasMany(models.Question, {
             onDelete: 'CASCADE'
         });
-    };
 
-    Test.associate = function(models) {
         models.Test.hasMany(models.SatCurve, {
             onDelete: 'CASCADE'
         });

@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var dotenv = require('dotenv');
 var db = require('./models');
@@ -30,6 +31,7 @@ app.set('view engine', 'handlebars');
 // require('./controllers/api-user-routes')(app);
 // require('./controllers/html-app-routes')(app);
 // require('./controllers/html-user-routes')(app);
+require('./controllers/api-exam-selections')(app);
 
 // Default route for testing and setup:
 app.get('/', (req, res) => {

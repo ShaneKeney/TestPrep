@@ -30,18 +30,14 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false
             }
         });
-    };
 
-    SectionResultsDetails.associate = function (models) {
         models.SectionResultsDetails.belongsTo(models.Students, {
             onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }
         });
-    };
 
-    SectionResultsDetails.associate = function (models) {
         models.SectionResultsDetails.belongsTo(models.Test, {
             onDelete: 'CASCADE',
             foreignKey: {

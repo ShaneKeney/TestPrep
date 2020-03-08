@@ -31,11 +31,17 @@ module.exports = (app) => {
                 [db.Question, 'question_number', 'ASC']
             ]
         }).then((results)=>{
-            questionArr = {
+            data = {
+                details: {
+                    name: results[0].exam,
+                    type: results[0].type
+                },
                 questions: results[0].Questions
             };
-            console.log(questionArr.questions.length);
-            res.render('bubblesheet', questionArr);
+            console.log(data.questions.length);
+            console.log(data);
+            // res.json(results);
+            res.render('bubblesheet', data);
         });
     });
 

@@ -16,4 +16,44 @@ $(() => {
         $(colEl).append(selEl);
         $(numChoices).append(colEl);
     }
+
+    $('#signin-form').on('submit', e => {
+        e.preventDefault();
+
+        const userData = {
+            email: $('#signin-email').val(),
+            password: $('#signin-password').val()
+        };
+
+        // console.log(userData);
+
+        // $.post('/api/signin', userData)
+        // .then();
+
+        // console.log('Sign in form submitted');
+    });
+
+    $('#register-form').on('submit', e => {
+        e.preventDefault();
+
+        // make sure new password matches confirm password
+        if ($('#register-password').val() === $('#confirm-password').val()) {
+            const userData = {
+                email: $('#register-email').val(),
+                phone: $('#register-phone').val(),
+                password: $('#register-password').val()
+            };
+    
+            // $.post('/api/register', userData)
+            // .then();
+    
+            // console.log(userData);
+    
+            // console.log('Register form submitted');
+
+            $('#password-mismatch').addClass('d-none');
+        } else {
+            $('#password-mismatch').removeClass('d-none');
+        }
+    });
 });

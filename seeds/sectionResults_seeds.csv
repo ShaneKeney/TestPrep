@@ -1,0 +1,14 @@
+answer_response,section,createdAt,updatedAt,TestId,StudentId
+"B,B,C,A,C,D,D,B,C,B,A,B,D,A,A,C,C,D,A,B,A,B,D,D,C,B,D,C,A,A,D,B,A,C,B,D,C,C,B,C,B,B,A,A,D,C,B,A,D,B,D,A",reading,3/4/20 0:00,3/4/20 0:00,1,1
+"D,B,A,C,C,D,B,C,A,A,B,B,A,B,C,C,C,A,D,D,B,D,D,D,B,A,B,C,B,D,C,A,A,A,A,B,D,C,A,B,B,C,D,D",writing,3/4/20 0:00,3/4/20 0:00,1,1
+"D,A,C,B,C,A,B,C,B,A,D,D,B,A,D,2,1600,7,0.8,100",mathNC,3/4/20 0:00,3/4/20 0:00,1,1
+"B,C,D,C,D,D,C,D,A,B,A,C,C,C,A,C,B,A,B,D,C,B,B,A,D,B,C,C,D,D,4, 5, 6,107,0.625,96,6,3,1.02,6.11",mathC,3/4/20 0:00,3/4/20 0:00,1,1
+"B,B,C,A,C,D,D,B,C,B,C,B,D,D,B,C,C,D,C,B,C,B,D,D,C,B,D,C,A,A,D,B,C,C,B,D,C,C,B,C,B,B,C,C,D,C,B,A,D,B,D,C",reading,3/4/20 0:00,3/4/20 0:00,1,2
+"D,B,A,C,C,D,B,C,C,C,B,B,A,B,C,C,C,A,D,D,B,D,D,D,B,C,B,C,B,D,C,A,A,A,C,B,D,C,A,B,B,C,D,D",writing,3/4/20 0:00,3/4/20 0:00,1,2
+"D,A,C,B,C,C,B,C,B,C,D,D,B,C,D,2,1600,7,0.8,100",mathNC,3/4/20 0:00,3/4/20 0:00,1,2
+"B,C,D,C,D,D,C,D,C,B,A,C,C,C,C,C,B,C,C,D,C,C,C,C,D,C,C,C,D,D,4, 5, 6,107,0.625,96,6,3,1.02,6.11",mathC,3/4/20 0:00,3/4/20 0:00,1,2
+"B,B,C,A,C,D,D,B,C,B,C,B,D,D,B,C,C,D,C,B,C,B,D,D,C,B,D,C,A,A,D,B,C,C,B,D,C,C,B,C,B,B,C,C,D,C,B,A,D,B,D,C",reading,3/4/20 0:00,3/4/20 0:00,2,2
+"D,B,A,C,C,D,B,C,C,C,B,B,A,B,C,C,C,A,D,D,B,D,D,D,B,C,B,C,B,D,C,A,A,A,C,B,D,C,A,B,B,C,D,D",writing,3/4/20 0:00,3/4/20 0:00,2,2
+"D,A,C,B,C,C,B,C,B,C,D,D,B,C,D,2,1600,7,0.8,100",mathNC,3/4/20 0:00,3/4/20 0:00,2,2
+"B,C,D,C,D,D,C,D,C,B,A,C,C,C,C,C,B,C,C,D,C,C,C,C,D,C,C,C,D,D,4, 5, 6,107,0.625,96,6,3,1.02,6.11",mathC,3/4/20 0:00,3/4/20 0:00,2,2
+"B,B,C,A,C,D,D,B,C,B,C,B,D,D,B,C,C,D,C,B,C,B,D,D,C,B,D,C,A,A,D,B,C,C,B,D,C,C,B,C,B,B,C,C,D,C,B,A,D,B,D,C",reading,3/4/20 0:00,3/4/20 0:00,3,3

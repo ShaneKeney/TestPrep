@@ -28,7 +28,7 @@ app.set('view engine', 'handlebars');
 // require('./controllers/routes.js')(app);
 // require('./controllers/api-results-routes.js')(app);
 // require('./controllers/api-user-routes.js')(app);
-// require('./controllers/html-app-routes.js')(app);
+require('./controllers/html-app-routes.js')(app);
 // require('./controllers/html-user-routes.js')(app);
 require('./controllers/api-exam-routes.js')(app);
 

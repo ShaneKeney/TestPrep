@@ -25,4 +25,23 @@ module.exports = (app) => {
                 res.json(questions);
             });
     });
+
+    app.get('/api/exams/:id/questions/:type/:section', (req, res) => {
+        db.Test.findAll({
+            where: {id: req.params.id},
+            include: {
+                model: db.Question,
+                where: {
+                    question_type: req.params.type,
+                    section: req.params.section
+                }
+            },
+            order: [
+                [db.Question, 'question_number', 'ASC']
+            ]
+        }).then((questions)=>{
+            res.json(questions);
+        });
+    });
+
 };

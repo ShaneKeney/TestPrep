@@ -1,11 +1,13 @@
+{{#each sectionList}}
 <div class="container mt-3">
     <div class="row bg-secondary m-1">
         <h4 class="px-2">
-            Section Summary - {{object}} - {{object}}
+            Section Summary - {{toUpperCase ../questionList.0.dataValues.Test.dataValues.type}} -
+            {{../questionList.0.dataValues.Test.dataValues.exam}} - {{toUpperCase dataValues.section}}
         </h4>
     </div>
-    <div class="row m-1">
-        <div class="col w-100 mr-1">
+    <div class="row mt-2 mx-1">
+        <div class="col w-100 mr-2">
             <div class="row bg-secondary">
                 <h4 class="px-2">
                     Score Summary
@@ -125,14 +127,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each objects}}
+                        {{#each ../questionList}}
+                        {{#ifEquals dataValues.section ../dataValues.section}}
                         <tr>
-                            <td>{{object1}}</td>
-                            <td>{{object2}}</td>
-                            <td>{{object3}}</td>
-                            <td>{{object4}}</td>
-                            <td>{{object5}}</td>
+                            <td {{#if ../omitted}} class="bg-warning" 
+                                {{else if ../wrong}} class="bg-danger"
+                                {{/if}}>
+                                {{../dataValues.question_number}}
+                            </td>
+                            <td>
+                                {{../dataValues.studentAnswer}}
+                            </td>
+                            {{!-- put in if else for making the answer '+' if it is the same as the student's answer --}}
+                            <td>{{../dataValues.ans_actual}}</td>
+                            <td>{{../dataValues.difficulty}}</td>
+                            <td>
+                                <small>
+                                    {{../dataValues.tag_category}} > {{../dataValues.tag_group}} >
+                                    {{../dataValues.tag}}
+                                </small>
+                            </td>
                         </tr>
+                        {{/ifEquals}}
                         {{/each}}
                     </tbody>
                 </table>
@@ -143,4 +159,11 @@
             </div>
         </div>
     </div>
+    <br>
+    <br>
+    <hr>
+    <hr>
+    <br>
+    <br>
 </div>
+{{/each}}

@@ -17,14 +17,15 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false
             }
         });
+    };
 
+    SectionResults.associate = function (models) {
         models.SectionResults.belongsTo(models.Test, {
             onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }
         });
-
     };
 
     return SectionResults;

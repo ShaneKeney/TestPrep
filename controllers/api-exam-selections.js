@@ -31,16 +31,14 @@ module.exports = (app) => {
                 [db.Question, 'question_number', 'ASC']
             ]
         }).then((results)=>{
-            data = {
+            const data = {
                 details: {
                     name: results[0].exam,
                     type: results[0].type
                 },
                 questions: results[0].Questions
             };
-            console.log(data.questions.length);
-            console.log(data);
-            // res.json(results);
+
             res.render('bubblesheet', data);
         });
     });

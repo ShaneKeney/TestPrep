@@ -3,6 +3,13 @@ let $examSelect = $('#exam-select');
 let $sectionSelect = $('#section-select');
 let $makeBubbleBtn = $('#makeBubbleBtn');
 let $bubbleCont = $('#bubbleContainer');
+const $bubbleForm = $('#answer-sheet');
+
+$bubbleForm.on('submit', e => {
+    e.preventDefault;
+
+    // submit the answers to the appropriate route
+});
 
 //populate exam list
 $.ajax({

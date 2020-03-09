@@ -130,18 +130,26 @@
                         {{#each ../questionList}}
                         {{#ifEquals dataValues.section ../dataValues.section}}
                         <tr>
-                            <td {{#if ../omitted}} class="bg-warning" 
-                                {{else if ../wrong}} class="bg-danger"
-                                {{/if}}>
-                                {{../dataValues.question_number}}
+                            <td class="py-0{{#if ../omitted}} bg-warning 
+                                {{else if ../wrong}} bg-danger
+                                {{/if}}">
+                                <small>
+                                    {{../dataValues.question_number}}
+                                </small>
                             </td>
-                            <td>
-                                {{../dataValues.studentAnswer}}
+                            <td class="py-0">
+                                <small>
+                                    {{../dataValues.studentAnswer}}
+                                </small>
                             </td>
                             {{!-- put in if else for making the answer '+' if it is the same as the student's answer --}}
-                            <td>{{../dataValues.ans_actual}}</td>
-                            <td>{{../dataValues.difficulty}}</td>
-                            <td>
+                            <td class="py-0">
+                                <small>{{../dataValues.ans_actual}}</small>
+                                </td>
+                            <td class="py-0">
+                                <small>{{../dataValues.difficulty}}</small>
+                                </td>
+                            <td class="py-0">
                                 <small>
                                     {{../dataValues.tag_category}} > {{../dataValues.tag_group}} >
                                     {{../dataValues.tag}}

@@ -42,5 +42,19 @@ app.get('/', (req, res) => {
 db.sequelize.sync().then(function () {
     app.listen(PORT, function() {
         console.log('App listening on PORT ' + PORT);
+        myFunction();
     });
 });
+
+const bcrypt = require('bcryptjs');
+
+const myFunction = async () => {
+    const password = 'password';
+    const hashPassword = await bcrypt.hash(password, 8);
+
+    console.log(password);
+    console.log(hashPassword);
+
+    const isMatch = await bcrypt.compare('password', hashPassword);
+    console.log(isMatch)
+}

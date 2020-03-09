@@ -1,8 +1,12 @@
 // placeholder file
-// copied directly from last week's homework (only adjustments for linting)
-// to be uncommented and adjusted as necessary to fit our needs
+const express = require('express');
+const Student = require('../models/students');
+const router = new express.Router();
 
-// ---------------------------------------
+router.post('/students', async (req, res) => {
+    console.log(req.body);
+});
+
 
 
 // // Requiring path to so we can use relative routes to our HTML files

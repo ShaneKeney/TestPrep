@@ -35,5 +35,9 @@ module.exports = function (sequelize, DataTypes) {
         });
     };
 
+    Students.beforeCreate(async (user, options) => {
+        console.log(user);
+    });
+
     return Students;
 };

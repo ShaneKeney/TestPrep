@@ -39,6 +39,8 @@ $(() => {
         // make sure new password matches confirm password
         if ($('#register-password').val() === $('#confirm-password').val()) {
             const userData = {
+                firstName: $('#register-firstName').val().trim(),
+                lastName: $('#register-lastName').val().trim(),
                 email: $('#register-email').val().trim(),
                 phone: $('#register-phone').val().trim(),
                 password: $('#register-password').val().trim(),

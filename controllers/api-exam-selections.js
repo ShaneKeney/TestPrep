@@ -31,12 +31,33 @@ module.exports = (app) => {
                 [db.Question, 'question_number', 'ASC']
             ]
         }).then((results)=>{
+
+            // HELPER FUNCTION SO THAT WE CAN USE
+            // {{#if mc}} AND {{#if num}}
+            // FOR QUESTION TYPES
+            // INSIDE bubblesheet.handlebars
+            const questionsArr = [];
+            results[0].Questions.forEach(question => {
+                if (question.dataValues.question_type === 'mc') {
+                    questionsArr.push({
+                        dataValues: question.dataValues,
+                        mc: true,
+                    });
+                } else if (question.dataValues.question_type === 'num') {
+                    questionsArr.push({
+                        dataValues: question.dataValues,
+                        num: true
+                    });
+                }
+            });
+            // END HELPER
+
             const data = {
                 details: {
                     name: results[0].exam,
                     type: results[0].type
                 },
-                questions: results[0].Questions
+                questions: questionsArr
             };
 
             res.render('bubblesheet', data);

@@ -1,37 +1,20 @@
-{{> nav/navbar}}
+<h3>{{details.name}} -- {{details.type}}</h3>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-3 col-md-4">
-            {{> nav/side-nav}}
-            {{> auth-modals/register}}
-            {{> auth-modals/signin}}
-        </div>
+<div id="bubbleContainer" class="container">
+    <form id="answer-sheet" class="mt-5">
+        
+        {{#each questions}}
 
-        <div class="col-lg-9 col-md-8">
+            {{#if mc}}
+                {{> question-types/multiple-choice}}
+            {{/if}}
 
-            <h3>{{details.name}} -- {{details.type}}</h3>
+            {{#if num}}
+                {{> question-types/number}}
+            {{/if}}
 
-            
+        {{/each}}
 
-            <div id="bubbleContainer" class="container">
-                <form id="answer-sheet" class="mt-5">
-                    
-                    {{#each questions}}
-
-                        {{#if mc}}
-                            {{> question-types/multiple-choice}}
-                        {{/if}}
-
-                        {{#if num}}
-                            {{> question-types/number}}
-                        {{/if}}
-
-                    {{/each}}
-
-                    <button type="submit" class="btn btn-primary">Submit Answers</button>
-                </form>
-            </div>
-        </div>
-    </div>
+        <button type="submit" class="btn btn-primary">Submit Answers</button>
+    </form>
 </div>

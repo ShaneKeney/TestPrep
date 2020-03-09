@@ -19,28 +19,29 @@
                     
                     {{#each questions}}
                     
-                    <div>
+                    Question Number {{dataValues.question_number}}:<br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="A">
+                            <input class="form-check-input" type="radio" name="{{dataValues.section}}{{dataValues.question_number}}" id="{{dataValues.section}}-{{dataValues.question_number}}-A" value="A">
                             <label class="form-check-label" for="inlineRadio1">A</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="B">
+                            <input class="form-check-input" type="radio" name="{{dataValues.section}}{{dataValues.question_number}}" id="{{dataValues.section}}-{{dataValues.question_number}}-B" value="B">
                             <label class="form-check-label" for="inlineRadio2">B</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="C">
+                            <input class="form-check-input" type="radio" name="{{dataValues.section}}{{dataValues.question_number}}" id="{{dataValues.section}}-{{dataValues.question_number}}-C" value="C">
                             <label class="form-check-label" for="inlineRadio3">C</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="D">
+                            <input class="form-check-input" type="radio" name="{{dataValues.section}}{{dataValues.question_number}}" id="{{dataValues.section}}-{{dataValues.question_number}}-D" value="D">
                             <label class="form-check-label" for="inlineRadio4">D</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="">
+                            <input class="form-check-input" type="radio" name="{{dataValues.section}}{{dataValues.question_number}}" value="">
                             <label class="form-check-label" for="inlineRadio5">Omit</label>
                         </div>
-                    </div>
+                    <br>
+                    <br>
                     
                     {{/each}}
                 </form>

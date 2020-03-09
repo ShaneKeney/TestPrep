@@ -39,12 +39,13 @@ $(() => {
         // make sure new password matches confirm password
         if ($('#register-password').val() === $('#confirm-password').val()) {
             const userData = {
-                email: $('#register-email').val(),
-                phone: $('#register-phone').val(),
-                password: $('#register-password').val()
+                email: $('#register-email').val().trim(),
+                phone: $('#register-phone').val().trim(),
+                password: $('#register-password').val().trim(),
+                confirmPassword: $('#confirm-password').val().trim()
             };
     
-            // $.post('/api/register', userData)
+            $.post('/api/register', userData)
             // .then();
     
             // console.log(userData);

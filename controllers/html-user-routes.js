@@ -1,13 +1,4 @@
 // placeholder file
-const express = require('express');
-const Student = require('../models/students');
-const router = new express.Router();
-
-router.post('/students', async (req, res) => {
-    console.log(req.body);
-});
-
-
 
 // // Requiring path to so we can use relative routes to our HTML files
 // var path = require('path');

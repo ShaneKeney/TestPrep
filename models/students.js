@@ -25,7 +25,6 @@ module.exports = function (sequelize, DataTypes) {
         },
         phone: {
             type: DataTypes.BIGINT,
-            allowNull: false,
         }
     });
 
@@ -39,6 +38,7 @@ module.exports = function (sequelize, DataTypes) {
         });
     };
 
+    // Run code just before Student/User is created
     Students.beforeCreate(async (user, options) => {
         console.log(user);
     });

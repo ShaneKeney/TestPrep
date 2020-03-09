@@ -20,51 +20,13 @@
                     {{#each questions}}
 
                         {{#if mc}}
-
-                            <div class="form-group">
-                        
-                                <div class="form-check form-check-inline">
-                                    <span class="font-weight-bold">{{dataValues.question_number}}:</span>&nbsp;
-                                    <input class="form-check-input" type="radio"
-                                            name="{{dataValues.section}}{{dataValues.question_number}}"
-                                            id="{{dataValues.section}}-{{dataValues.question_number}}-A"
-                                            value="A">
-                                    <label class="form-check-label" for="{{dataValues.section}}-{{dataValues.question_number}}-A">A</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio"
-                                            name="{{dataValues.section}}{{dataValues.question_number}}"
-                                            id="{{dataValues.section}}-{{dataValues.question_number}}-B"
-                                            value="B">
-                                    <label class="form-check-label" for="{{dataValues.section}}-{{dataValues.question_number}}-B">B</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio"
-                                            name="{{dataValues.section}}{{dataValues.question_number}}"
-                                            id="{{dataValues.section}}-{{dataValues.question_number}}-C"
-                                            value="C">
-                                    <label class="form-check-label"for="{{dataValues.section}}-{{dataValues.question_number}}-C">C</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio"
-                                            name="{{dataValues.section}}{{dataValues.question_number}}"
-                                            id="{{dataValues.section}}-{{dataValues.question_number}}-D"
-                                            value="D">
-                                    <label class="form-check-label" for="{{dataValues.section}}-{{dataValues.question_number}}-D">D</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="{{dataValues.section}}{{dataValues.question_number}}" value="">
-                                    <label class="form-check-label" for="{{dataValues.section}}-{{dataValues.question_number}}">Omit</label>
-                                </div>
-
-                            </div>
-
+                            {{> question-types/multiple-choice}}
                         {{/if}}
 
                         {{#if num}}
-                            <p>I'm a number question</p>
+                            {{> question-types/number}}
                         {{/if}}
-                        
+
                     {{/each}}
 
                     <button type="submit" class="btn btn-primary">Submit Answers</button>

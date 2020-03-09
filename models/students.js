@@ -24,13 +24,17 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         phone: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.BIGINT,
             allowNull: false,
         }
     });
 
     Students.associate = function (models) {
         models.Students.hasMany(models.SectionResults, {
+            onDelete: 'CASCADE'
+        });
+
+        models.Students.hasMany(models.SectionResultsDetails, {
             onDelete: 'CASCADE'
         });
     };

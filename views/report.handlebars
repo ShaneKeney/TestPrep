@@ -1,0 +1,146 @@
+<div class="container mt-3">
+    <div class="row bg-secondary m-1">
+        <h4 class="px-2">
+            Section Summary - {{object}} - {{object}}
+        </h4>
+    </div>
+    <div class="row m-1">
+        <div class="col w-100 mr-1">
+            <div class="row bg-secondary">
+                <h4 class="px-2">
+                    Score Summary
+                </h4>
+            </div>
+            <div class="row">
+                <table class="table table-bordered table-striped my-1 border font-weight-bolder">
+                    <thead>
+                        <tr>
+                            <th class="w-25">Score</td>
+                            <th class="w-75">{{object}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-success">
+                            <td>Correct</td>
+                            <td>{{object}}</td>
+                        </tr>
+                        <tr class="text-danger">
+                            <td>Incorrect</td>
+                            <td>{{object}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row bg-secondary mt-3">
+                <h4 class="px-2">Difficulty Summary</h4>
+            </div>
+            <div class="row">
+                <table class="table table-bordered table-striped my-1 text-center border">
+                    <thead>
+                        <tr>
+                            <th>Easy</th>
+                            <th>Medium</th>
+                            <th>Hard</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row bg-secondary mt-3">
+                <h4 class="px-2">Top Questions</h4>
+            </div>
+            <div class="row border mt-1">
+                <table class="table table-bordered table-striped mb-0 text-center">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="mt-0">{{object}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Number Correct</td>
+                            <td>Questions Missed</td>
+                        </tr>
+                        <tr>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row border mt-2">
+                <table class="table table-bordered table-striped mb-0 text-center">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="mt-0">{{object}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Number Correct</td>
+                            <td>Questions Missed</td>
+                        </tr>
+                        <tr>
+                            <td>{{object}}</td>
+                            <td>{{object}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="col-6">
+            <div class="row bg-secondary">
+                <h4 class="px-2">
+                    Performance
+                </h4>
+            </div>
+            <div class="row">
+                <table class="table table-bordered table-striped my-1">
+                    <thead class="thead-light my-5">
+                        <tr class="my-5">
+                            <th>Q*</th>
+                            <th>R*</th>
+                            <th>A*</th>
+                            <th>D*</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each objects}}
+                        <tr>
+                            <td>{{object1}}</td>
+                            <td>{{object2}}</td>
+                            <td>{{object3}}</td>
+                            <td>{{object4}}</td>
+                            <td>{{object5}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <p>* Q = Question</p>
+                <p>* R = Response</p>
+                <p>* A = Answer</p>
+                <p>* D = Difficulty</p>
+            </div>
+        </div>
+    </div>
+</div>

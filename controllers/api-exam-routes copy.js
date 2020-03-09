@@ -1,16 +1,26 @@
-// routes for getting and setting user's scores and
-// test results
+// routes for getting exam information, including
+// questions detail and scoring information
 
 // Require db models
 const db = require('../models');
 
 
 module.exports = (app) => {
-    // get list of all previously completed exams for user
+    // get list of all exams
     app.get('/api/exams', (req, res) => {
         db.Test.findAll()
             .then((tests) => {
                 res.json(tests);
+            });
+    });
+
+    // get list of questions for a specific exam and section
+    app.get('/api/exams', (req, res) => {
+        db.Test.findAll({
+            include: [db.Question]
+        })
+            .then(questions => {
+                res.json(questions);
             });
     });
 
@@ -27,5 +37,4 @@ module.exports = (app) => {
                 res.json(questions);
             });
     });
-
 };

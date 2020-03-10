@@ -6,9 +6,10 @@ const db = require('../models');
 
 module.exports = (app) => {
     // get get report of exam results taken by a student
-    app.get('/reports/:StudentId/:TestId', (req, res) => {
-        var StudentId = req.params.StudentId;
-        var TestId = req.params.TestId;
+    app.get('/reports/:StudentId/:TestId/:section', (req, res) => {
+        const StudentId = req.params.StudentId;
+        const TestId = req.params.TestId;
+        const sectionFilter = req.params.section;
         var resultDetails;
         var sectionList;
         var questionList;
@@ -127,6 +128,16 @@ module.exports = (app) => {
                                 scoreList = data;
                                 // scoring calculations section
                                 // create properties for calculations based on each section
+                                if(sectionFilter !== 'all'){
+                                    sectionList = sectionList.filter(sectionRecord=>{
+                                        if(sectionRecord.dataValues.section === sectionFilter){
+                                            return true;
+                                        }
+                                    });
+                                    if(sectionList.length === 0){
+                                        throw new Error(`the section: ${sectionFilter} does not exist for the test with ID: ${TestId}1)`);
+                                    }
+                                }
                                 sectionList.forEach(sectionRecord => {
                                     var section = sectionRecord.dataValues.section;
                                     // function to count questions based on certain criteria

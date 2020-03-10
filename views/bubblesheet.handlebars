@@ -1,32 +1,28 @@
 <h3>{{details.name}} -- {{details.type}}</h3>
 
-<div id="bubbleContainer" class="container">
-    <form id="answer-sheet" class="mt-5">
+{{!-- <div id="bubbleContainer" class="container">
+    <form id="answer-sheet" class="mt-5"> --}}
 
-        {{!-- MULTIPLE CHOICE QUESTIONS --}}
-        
-        <table class="mc-bubblesheet">
-            <tbody class="mc-body">
+    <table class="mc-bubblesheet">
+        <tbody class="mc-body">
 
-                {{#each questions}}
-                    {{#if mc}}
-                        {{> question-types/multiple-choice}}
-                    {{/if}}
-                {{/each}}
-                
-            </tbody>
-        </table>
+            {{#each questions}}
 
-        {{!-- NUMBER QUESTIONS --}}
-
-        {{#each questions}}
+            {{#if mc}}
+                {{> question-types/multiple-choice}}
+            {{/if}}
 
             {{#if num}}
                 {{> question-types/number}}
             {{/if}}
 
-        {{/each}}
+            {{/each}}
 
-        <button type="submit" class="btn btn-primary">Submit Answers</button>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-outline-success mt-3 collect">Collect Answers</button>
+
+        {{!-- <button type="submit" class="btn btn-primary">Submit Answers</button>
     </form>
-</div>
+</div> --}}

@@ -8,7 +8,7 @@ router.post('/api/register', async (req, res) => {
     // check to see if password & confirm match else send error
     if(req.body.password !== req.body.confirmPassword) {
         console.log('Passwords do not match');
-        res.status(404).send('PASS_MISMATCH');
+        res.status(401).send('PASS_MISMATCH');
     }
 
     //hash password and create new user/student
@@ -23,7 +23,9 @@ router.post('/api/register', async (req, res) => {
             password: hashedPassword
         });
         
-        res.status(201).send('Successfully Registered!');
+        const token = newUser.generateAuthToken();
+
+        res.status(201).send({ user: newUser, token });
     } catch(e) {
         console.log(e);
         res.status(400).send(e)
@@ -34,8 +36,9 @@ router.post('/api/users/login' , async (req, res) => {
     //console.log(req.body)
     try {
         const user = await db.Students.findByCredentials(req.body.email, req.body.password);
-        console.log(user)
-        res.send(user)
+        //console.log(user)
+        const token = await user.generateAuthToken();
+        res.send({ user, token })
     } catch(err) {
         res.status(400).send();
     }

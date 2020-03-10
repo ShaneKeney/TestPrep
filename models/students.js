@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = function (sequelize, DataTypes) {
     var Students = sequelize.define('Students', {
@@ -28,6 +29,10 @@ module.exports = function (sequelize, DataTypes) {
         },
         phone: {
             type: DataTypes.STRING,
+        },
+        tokens: { 
+            type: DataTypes.STRING,
+            defaultValue: null
         }
     });
 
@@ -43,8 +48,19 @@ module.exports = function (sequelize, DataTypes) {
 
     // Run code just before Student/User is created
     Students.beforeCreate(async (user, options) => {
-        console.log(user);
+        //console.log(user);
     });
+
+    Students.prototype.generateAuthToken = async function() {
+        const user = this;
+        console.log(user)
+        const token = jwt.sign({id: user.id.toString()}, 'thisisasecret'); //TODO: change this to process.env 
+
+        user.tokens = token;
+        await user.save();
+
+        return token;
+    }
 
     Students.findByCredentials = async (email, password) => {
         const userArray = await Students.findAll({
@@ -62,13 +78,11 @@ module.exports = function (sequelize, DataTypes) {
         }
 
         const isMatch = await bcrypt.compare(password, user.dataValues.password);
-        console.log(isMatch)
         if(!isMatch) {
             console.log('Password mismatch')
             throw new Error('Unable to login!');
         }
 
-        console.log('hit here')
         return user;
     }
 

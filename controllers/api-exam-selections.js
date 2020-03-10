@@ -1,21 +1,12 @@
 const db = require('../models');
 
 module.exports = (app) => {
-    // get list of all exams
-    app.get('/api/exams', (req, res) => {
-        db.Test.findAll({
-            where: {id: 1},
-            include: [db.Question]
-        }).then((questions)=>{
-            res.json(questions);
-        });
-    });
 
-    app.get('/api/exams/sections/:id', (req, res) => {
+    app.get('/api/exams/sections/:testID', (req, res) => {
 
         db.Question.findAll({
             where: {
-                TestId: req.params.id
+                TestId: req.params.testID
             },
             attributes: [
                 [db.Sequelize.fn('DISTINCT', db.Sequelize.col('section')) ,'section']
@@ -26,9 +17,9 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/api/exams/:id/questions/:type/:section', (req, res) => {
+    app.get('/api/exams/:testID/questions/:type/:section', (req, res) => {
         db.Test.findAll({
-            where: {id: req.params.id},
+            where: {id: req.params.testID},
             include: {
                 model: db.Question,
                 where: {
@@ -39,8 +30,37 @@ module.exports = (app) => {
             order: [
                 [db.Question, 'question_number', 'ASC']
             ]
-        }).then((questions)=>{
-            res.json(questions);
+        }).then((results)=>{
+
+            // HELPER FUNCTION SO THAT WE CAN USE
+            // {{#if mc}} AND {{#if num}}
+            // FOR QUESTION TYPES
+            // INSIDE bubblesheet.handlebars
+            const questionsArr = [];
+            results[0].Questions.forEach(question => {
+                if (question.dataValues.question_type === 'mc') {
+                    questionsArr.push({
+                        dataValues: question.dataValues,
+                        mc: true,
+                    });
+                } else if (question.dataValues.question_type === 'num') {
+                    questionsArr.push({
+                        dataValues: question.dataValues,
+                        num: true
+                    });
+                }
+            });
+            // END HELPER
+
+            const data = {
+                details: {
+                    name: results[0].exam,
+                    type: results[0].type
+                },
+                questions: questionsArr
+            };
+
+            res.render('bubblesheet', data);
         });
     });
 

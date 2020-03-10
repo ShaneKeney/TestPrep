@@ -1,0 +1,20 @@
+<h3>{{details.name}} -- {{details.type}}</h3>
+
+<div id="bubbleContainer" class="container">
+    <form id="answer-sheet" class="mt-5">
+        
+        {{#each questions}}
+
+            {{#if mc}}
+                {{> question-types/multiple-choice}}
+            {{/if}}
+
+            {{#if num}}
+                {{> question-types/number}}
+            {{/if}}
+
+        {{/each}}
+
+        <button type="submit" class="btn btn-primary">Submit Answers</button>
+    </form>
+</div>

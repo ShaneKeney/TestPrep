@@ -35,6 +35,7 @@ app.set('view engine', 'handlebars');
 require('./controllers/html-app-routes.js')(app);
 // require('./controllers/html-user-routes.js')(app);
 require('./controllers/api-exam-routes.js')(app);
+require('./controllers/api-exam-selections')(app);
 
 // Default route for testing and setup:
 app.get('/', (req, res) => {

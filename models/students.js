@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 module.exports = function (sequelize, DataTypes) {
     var Students = sequelize.define('Students', {
         email: {
@@ -43,6 +45,32 @@ module.exports = function (sequelize, DataTypes) {
     Students.beforeCreate(async (user, options) => {
         console.log(user);
     });
+
+    Students.findByCredentials = async (email, password) => {
+        const userArray = await Students.findAll({
+            where: {
+                email: email
+            }
+        });
+
+        const user = userArray[0];
+        // console.log(user.dataValues.email)
+        // console.log(user.dataValues.password)
+
+        if(!user) {
+            throw new Error('Unable to login')
+        }
+
+        const isMatch = await bcrypt.compare(password, user.dataValues.password);
+        console.log(isMatch)
+        if(!isMatch) {
+            console.log('Password mismatch')
+            throw new Error('Unable to login!');
+        }
+
+        console.log('hit here')
+        return user;
+    }
 
     return Students;
 };

@@ -21,14 +21,19 @@ $(() => {
         e.preventDefault();
 
         const userData = {
-            email: $('#signin-email').val(),
-            password: $('#signin-password').val()
+            email: $('#signin-email').val().trim(),
+            password: $('#signin-password').val().trim()
         };
 
         // console.log(userData);
 
-        // $.post('/api/signin', userData)
-        // .then();
+        $.post('/api/users/login', userData)
+        .then(function(res) {
+            console.log(res)
+        })
+        .catch(function(err) {
+            console.log(err)
+        })
 
         // console.log('Sign in form submitted');
     });
@@ -51,7 +56,12 @@ $(() => {
             .then(function(res) {
                 console.log(res); //log the response to see what is happening
                 resetRegisterFields();
-            });
+            })
+            .catch(function(err) {
+                if(err.responseJSON.errors[0].message === "students.email must be unique") {
+                    $('#regErrorText').text('Email already registered'); 
+                }
+            })
     
             // console.log(userData);
     
@@ -62,6 +72,11 @@ $(() => {
             $('#password-mismatch').removeClass('d-none');
         }
     });
+
+    $('#regClose').on('click', function() {
+        $('#regErrorText').text(''); 
+        resetRegisterFields();
+    })
 });
 
 function resetRegisterFields() {
@@ -73,4 +88,5 @@ function resetRegisterFields() {
     $('#confirm-password').val('');
 
     $('#register-modal').modal('hide');
+    $('#regErrorText').val('');
 }

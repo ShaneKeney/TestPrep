@@ -30,5 +30,15 @@ router.post('/api/register', async (req, res) => {
     }
 });
 
+router.post('/api/users/login' , async (req, res) => {
+    //console.log(req.body)
+    try {
+        const user = await db.Students.findByCredentials(req.body.email, req.body.password);
+        console.log(user)
+        res.send(user)
+    } catch(err) {
+        res.status(400).send();
+    }
+})
 
 module.exports = router;

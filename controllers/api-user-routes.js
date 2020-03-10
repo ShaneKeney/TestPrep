@@ -23,7 +23,7 @@ router.post('/api/register', async (req, res) => {
             password: hashedPassword
         });
         
-        res.status(201).send('Success');
+        res.status(201).send('Successfully Registered!');
     } catch(e) {
         console.log(e);
         res.status(400).send(e)

@@ -48,7 +48,10 @@ $(() => {
             };
     
             $.post('/api/register', userData)
-            // .then();
+            .then(function(res) {
+                console.log(res); //log the response to see what is happening
+                resetRegisterFields();
+            });
     
             // console.log(userData);
     
@@ -60,3 +63,14 @@ $(() => {
         }
     });
 });
+
+function resetRegisterFields() {
+    $('#register-firstName').val('');
+    $('#register-lastName').val('');
+    $('#register-email').val('');
+    $('#register-phone').val('');
+    $('#register-password').val('');
+    $('#confirm-password').val('');
+
+    $('#register-modal').modal('hide');
+}

@@ -25,8 +25,6 @@ $(() => {
             password: $('#signin-password').val().trim()
         };
 
-    //     // console.log(userData);
-
         $.post('/api/users/login', userData)
         .then(function(res) {
             console.log(res)

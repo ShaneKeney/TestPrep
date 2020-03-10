@@ -27,6 +27,7 @@ router.post('/api/register', async (req, res) => {
         const token = await newUser.generateAuthToken();
         res.status(201).send({ user: newUser, token });
     } catch(e) {
+        console.log(e);
         res.status(400).send(e)
     }
 });

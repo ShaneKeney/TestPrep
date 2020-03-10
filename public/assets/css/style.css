@@ -4,3 +4,6 @@
 .vertical-text {
     transform: rotate(270deg);
 }
+td,th {
+    line-height: 1rem ;
+}

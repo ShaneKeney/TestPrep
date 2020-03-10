@@ -17,6 +17,7 @@ INSERT INTO Students (email, first_name, last_name, password, phone, createdAt, 
 INSERT INTO Students (email, first_name, last_name, password, phone, createdAt, updatedAt) VALUES ('person1@gmail.com', 'Zac', 'TheTeacher', 'hasanawesomewife', '5675675678', '2020/3/04 0:00', '2020/3/04 0:00');
 INSERT INTO Students (email, first_name, last_name, password, phone, createdAt, updatedAt) VALUES ('person_single@gmail.com', 'Nate', 'LikesBoardgames', '10000times', '6786786789', '2020/3/04 0:00', '2020/3/04 0:00');
 
+INSERT INTO SectionResultsDetails (exam,section,question_number,answer_response,createdAt,updatedAt,StudentId,TestId) VALUES ('College Board Test 1','reading','3','C','2020/3/04 0:00','2020/3/04 0:00',1,1);
 
 INSERT INTO Questions (exam, section, section_position, question_number, difficulty, question_type, ans_actual, tag_category, tag_group, tag, createdAt, updatedAt, TestId) VALUES ('College Board Test 1', 'reading', '1', '1', 'e', 'mc', 'B', 'Literature', 'No Line Reference', 'Summary', '2020/3/04 0:00', '2020/3/04 0:00', '1');
 INSERT INTO Questions (exam, section, section_position, question_number, difficulty, question_type, ans_actual, tag_category, tag_group, tag, createdAt, updatedAt, TestId) VALUES ('College Board Test 1', 'reading', '1', '2', 'e', 'mc', 'B', 'Literature', 'No Line Reference', 'Summary', '2020/3/04 0:00', '2020/3/04 0:00', '1');

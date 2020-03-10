@@ -10,7 +10,7 @@ td,th {
 
 .mc-letter-btn {
     border-radius: 50%;
-    background-color: #f2f2f2;
+    background-color:#f2f2f2;
     border: none;
     height: 2rem;
     width: 2rem;
@@ -18,5 +18,5 @@ td,th {
 }
 
 .mc-letter-btn.selected {
-    background-color: #61e08b;
+    background-color:#61e08b;
 }

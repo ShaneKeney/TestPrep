@@ -56,5 +56,5 @@ $(() => {
             $('#password-mismatch').removeClass('d-none');
         }
     });
-    
+
 });

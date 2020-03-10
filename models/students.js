@@ -68,8 +68,6 @@ module.exports = function (sequelize, DataTypes) {
         });
 
         const user = userArray[0];
-        // console.log(user.dataValues.email)
-        // console.log(user.dataValues.password)
 
         if(!user) {
             throw new Error('Unable to login')

@@ -1,9 +1,12 @@
 <h3>{{details.name}} -- {{details.type}}</h3>
 
-<div id="bubbleContainer" class="container">
-    <form id="answer-sheet" class="mt-5">
-        
-        {{#each questions}}
+{{!-- <div id="bubbleContainer" class="container">
+    <form id="answer-sheet" class="mt-5"> --}}
+
+    <table class="mc-bubblesheet">
+        <tbody class="mc-body">
+
+            {{#each questions}}
 
             {{#if mc}}
                 {{> question-types/multiple-choice}}
@@ -13,8 +16,13 @@
                 {{> question-types/number}}
             {{/if}}
 
-        {{/each}}
+            {{/each}}
 
-        <button type="submit" class="btn btn-primary">Submit Answers</button>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-outline-success mt-3 collect">Collect Answers</button>
+
+        {{!-- <button type="submit" class="btn btn-primary">Submit Answers</button>
     </form>
-</div>
+</div> --}}

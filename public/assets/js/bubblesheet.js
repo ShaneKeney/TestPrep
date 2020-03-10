@@ -4,6 +4,7 @@ let $sectionSelect = $('#section-select');
 let $makeBubbleBtn = $('#makeBubbleBtn');
 let $bubbleCont = $('#bubbleContainer');
 const $bubbleForm = $('#answer-sheet');
+let routeURL;
 
 $bubbleForm.on('submit', e => {
     e.preventDefault;
@@ -44,6 +45,10 @@ $examSelect.on('change', function(event) {
         url: sectionAPIquery
     }).then(sections => {
         $sectionSelect.removeClass('d-none');
+        routeURL = `/api/exams/${testID}/questions/all`;
+        $makeBubbleBtn.removeAttr('href').attr({
+            'href': routeURL
+        });
         $makeBubbleBtn.removeClass('d-none');
         $sectionSelect.empty();
         $sectionSelect.append($('<option>').text('All Sections'));
@@ -65,25 +70,72 @@ $examSelect.on('change', function(event) {
         $sectionSelect.append($option);
         })
     })
-
 })
 
 //populate bubble sheet
-$makeBubbleBtn.on('click', function(event) {
-    event.preventDefault();
+///api/exams/1/questions/ma
+$sectionSelect.on('change', function(e) {
+    e.preventDefault();
     let testID = $examSelect.find(':selected').data('test-id');
     let section = $sectionSelect.find(':selected').data('section');
+    routeURL = `/api/exams/${testID}/questions/${section}`;
+    $makeBubbleBtn.removeAttr('href').attr({
+        'href': routeURL
+    });
+});
+
+//Custom Bubblesheet Selection
+let i = 0;
+    let $document = $(document);
+    let $mcButton = $('.mc-letter-btn');
+    let $collectButton = $('.collect');
+    let $qRow = $('.q-row');
     
-    console.log(testID, section);
-
-    let queryURL = `/api/exams/${testID}/questions/mc/${section}`;
-
-    $.ajax({
-        method: 'GET',
-        url: queryURL
+    $mcButton.on('click', function(e) {
+        e.preventDefault();
+        i = parseInt($(this).parent().siblings('.mc-bs-qnum').text()) - 1;
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+            $(this).parent().siblings('.mc-answer').text(' ');
+        } else {
+            $(this).parent().children().removeClass('selected');
+            $(this).addClass('selected');
+            $(this).parent().siblings('.mc-answer').text($(this).text());
+            i++
+        }
+    });
+    
+    $document.keydown(function(e) {
+        let key = event.which || event.keyCode;
+        switch (key) {
+            case 65:
+                $qRow.eq(i).find('.mc-letter-btn').eq(0).trigger('click');
+                break;
+            case 66:
+                $qRow.eq(i).find('.mc-letter-btn').eq(1).trigger('click');
+                break;
+            case 67:
+                $qRow.eq(i).find('.mc-letter-btn').eq(2).trigger('click');
+                break;
+            case 68:
+                $qRow.eq(i).find('.mc-letter-btn').eq(3).trigger('click');
+                break;
+            case 8:
+                i--;
+                if( i < 0 ){ i = 0; }
+                $qRow.eq(i).find('.mc-letter-btn').parent().children().removeClass('selected');
+                $qRow.eq(i).find('.mc-letter-btn').parent().siblings('.mc-answer').text(' ');
+                break;
+        }
+    })
+    
+    $collectButton.on('click', function(e) {
+        e.preventDefault();
+        let ansStr = $('.mc-body').find('.mc-answer').text();
+        let ansArr = ansStr.split('');
+        console.log(ansArr);
     });
 
-})
 
 
 });

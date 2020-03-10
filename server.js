@@ -4,7 +4,7 @@ var db = require('./models');
 const userRoutes = require('./controllers/api-user-routes');
 
 //Load environment variables if present for development
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 
@@ -16,13 +16,16 @@ var app = express();
 app.use(express.static('public'));
 
 // Parse application body as JSON
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Set Handlebars view engine:
 var exphbs = require('express-handlebars');
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs({
+    defaultLayout: 'main',
+    helpers: require('./config/handlebars-helpers')
+}));
 app.set('view engine', 'handlebars');
 
 // Import routes and give the server access to them
@@ -44,7 +47,7 @@ app.get('/', (req, res) => {
 // =============================================================
 // { force: true }
 db.sequelize.sync().then(function () {
-    app.listen(PORT, function() {
+    app.listen(PORT, function () {
         console.log('App listening on PORT ' + PORT);
     });
 });

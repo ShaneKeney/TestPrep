@@ -17,13 +17,12 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/api/exams/:testID/questions/:type/:section', (req, res) => {
+    app.get('/api/exams/:testID/questions/:section', (req, res) => {
         db.Test.findAll({
             where: {id: req.params.testID},
             include: {
                 model: db.Question,
                 where: {
-                    question_type: req.params.type,
                     section: req.params.section
                 }
             },
@@ -31,16 +30,37 @@ module.exports = (app) => {
                 [db.Question, 'question_number', 'ASC']
             ]
         }).then((results)=>{
-            data = {
+
+            // HELPER FUNCTION SO THAT WE CAN USE
+            // {{#if mc}} AND {{#if num}}
+            // FOR QUESTION TYPES
+            // INSIDE bubblesheet.handlebars
+            const questionsArr = [];
+            results[0].Questions.forEach(question => {
+                if (question.dataValues.question_type === 'mc') {
+                    questionsArr.push({
+                        dataValues: question.dataValues,
+                        mc: true,
+                    });
+                } else if (question.dataValues.question_type === 'num'
+                        || question.dataValues.question_type === 'array'
+                        || question.dataValues.question_type === 'range') {
+                    questionsArr.push({
+                        dataValues: question.dataValues,
+                        num: true
+                    });
+                }
+            });
+            // END HELPER
+
+            const data = {
                 details: {
                     name: results[0].exam,
                     type: results[0].type
                 },
-                questions: results[0].Questions
+                questions: questionsArr
             };
-            console.log(data.questions.length);
-            console.log(data);
-            // res.json(results);
+
             res.render('bubblesheet', data);
         });
     });

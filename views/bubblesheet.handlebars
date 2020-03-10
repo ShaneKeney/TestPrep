@@ -1,50 +1,28 @@
-{{> nav/navbar}}
+<h3>{{details.name}} -- {{details.type}}</h3>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-3 col-md-4">
-            {{> nav/side-nav}}
-            {{> auth-modals/register}}
-            {{> auth-modals/signin}}
-        </div>
+{{!-- <div id="bubbleContainer" class="container">
+    <form id="answer-sheet" class="mt-5"> --}}
 
-        <div class="col-lg-9 col-md-8">
+    <table class="mc-bubblesheet">
+        <tbody class="mc-body">
 
-            <h3>{{details.name}} -- {{details.type}}</h3>
+            {{#each questions}}
 
-            
+            {{#if mc}}
+                {{> question-types/multiple-choice}}
+            {{/if}}
 
-            <div id="bubbleContainer" class="container">
-                <form id="answer-sheet" class="mt-5">
-                    
-                    {{#each questions}}
-                    
-                    <div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="A">
-                            <label class="form-check-label" for="inlineRadio1">A</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="B">
-                            <label class="form-check-label" for="inlineRadio2">B</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="C">
-                            <label class="form-check-label" for="inlineRadio3">C</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="D">
-                            <label class="form-check-label" for="inlineRadio4">D</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="{{questions.section}}{{questions.question_number}}" value="">
-                            <label class="form-check-label" for="inlineRadio5">Omit</label>
-                        </div>
-                    </div>
-                    
-                    {{/each}}
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+            {{#if num}}
+                {{> question-types/number}}
+            {{/if}}
+
+            {{/each}}
+
+        </tbody>
+    </table>
+    
+    <button class="btn btn-outline-success mt-3 collect">Collect Answers</button>
+
+        {{!-- <button type="submit" class="btn btn-primary">Submit Answers</button>
+    </form>
+</div> --}}

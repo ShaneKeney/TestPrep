@@ -14,7 +14,23 @@
   <title>Test Prep Scoring</title>
 </head>
 <body>
-  {{{ body }}}
+  {{> nav/navbar}}
+
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-lg-3 col-md-4">
+              {{> nav/side-nav}}
+              {{> auth-modals/register}}
+              {{> auth-modals/signin}}
+          </div>
+
+          <div class="col-lg-9 col-md-8">
+          
+            {{{ body }}}
+
+          </div>
+    </div>
+</div>
 
   <!-- JavaScript Files -->
   <script src="/assets/js/jquery-3.4.1.min.js"></script>

@@ -14,3 +14,5 @@ When seeding your local database, populate tables in the following order:
 -
 
 Start the server so that Sequelize initializes the tables in the database, then use MySQL Workbench's data import wizard to import the data from the .csv files in the db folder.
+
+//TODO: Add JWT_SECRET to Heroku projects -> staging & prod

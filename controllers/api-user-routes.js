@@ -3,6 +3,7 @@ const express = require('express');
 const router = new express.Router();
 const bcrypt = require('bcryptjs');
 const db = require('../models');
+const isAuthenticated = require('../middleware/auth');
 
 router.post('/api/register', async (req, res) => {
     // check to see if password & confirm match else send error
@@ -23,25 +24,27 @@ router.post('/api/register', async (req, res) => {
             password: hashedPassword
         });
         
-        const token = newUser.generateAuthToken();
-
+        const token = await newUser.generateAuthToken();
         res.status(201).send({ user: newUser, token });
     } catch(e) {
-        console.log(e);
+        //console.log(e);
         res.status(400).send(e)
     }
 });
 
-router.post('/api/users/login' , async (req, res) => {
-    //console.log(req.body)
+router.post('/api/users/login', async (req, res) => {
     try {
         const user = await db.Students.findByCredentials(req.body.email, req.body.password);
-        //console.log(user)
+
         const token = await user.generateAuthToken();
         res.send({ user, token })
     } catch(err) {
         res.status(400).send();
     }
 })
+
+router.get('/api/users/me', isAuthenticated, async (req, res) => {
+    res.send(req.user);
+});
 
 module.exports = router;

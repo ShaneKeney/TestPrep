@@ -34,8 +34,6 @@ $(() => {
         .catch(function(err) {
             console.log(err)
         })
-
-        // console.log('Sign in form submitted');
     });
 
     $('#register-form').on('submit', e => {
@@ -62,10 +60,6 @@ $(() => {
                     $('#regErrorText').text('Email already registered'); 
                 }
             })
-    
-            // console.log(userData);
-    
-            // console.log('Register form submitted');
 
             $('#password-mismatch').addClass('d-none');
         } else {

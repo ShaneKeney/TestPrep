@@ -53,13 +53,11 @@ module.exports = function (sequelize, DataTypes) {
 
     Students.prototype.generateAuthToken = async function() {
         const user = this;
-        console.log(user)
-        const token = jwt.sign({id: user.id.toString()}, 'thisisasecret'); //TODO: change this to process.env 
-
+        const token = jwt.sign({id: user.id.toString()}, process.env.JWT_SECRET); //TODO: change this to process.env 
         user.tokens = token;
         await user.save();
 
-        return token;
+        return user.tokens;
     }
 
     Students.findByCredentials = async (email, password) => {

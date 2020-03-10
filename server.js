@@ -12,12 +12,6 @@ var PORT = process.env.PORT || 3000;
 
 var app = express();
 
-// Setting up Express Middleware for authentication
-app.use((req, res, next) => {
-
-    next(); //call next to say we are done with our middleware function
-});
-
 // Serve static content for the app from the "public" directory in the application directory
 app.use(express.static('public'));
 

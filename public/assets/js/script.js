@@ -17,21 +17,22 @@ $(() => {
     //     $(numChoices).append(colEl);
     // }
 
-    // $('#signin-form').on('submit', e => {
-    //     e.preventDefault();
+    $('#signin-form').on('submit', e => {
+        e.preventDefault();
 
-    //     const userData = {
-    //         email: $('#signin-email').val(),
-    //         password: $('#signin-password').val()
-    //     };
+        const userData = {
+            email: $('#signin-email').val().trim(),
+            password: $('#signin-password').val().trim()
+        };
 
-    //     // console.log(userData);
-
-    //     // $.post('/api/signin', userData)
-    //     // .then();
-
-    //     // console.log('Sign in form submitted');
-    // });
+        $.post('/api/users/login', userData)
+        .then(function(res) {
+            console.log(res)
+        })
+        .catch(function(err) {
+            console.log(err)
+        })
+    });
 
     $('#register-form').on('submit', e => {
         e.preventDefault();
@@ -39,17 +40,24 @@ $(() => {
         // make sure new password matches confirm password
         if ($('#register-password').val() === $('#confirm-password').val()) {
             const userData = {
-                email: $('#register-email').val(),
-                phone: $('#register-phone').val(),
-                password: $('#register-password').val()
+                firstName: $('#register-firstName').val().trim(),
+                lastName: $('#register-lastName').val().trim(),
+                email: $('#register-email').val().trim(),
+                phone: $('#register-phone').val().trim(),
+                password: $('#register-password').val().trim(),
+                confirmPassword: $('#confirm-password').val().trim()
             };
     
-            // $.post('/api/register', userData)
-            // .then();
-    
-            // console.log(userData);
-    
-            // console.log('Register form submitted');
+            $.post('/api/register', userData)
+            .then(function(res) {
+                console.log(res); //log the response to see what is happening
+                resetRegisterFields();
+            })
+            .catch(function(err) {
+                if(err.responseJSON.errors[0].message === "students.email must be unique") {
+                    $('#regErrorText').text('Email already registered'); 
+                }
+            })
 
             $('#password-mismatch').addClass('d-none');
         } else {
@@ -57,4 +65,20 @@ $(() => {
         }
     });
 
+    $('#regClose').on('click', function() {
+        $('#regErrorText').text(''); 
+        resetRegisterFields();
+    })
 });
+
+function resetRegisterFields() {
+    $('#register-firstName').val('');
+    $('#register-lastName').val('');
+    $('#register-email').val('');
+    $('#register-phone').val('');
+    $('#register-password').val('');
+    $('#confirm-password').val('');
+
+    $('#register-modal').modal('hide');
+    $('#regErrorText').val('');
+}

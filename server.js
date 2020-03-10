@@ -1,7 +1,7 @@
-require('dotenv').config();
 var express = require('express');
 var dotenv = require('dotenv');
 var db = require('./models');
+const userRoutes = require('./controllers/api-user-routes');
 
 //Load environment variables if present for development
 if (process.env.NODE_ENV !== 'production') {
@@ -33,9 +33,10 @@ app.set('view engine', 'handlebars');
 // require('./controllers/api-results-routes.js')(app);
 // require('./controllers/api-user-routes.js')(app);
 require('./controllers/html-app-routes.js')(app);
-// require('./controllers/html-user-routes.js')(app);
+// // require('./controllers/html-user-routes.js')(app);
 require('./controllers/api-exam-routes.js')(app);
 require('./controllers/api-exam-selections')(app);
+app.use(userRoutes);
 
 // Default route for testing and setup:
 app.get('/', (req, res) => {

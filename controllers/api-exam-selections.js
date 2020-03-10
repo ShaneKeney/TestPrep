@@ -17,13 +17,12 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/api/exams/:testID/questions/:type/:section', (req, res) => {
+    app.get('/api/exams/:testID/questions/:section', (req, res) => {
         db.Test.findAll({
             where: {id: req.params.testID},
             include: {
                 model: db.Question,
                 where: {
-                    question_type: req.params.type,
                     section: req.params.section
                 }
             },
@@ -43,7 +42,9 @@ module.exports = (app) => {
                         dataValues: question.dataValues,
                         mc: true,
                     });
-                } else if (question.dataValues.question_type === 'num') {
+                } else if (question.dataValues.question_type === 'num'
+                        || question.dataValues.question_type === 'array'
+                        || question.dataValues.question_type === 'range') {
                     questionsArr.push({
                         dataValues: question.dataValues,
                         num: true

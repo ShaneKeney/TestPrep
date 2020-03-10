@@ -2,12 +2,24 @@
 
 <div id="bubbleContainer" class="container">
     <form id="answer-sheet" class="mt-5">
-        
-        {{#each questions}}
 
-            {{#if mc}}
-                {{> question-types/multiple-choice}}
-            {{/if}}
+        {{!-- MULTIPLE CHOICE QUESTIONS --}}
+        
+        <table class="mc-bubblesheet">
+            <tbody class="mc-body">
+
+                {{#each questions}}
+                    {{#if mc}}
+                        {{> question-types/multiple-choice}}
+                    {{/if}}
+                {{/each}}
+                
+            </tbody>
+        </table>
+
+        {{!-- NUMBER QUESTIONS --}}
+
+        {{#each questions}}
 
             {{#if num}}
                 {{> question-types/number}}

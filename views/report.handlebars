@@ -48,19 +48,14 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
+                            <td>{{easyPercent}}%</td>
+                            <td>{{medPercent}}%</td>
+                            <td>{{hardPercent}}%</td>
                         </tr>
                         <tr>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
+                            <td>{{easyCorrect}}/{{easyCount}}</td>
+                            <td>{{medCorrect}}/{{medCount}}</td>
+                            <td>{{hardCorrect}}/{{hardCount}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -160,10 +155,7 @@
                         {{/each}}
                     </tbody>
                 </table>
-                <p>* Q = Question</p>
-                <p>* R = Response</p>
-                <p>* A = Answer</p>
-                <p>* D = Difficulty</p>
+                <p class="d-block">* Q = Question; * R = Response; * A = Answer; * D = Difficulty</p>
             </div>
         </div>
     </div>

@@ -15,6 +15,9 @@ module.exports = (app) => {
         var scoreList;
         var scoreCount = {};
         var skippedCount = {};
+        var easyCorrect = {};
+        var medCorrect = {};
+        var hardCorrect = {};
         // search the sectionResultsDetails based on the StudentId and TestId
         db.SectionResultsDetails.findAll({
             where: {
@@ -56,7 +59,8 @@ module.exports = (app) => {
                                     // get the record from the students answers if it matches the section and question number of the current question
                                     // chose this method as we did not create direct relations between the tables
                                     const studentAnswer = resultDetails.filter(answer => {
-                                        if (question.dataValues.section === answer.dataValues.section && question.dataValues.question_number === answer.dataValues.question_number) {
+                                        if (question.dataValues.section === answer.dataValues.section
+                                            && question.dataValues.question_number === answer.dataValues.question_number) {
                                             return true;
                                         }
                                     })[0];
@@ -64,14 +68,19 @@ module.exports = (app) => {
                                     if (studentAnswer) {
                                         question.dataValues.studentAnswer = studentAnswer.dataValues.answer_response;
                                     }
-                                    // create a property to track the score based on the section, if it does not yet exist
-                                    if (!scoreCount[question.dataValues.modSection]) {
-                                        scoreCount[question.dataValues.modSection] = 0;
+                                    var modSection = question.dataValues.modSection;
+                                    // checks if property exists yet, and creates it with a zero value if not
+                                    function createPropOn(obj) {
+                                        if (!obj[modSection]) {
+                                            obj[modSection] = 0;
+                                        }
                                     }
-                                    // create a property to track the skipped questions based on the section, if it does not yet exist
-                                    if (!skippedCount[question.dataValues.modSection]) {
-                                        skippedCount[question.dataValues.modSection] = 0;
-                                    }
+                                    createPropOn(scoreCount);
+                                    createPropOn(skippedCount);
+                                    createPropOn(easyCorrect);
+                                    createPropOn(medCorrect);
+                                    createPropOn(hardCorrect);
+
                                     // check the validity of the student's answer
                                     // set variables to store right/wrong/skipped
                                     if (question.dataValues.studentAnswer === question.dataValues.ans_actual) {
@@ -79,14 +88,23 @@ module.exports = (app) => {
                                         question.dataValues.ans_actual = '+';
                                         question.wrong = false;
                                         question.omitted = false;
-
                                         // update the score count for the section
-                                        scoreCount[question.dataValues.modSection] += 1;
+                                        scoreCount[modSection] += 1;
+                                        // update the count of the difficulty variables
+                                        switch (question.dataValues.difficulty) {
+                                        case 'e': easyCorrect[modSection] += 1;
+                                            break;
+                                        case 'm': medCorrect[modSection] += 1;
+                                            break;
+                                        case 'h': hardCorrect[modSection] += 1;
+                                            break;
+                                        default: '';
+                                        }
                                     } else if (question.dataValues.studentAnswer) {
                                         question.wrong = true;
                                     } else {
                                         question.omitted = true;
-                                        skippedCount[question.dataValues.modSection] += 1;
+                                        skippedCount[modSection] += 1;
                                         // set a dash to display if it was skipped
                                         question.dataValues.studentAnswer = '-';
                                     }
@@ -99,31 +117,50 @@ module.exports = (app) => {
                                 TestId: TestId
                             }
                         })
-                            .then(data=>{
+                            .then(data => {
                                 scoreList = data;
                                 // scoring calculations section
                                 // create properties for calculations based on each section
                                 sectionList.forEach(sectionRecord => {
-                                    var section;
-                                    section = sectionRecord.dataValues.section;
+                                    var section = sectionRecord.dataValues.section;
+                                    // function to count questions based on difficulty
+                                    function countDiff(diff) {
+                                        return questionList.filter(item => {
+                                            if (item.dataValues.difficulty === diff
+                                                 && item.dataValues.modSection === section) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        }).length;
+                                    }
+                                    sectionRecord.easyCount = countDiff('e');
+                                    sectionRecord.medCount = countDiff('m');
+                                    sectionRecord.hardCount = countDiff('h');
+                                    sectionRecord.easyCorrect = easyCorrect[section];
+                                    sectionRecord.medCorrect = medCorrect[section];
+                                    sectionRecord.hardCorrect = hardCorrect[section];
+                                    sectionRecord.easyPercent = (sectionRecord.easyCorrect / sectionRecord.easyCount *100).toFixed(1);
+                                    sectionRecord.medPercent = (sectionRecord.medCorrect/sectionRecord.medCount*100).toFixed(1);
+                                    sectionRecord.hardPercent = (sectionRecord.hardCorrect/sectionRecord.hardCount*100).toFixed(1);
                                     // get number of questions in the section
                                     sectionRecord.totalQs = scoreList.filter(scoreRecord => {
-                                        if(scoreRecord.dataValues.section === section) {
+                                        if (scoreRecord.dataValues.section === section) {
                                             return true;
                                         }
                                     }).length - 1;
-                                    // properties for skipped questions, correct answers, percent correct, and incorrect answers
+                                    // properties for skipped questions, correct answers, percent correct, and incorrect answers, etc.
                                     sectionRecord.skippedCount = skippedCount[section];
                                     sectionRecord.numberCorrect = scoreCount[section];
                                     sectionRecord.percentCorrect = (sectionRecord.numberCorrect / sectionRecord.totalQs * 100).toFixed(0);
                                     sectionRecord.numberIncorrect = sectionRecord.totalQs - sectionRecord.numberCorrect;
                                     // search for the actual score based on the number of correct answers
-                                    var selectedScoreRecord = scoreList.filter(scoreRecord=>{
+                                    var selectedScoreRecord = scoreList.filter(scoreRecord => {
                                         if (scoreRecord.dataValues.section === section && scoreRecord.dataValues.raw === scoreCount[section]) {
                                             return true;
                                         }
                                     });
-                                    if(selectedScoreRecord.length > 0) {
+                                    if (selectedScoreRecord.length > 0) {
                                         sectionRecord.dataValues.score = selectedScoreRecord[0].dataValues.score;
                                     } else {
                                         sectionRecord.dataValues.score = 0;

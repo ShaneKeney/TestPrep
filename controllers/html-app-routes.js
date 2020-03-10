@@ -50,11 +50,11 @@ module.exports = (app) => {
                                     // in order to match with SatCurve scoring table
                                     // using switch for easy additions later
                                     switch (question.dataValues.section) {
-                                    case 'mathNC': question.dataValues.modSection = 'math';
-                                        break;
-                                    case 'mathC': question.dataValues.modSection = 'math';
-                                        break;
-                                    default: question.dataValues.modSection = question.dataValues.section;
+                                        case 'mathNC': question.dataValues.modSection = 'math';
+                                            break;
+                                        case 'mathC': question.dataValues.modSection = 'math';
+                                            break;
+                                        default: question.dataValues.modSection = question.dataValues.section;
                                     }
                                     // get the record from the students answers if it matches the section and question number of the current question
                                     // chose this method as we did not create direct relations between the tables
@@ -92,13 +92,13 @@ module.exports = (app) => {
                                         scoreCount[modSection] += 1;
                                         // update the count of the difficulty variables
                                         switch (question.dataValues.difficulty) {
-                                        case 'e': easyCorrect[modSection] += 1;
-                                            break;
-                                        case 'm': medCorrect[modSection] += 1;
-                                            break;
-                                        case 'h': hardCorrect[modSection] += 1;
-                                            break;
-                                        default: '';
+                                            case 'e': easyCorrect[modSection] += 1;
+                                                break;
+                                            case 'm': medCorrect[modSection] += 1;
+                                                break;
+                                            case 'h': hardCorrect[modSection] += 1;
+                                                break;
+                                            default: '';
                                         }
                                     } else if (question.dataValues.studentAnswer) {
                                         question.wrong = true;
@@ -127,7 +127,7 @@ module.exports = (app) => {
                                     function countDiff(diff) {
                                         return questionList.filter(item => {
                                             if (item.dataValues.difficulty === diff
-                                                 && item.dataValues.modSection === section) {
+                                                && item.dataValues.modSection === section) {
                                                 return true;
                                             } else {
                                                 return false;
@@ -140,9 +140,9 @@ module.exports = (app) => {
                                     sectionRecord.easyCorrect = easyCorrect[section];
                                     sectionRecord.medCorrect = medCorrect[section];
                                     sectionRecord.hardCorrect = hardCorrect[section];
-                                    sectionRecord.easyPercent = (sectionRecord.easyCorrect / sectionRecord.easyCount *100).toFixed(1);
-                                    sectionRecord.medPercent = (sectionRecord.medCorrect/sectionRecord.medCount*100).toFixed(1);
-                                    sectionRecord.hardPercent = (sectionRecord.hardCorrect/sectionRecord.hardCount*100).toFixed(1);
+                                    sectionRecord.easyPercent = (sectionRecord.easyCorrect / sectionRecord.easyCount * 100).toFixed(1);
+                                    sectionRecord.medPercent = (sectionRecord.medCorrect / sectionRecord.medCount * 100).toFixed(1);
+                                    sectionRecord.hardPercent = (sectionRecord.hardCorrect / sectionRecord.hardCount * 100).toFixed(1);
                                     // get number of questions in the section
                                     sectionRecord.totalQs = scoreList.filter(scoreRecord => {
                                         if (scoreRecord.dataValues.section === section) {

@@ -28,7 +28,8 @@
         "brace-style": "error",
         "indent": [
             2,
-            4
+            4,
+            { "SwitchCase": 1 }
         ],
         "quotes": [
             "error",

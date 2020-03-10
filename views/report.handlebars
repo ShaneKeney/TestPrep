@@ -67,7 +67,7 @@
                 <table class="table table-bordered table-striped mb-0 text-center">
                     <thead>
                         <tr>
-                            <th colspan="2" class="mt-0">{{object}}</th>
+                            <th colspan="2" class="mt-0">{{sortedTagsWrong.[0]}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,8 +76,12 @@
                             <td>Questions Missed</td>
                         </tr>
                         <tr>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
+                            <td>{{correctTagWrong1Count}}/{{tagWrong1Count}}</td>
+                            <td>
+                                {{#if tagWrong1Missed}}
+                                    ({{tagWrong1Missed}})
+                                {{/if}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -86,7 +90,7 @@
                 <table class="table table-bordered table-striped mb-0 text-center">
                     <thead>
                         <tr>
-                            <th colspan="2" class="mt-0">{{object}}</th>
+                            <th colspan="2" class="mt-0">{{sortedTagsWrong.[1]}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,8 +99,8 @@
                             <td>Questions Missed</td>
                         </tr>
                         <tr>
-                            <td>{{object}}</td>
-                            <td>{{object}}</td>
+                            <td>{{correctTagWrong2Count}}/{{tagWrong2Count}}</td>
+                            <td>{{tagWrong2Missed}}</td>
                         </tr>
                     </tbody>
                 </table>

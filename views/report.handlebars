@@ -18,17 +18,17 @@
                     <thead>
                         <tr>
                             <th class="w-25">Score</td>
-                            <th class="w-75">{{object}}</td>
+                            <th class="w-75">{{dataValues.score}}</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="text-success">
                             <td>Correct</td>
-                            <td>{{object}}</td>
+                            <td>{{numberCorrect}} ({{percentCorrect}}%)</td>
                         </tr>
                         <tr class="text-danger">
                             <td>Incorrect</td>
-                            <td>{{object}}</td>
+                            <td>{{numberIncorrect}} (Including {{skippedCount}} omitted)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -128,7 +128,7 @@
                     </thead>
                     <tbody>
                         {{#each ../questionList}}
-                        {{#ifEquals dataValues.section ../dataValues.section}}
+                        {{#ifEquals dataValues.modSection ../dataValues.section}}
                         <tr>
                             <td class="py-0{{#if ../omitted}} bg-warning 
                                 {{else if ../wrong}} bg-danger

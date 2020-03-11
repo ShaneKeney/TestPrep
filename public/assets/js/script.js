@@ -22,16 +22,17 @@ $(() => {
         e.preventDefault();
 
         const userData = {
-            email: $('#signin-email').val(),
-            password: $('#signin-password').val()
+            email: $('#signin-email').val().trim(),
+            password: $('#signin-password').val().trim()
         };
 
-        // console.log(userData);
-
-        // $.post('/api/signin', userData)
-        // .then();
-
-        // console.log('Sign in form submitted');
+        $.post('/api/users/login', userData)
+        .then(function(res) {
+            console.log(res)
+        })
+        .catch(function(err) {
+            console.log(err)
+        })
     });
 
     $('#register-form').on('submit', e => {
@@ -41,40 +42,49 @@ $(() => {
         $('#invalid-email').addClass('d-none');
         $('#invalid-phone').addClass('d-none');
 
-        const registerPassword = $('#register-password').val().trim();
-        const confirmPassword = $('#confirm-password').val().trim();
-        const registerEmail = $('#register-email').val().trim();
-
-        let registerPhone = '';
+        const userData = {
+            firstName: $('#register-firstName').val().trim(),
+            lastName: $('#register-lastName').val().trim(),
+            email: $('#register-email').val().trim(),
+            phone: $('#register-phone').val().trim(),
+            password: $('#register-password').val().trim(),
+            confirmPassword: $('#confirm-password').val().trim()
+        }
 
         const validateEmail = () => {
             const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return emailRegex.test(registerEmail);
+            return emailRegex.test(userData.email);
         }
 
         const validatePhone = () => {
-            registerPhone = '';
-            const phoneInput = $('#register-phone').val().trim().split('');
-            phoneInput.forEach(char => {
+            let registerPhone = '';
+            userData.phone.split('').forEach(char => {
                 if (phoneArr.includes(char)) {
-                    registerPhone.concat(char);
+                    registerPhone += char;
+                    console.log(registerPhone);
+                    console.log(registerPhone.length);
                 }
             });
 
-            registerPhone.length !== 9 ? true : false;
-            
+            userData.phone = registerPhone;
+
+            return registerPhone.length === 10 ? true : false;
         }
 
-        if (registerPassword === confirmPassword && validateEmail() && validatePhone()) {
-            const userData = {
-                email: registerEmail,
-                phone: registerPhone,
-                password: registerPassword
-            }
-            // $.post('/api/register', userData)
-            // .then();
+        if (userData.password === userData.confirmPassword && validateEmail() && validatePhone()) {
+            $.post('/api/register', userData)
+            .then(function(res) {
+                console.log(res); //log the response to see what is happening
+                resetRegisterFields();
+            })
+            .catch(function(err) {
+                if(err.responseJSON.errors[0].message === "students.email must be unique") {
+                    $('#regErrorText').text('Email already registered'); 
+                }
+            });
+            location.reload();
         } else {
-            if (registerPassword !== confirmPassword) 
+            if (userData.password !== userData.confirmPassword) 
                 $('#password-mismatch').removeClass('d-none');
             if (!validateEmail())
                 $('#invalid-email').removeClass('d-none');
@@ -83,4 +93,20 @@ $(() => {
         }
     });
 
+    $('#regClose').on('click', function() {
+        $('#regErrorText').text(''); 
+        resetRegisterFields();
+    })
 });
+
+function resetRegisterFields() {
+    $('#register-firstName').val('');
+    $('#register-lastName').val('');
+    $('#register-email').val('');
+    $('#register-phone').val('');
+    $('#register-password').val('');
+    $('#confirm-password').val('');
+
+    $('#register-modal').modal('hide');
+    $('#regErrorText').val('');
+}

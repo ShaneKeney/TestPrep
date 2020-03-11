@@ -9,7 +9,7 @@ module.exports = (app) => {
                 TestId: req.params.testID
             },
             attributes: [
-                [db.Sequelize.fn('DISTINCT', db.Sequelize.col('section')) ,'section']
+                [db.Sequelize.fn('DISTINCT', db.Sequelize.col('section')), 'section']
             ]
         })
             .then((questions) => {
@@ -19,7 +19,7 @@ module.exports = (app) => {
 
     app.get('/api/exams/:testID/questions/:section', (req, res) => {
         db.Test.findAll({
-            where: {id: req.params.testID},
+            where: { id: req.params.testID },
             include: {
                 model: db.Question,
                 where: {
@@ -29,7 +29,7 @@ module.exports = (app) => {
             order: [
                 [db.Question, 'question_number', 'ASC']
             ]
-        }).then((results)=>{
+        }).then((results) => {
 
             // HELPER FUNCTION SO THAT WE CAN USE
             // {{#if mc}} AND {{#if num}}
@@ -43,8 +43,8 @@ module.exports = (app) => {
                         mc: true,
                     });
                 } else if (question.dataValues.question_type === 'num'
-                        || question.dataValues.question_type === 'array'
-                        || question.dataValues.question_type === 'range') {
+                    || question.dataValues.question_type === 'array'
+                    || question.dataValues.question_type === 'range') {
                     questionsArr.push({
                         dataValues: question.dataValues,
                         num: true
@@ -65,4 +65,52 @@ module.exports = (app) => {
         });
     });
 
+    app.get('/api/exams/:userId', (req, res) => {
+        db.SectionResultsDetails.findAll({
+            where: {
+                StudentId: req.params.userId
+            },
+            attributes: [
+                [db.Sequelize.fn('DISTINCT', db.Sequelize.col('TestId')), 'TestId']
+            ]
+        })
+            .then((testIds) => {
+                var testIdArr = [];
+                testIds.forEach(element => {
+                    testIdArr.push(element.dataValues.TestId);
+                });
+                db.Test.findAll({
+                    where: {
+                        id: testIdArr
+                    }
+                }).then(tests => {
+                    var examArr = [];
+                    tests.forEach(e => {
+                        examArr.push({
+                            exam: e.dataValues.exam,
+                            testID: e.dataValues.id
+                        });
+                    });
+                    res.json(examArr);
+                });
+            });
+    });
+
+    app.get('/api/sections/:userId/:testId', (req,res)=>{
+        db.Question.findAll({
+            where: {
+                TestId: req.params.testId
+            },
+            attributes: [
+                [db.Sequelize.fn('DISTINCT', db.Sequelize.col('section')),'section']
+            ]
+        })
+            .then(sections=>{
+                var sectionsArr = [];
+                sections.forEach(e=>{
+                    sectionsArr.push(e.dataValues.section);
+                });
+                res.json(sectionsArr);
+            });
+    });
 };

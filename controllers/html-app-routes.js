@@ -116,113 +116,112 @@ module.exports = (app) => {
                                         question.dataValues.studentAnswer = '-';
                                     }
                                 });
-                            });
-
-                        // get scoring table for the test
-                        db.SatCurve.findAll({
-                            where: {
-                                TestId: TestId
-                            }
-                        })
-                            .then(data => {
-                                scoreList = data;
-                                // scoring calculations section
-                                // create properties for calculations based on each section
-                                if(sectionFilter !== 'all'){
-                                    sectionList = sectionList.filter(sectionRecord=>{
-                                        if(sectionRecord.dataValues.section === sectionFilter){
-                                            return true;
-                                        }
-                                    });
-                                    if(sectionList.length === 0){
-                                        throw new Error(`the section: ${sectionFilter} does not exist for the test with ID: ${TestId}1)`);
+                                // get scoring table for the test
+                                db.SatCurve.findAll({
+                                    where: {
+                                        TestId: TestId
                                     }
-                                }
-                                sectionList.forEach(sectionRecord => {
-                                    var section = sectionRecord.dataValues.section;
-                                    // function to count questions based on certain criteria
-                                    function countQ(val, field) {
-                                        return questionList.filter(item => {
-                                            if (item.dataValues[field] === val
-                                                && item.dataValues.modSection === section) {
-                                                return true;
-                                            } else {
-                                                return false;
+                                })
+                                    .then(data => {
+                                        scoreList = data;
+                                        // scoring calculations section
+                                        // create properties for calculations based on each section
+                                        if (sectionFilter !== 'all') {
+                                            sectionList = sectionList.filter(sectionRecord => {
+                                                if (sectionRecord.dataValues.section === sectionFilter) {
+                                                    return true;
+                                                }
+                                            });
+                                            if (sectionList.length === 0) {
+                                                throw new Error(`the section: ${sectionFilter} does not exist for the test with ID: ${TestId}1)`);
                                             }
-                                        }).length;
-                                    }
-                                    sectionRecord.sortedTagsWrong = Object.keys(tagWrong[section]).sort(function (a, b) {
-                                        return tagWrong[section][b] - tagWrong[section][a];
-                                    }).slice(0, 2);
-                                    sectionRecord.easyCount = countQ('e', 'difficulty');
-                                    sectionRecord.medCount = countQ('m', 'difficulty');
-                                    sectionRecord.hardCount = countQ('h', 'difficulty');
-                                    sectionRecord.tagWrong1Count = countQ(sectionRecord.sortedTagsWrong[0], 'tag_category');
-                                    sectionRecord.tagWrong2Count = countQ(sectionRecord.sortedTagsWrong[1], 'tag_category');
-                                    sectionRecord.correctTagWrong1Count = questionList.filter(q => {
-                                        if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[0]
-                                            && q.dataValues.modSection === section
-                                            && q.wrong === false) {
-                                            return true;
                                         }
-                                    }).length;
-                                    sectionRecord.correctTagWrong2Count = questionList.filter(q => {
-                                        if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[1]
-                                            && q.dataValues.modSection === section
-                                            && q.wrong === false) {
-                                            return true;
-                                        }
-                                    }).length;
+                                        sectionList.forEach(sectionRecord => {
+                                            var section = sectionRecord.dataValues.section;
+                                            // function to count questions based on certain criteria
+                                            function countQ(val, field) {
+                                                return questionList.filter(item => {
+                                                    if (item.dataValues[field] === val
+                                                        && item.dataValues.modSection === section) {
+                                                        return true;
+                                                    } else {
+                                                        return false;
+                                                    }
+                                                }).length;
+                                            }
+                                            sectionRecord.sortedTagsWrong = Object.keys(tagWrong[section]).sort(function (a, b) {
+                                                return tagWrong[section][b] - tagWrong[section][a];
+                                            }).slice(0, 2);
+                                            sectionRecord.easyCount = countQ('e', 'difficulty');
+                                            sectionRecord.medCount = countQ('m', 'difficulty');
+                                            sectionRecord.hardCount = countQ('h', 'difficulty');
+                                            sectionRecord.tagWrong1Count = countQ(sectionRecord.sortedTagsWrong[0], 'tag_category');
+                                            sectionRecord.tagWrong2Count = countQ(sectionRecord.sortedTagsWrong[1], 'tag_category');
+                                            sectionRecord.correctTagWrong1Count = questionList.filter(q => {
+                                                if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[0]
+                                                    && q.dataValues.modSection === section
+                                                    && q.wrong === false) {
+                                                    return true;
+                                                }
+                                            }).length;
+                                            sectionRecord.correctTagWrong2Count = questionList.filter(q => {
+                                                if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[1]
+                                                    && q.dataValues.modSection === section
+                                                    && q.wrong === false) {
+                                                    return true;
+                                                }
+                                            }).length;
 
-                                    function getNums(iter) {
-                                        var wrongNums = [];
-                                        questionList.forEach(q => {
-                                            if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[iter]
-                                                && q.dataValues.modSection === section
-                                                && q.wrong === true) {
-                                                wrongNums.push(q.dataValues.question_number);
+                                            function getNums(iter) {
+                                                var wrongNums = [];
+                                                questionList.forEach(q => {
+                                                    if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[iter]
+                                                        && q.dataValues.modSection === section
+                                                        && q.wrong === true) {
+                                                        wrongNums.push(q.dataValues.question_number);
+                                                    }
+                                                });
+                                                return wrongNums;
+                                            }
+                                            sectionRecord.tagWrong1Missed = getNums(0);
+                                            sectionRecord.tagWrong2Missed = getNums(1);
+
+                                            sectionRecord.easyCorrect = easyCorrect[section];
+                                            sectionRecord.medCorrect = medCorrect[section];
+                                            sectionRecord.hardCorrect = hardCorrect[section];
+                                            sectionRecord.easyPercent = (sectionRecord.easyCorrect / sectionRecord.easyCount * 100).toFixed(1);
+                                            sectionRecord.medPercent = (sectionRecord.medCorrect / sectionRecord.medCount * 100).toFixed(1);
+                                            sectionRecord.hardPercent = (sectionRecord.hardCorrect / sectionRecord.hardCount * 100).toFixed(1);
+                                            // get number of questions in the section
+                                            sectionRecord.totalQs = scoreList.filter(scoreRecord => {
+                                                if (scoreRecord.dataValues.section === section) {
+                                                    return true;
+                                                }
+                                            }).length - 1;
+                                            // properties for skipped questions, correct answers, percent correct, and incorrect answers, etc.
+                                            sectionRecord.skippedCount = skippedCount[section];
+                                            sectionRecord.numberCorrect = scoreCount[section];
+                                            sectionRecord.percentCorrect = (sectionRecord.numberCorrect / sectionRecord.totalQs * 100).toFixed(0);
+                                            sectionRecord.numberIncorrect = sectionRecord.totalQs - sectionRecord.numberCorrect;
+                                            // search for the actual score based on the number of correct answers
+                                            var selectedScoreRecord = scoreList.filter(scoreRecord => {
+                                                if (scoreRecord.dataValues.section === section && scoreRecord.dataValues.raw === scoreCount[section]) {
+                                                    return true;
+                                                }
+                                            });
+                                            if (selectedScoreRecord.length > 0) {
+                                                sectionRecord.dataValues.score = selectedScoreRecord[0].dataValues.score;
+                                            } else {
+                                                sectionRecord.dataValues.score = 0;
                                             }
                                         });
-                                        return wrongNums;
-                                    }
-                                    sectionRecord.tagWrong1Missed = getNums(0);
-                                    sectionRecord.tagWrong2Missed = getNums(1);
-
-                                    sectionRecord.easyCorrect = easyCorrect[section];
-                                    sectionRecord.medCorrect = medCorrect[section];
-                                    sectionRecord.hardCorrect = hardCorrect[section];
-                                    sectionRecord.easyPercent = (sectionRecord.easyCorrect / sectionRecord.easyCount * 100).toFixed(1);
-                                    sectionRecord.medPercent = (sectionRecord.medCorrect / sectionRecord.medCount * 100).toFixed(1);
-                                    sectionRecord.hardPercent = (sectionRecord.hardCorrect / sectionRecord.hardCount * 100).toFixed(1);
-                                    // get number of questions in the section
-                                    sectionRecord.totalQs = scoreList.filter(scoreRecord => {
-                                        if (scoreRecord.dataValues.section === section) {
-                                            return true;
-                                        }
-                                    }).length - 1;
-                                    // properties for skipped questions, correct answers, percent correct, and incorrect answers, etc.
-                                    sectionRecord.skippedCount = skippedCount[section];
-                                    sectionRecord.numberCorrect = scoreCount[section];
-                                    sectionRecord.percentCorrect = (sectionRecord.numberCorrect / sectionRecord.totalQs * 100).toFixed(0);
-                                    sectionRecord.numberIncorrect = sectionRecord.totalQs - sectionRecord.numberCorrect;
-                                    // search for the actual score based on the number of correct answers
-                                    var selectedScoreRecord = scoreList.filter(scoreRecord => {
-                                        if (scoreRecord.dataValues.section === section && scoreRecord.dataValues.raw === scoreCount[section]) {
-                                            return true;
-                                        }
+                                        // send the report page, with variables for handlebars
+                                        res.render('report', {
+                                            object: 'object',
+                                            questionList: questionList,
+                                            sectionList: sectionList
+                                        });
                                     });
-                                    if (selectedScoreRecord.length > 0) {
-                                        sectionRecord.dataValues.score = selectedScoreRecord[0].dataValues.score;
-                                    } else {
-                                        sectionRecord.dataValues.score = 0;
-                                    }
-                                });
-                                // send the report page, with variables for handlebars
-                                res.render('report', {
-                                    object: 'object',
-                                    questionList: questionList,
-                                    sectionList: sectionList
-                                });
                             })
                             .catch(err => {
                                 console.log(err);

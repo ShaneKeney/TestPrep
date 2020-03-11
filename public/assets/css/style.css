@@ -24,3 +24,7 @@ td,th {
 #regErrorText {
     color: red;
 }
+
+.side-nav .custom-select {
+    width: 95%;
+}

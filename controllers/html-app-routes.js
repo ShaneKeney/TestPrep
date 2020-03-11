@@ -185,7 +185,6 @@ module.exports = (app) => {
                                             }
                                             sectionRecord.tagWrong1Missed = getNums(0);
                                             sectionRecord.tagWrong2Missed = getNums(1);
-
                                             sectionRecord.easyCorrect = easyCorrect[section];
                                             sectionRecord.medCorrect = medCorrect[section];
                                             sectionRecord.hardCorrect = hardCorrect[section];

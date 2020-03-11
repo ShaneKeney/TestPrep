@@ -178,14 +178,13 @@ module.exports = (app) => {
                                                     if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[iter]
                                                         && q.dataValues.modSection === section
                                                         && q.wrong === true) {
-                                                        wrongNums.push(q.dataValues.question_number);
+                                                        wrongNums.push(' '+q.dataValues.question_number);
                                                     }
                                                 });
                                                 return wrongNums;
                                             }
                                             sectionRecord.tagWrong1Missed = getNums(0);
                                             sectionRecord.tagWrong2Missed = getNums(1);
-
                                             sectionRecord.easyCorrect = easyCorrect[section];
                                             sectionRecord.medCorrect = medCorrect[section];
                                             sectionRecord.hardCorrect = hardCorrect[section];

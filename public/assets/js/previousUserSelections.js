@@ -1,6 +1,6 @@
 const examsEl = $('#formControlSelect1');
 const sectionsEl = $('#formControlSelect2');
-var userId = 1;
+var userId = 2;
 var urlPreviousExam = '/api/exams/' + userId;
 
 $.ajax({

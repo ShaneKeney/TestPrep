@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 module.exports = function (sequelize, DataTypes) {
     var Students = sequelize.define('Students', {
         email: {
@@ -5,7 +8,8 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 isEmail: true,
-            }
+            },
+            unique: true
         },
         first_name: {
             type: DataTypes.STRING,
@@ -24,8 +28,11 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         phone: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
+            type: DataTypes.STRING,
+        },
+        tokens: { 
+            type: DataTypes.STRING,
+            defaultValue: null
         }
     });
 
@@ -39,6 +46,43 @@ module.exports = function (sequelize, DataTypes) {
         });
     };
 
+    // Run code just before Student/User is created
+    Students.beforeCreate(async (user, options) => {
+        //console.log(user);
+    });
+
+    Students.prototype.generateAuthToken = async function() {
+        const user = this;
+        console.log(user.dataValues)
+        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET); //TODO: change this to process.env 
+        console.log(token);
+        user.tokens = token;
+        await user.save();
+
+        return user.tokens;
+    }
+
+    Students.findByCredentials = async (email, password) => {
+        const userArray = await Students.findAll({
+            where: {
+                email: email
+            }
+        });
+
+        const user = userArray[0];
+
+        if(!user) {
+            throw new Error('Unable to login')
+        }
+
+        const isMatch = await bcrypt.compare(password, user.dataValues.password);
+        if(!isMatch) {
+            console.log('Password mismatch')
+            throw new Error('Unable to login!');
+        }
+
+        return user;
+    }
 
     return Students;
 };

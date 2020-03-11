@@ -9,18 +9,20 @@ const isAuthenticated = async (req, res, next) => {
         const userArray = await db.Students.findAll({
             where: {
                 id: decoded.id,
-                tokens: token                        
+                tokens: token
             }
-        })
+        });
 
         const user = userArray[0];
-        if(!user) throw new Error();
+        if(!user) {
+            throw new Error();
+        }
 
         req.user = user;
         next();
     } catch (err) {
         res.status(401).send({ error: 'Please authenticate.' });
     }
-}
+};
 
 module.exports = isAuthenticated;

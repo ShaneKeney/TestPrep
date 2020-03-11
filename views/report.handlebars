@@ -1,8 +1,8 @@
 {{#each sectionList}}
 <div class="mt-3 container d-flex justify-content-center">
     <h5 class="d-inline align-self-center mb-0">Take / Retake -> </h5>
-    <button type="button" class="btn btn-primary mx-2 ">All Sections</button>
-<button type="button" class="btn btn-secondary mx-2">This Section</button>
+    <button type="button" class="btn btn-outline-primary mx-2 ">All Sections</button>
+<button type="button" class="btn btn-outline-primary mx-2">This Section</button>
 
 </div>
 <div class="container mt-3">
@@ -13,7 +13,7 @@
         </h4>
     </div>
     <div class="row mt-2 mx-1">
-        <div class="col w-100 mr-2">
+        <div class="col w-100 mr-lg-2">
             <div class="row bg-secondary">
                 <h4 class="px-2">
                     Score Summary
@@ -82,7 +82,7 @@
                             <td>Questions Missed</td>
                         </tr>
                         <tr>
-                            <td>{{correctTagWrong1Count}}/{{tagWrong1Count}}</td>
+                            <td class="w-25">{{correctTagWrong1Count}}/{{tagWrong1Count}}</td>
                             <td>
                                 {{#if tagWrong1Missed}}
                                     ({{tagWrong1Missed}})
@@ -105,7 +105,7 @@
                             <td>Questions Missed</td>
                         </tr>
                         <tr>
-                            <td>{{correctTagWrong2Count}}/{{tagWrong2Count}}</td>
+                            <td class="w-25">{{correctTagWrong2Count}}/{{tagWrong2Count}}</td>
                             {{#if tagWrong2Missed}}
                             <td>({{tagWrong2Missed}})</td>
                             {{/if}}
@@ -116,7 +116,7 @@
 
         </div>
 
-        <div class="col-12 col-lg-7">
+        <div class="col-12 col-lg-7 mt-3 mt-lg-0">
             <div class="row bg-secondary">
                 <h4 class="px-2">
                     Performance

@@ -52,15 +52,15 @@ module.exports = (app) => {
                 }
             });
             // END HELPER
-
+            let sectionName = questionsArr[0].dataValues.section.substr(0, 1).toUpperCase() + questionsArr[0].dataValues.section.substr(1);
             const data = {
                 details: {
                     name: results[0].exam,
-                    type: results[0].type
+                    section: sectionName,
+                    type: results[0].type.toUpperCase()
                 },
                 questions: questionsArr
             };
-
             res.render('bubblesheet', data);
         });
     });

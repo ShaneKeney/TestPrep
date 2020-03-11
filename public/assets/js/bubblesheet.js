@@ -1,16 +1,16 @@
 $(() => {
+    let $document = $(document);
     let $examSelect = $('#exam-select');
     let $sectionSelect = $('#section-select');
     let $makeBubbleBtn = $('#makeBubbleBtn');
-    let $bubbleCont = $('#bubbleContainer');
-    const $bubbleForm = $('#answer-sheet');
+    //bubblehseets
+    let $qRow = $('.q-row');
+    let $mcButton = $('.mc-letter-btn');
+    let $mcTable = $('.mc-bubblesheet');
+    let $gridSelect = $('.gi-select');
+    let $collectButton = $('.collect');
     let routeURL;
-
-    $bubbleForm.on('submit', e => {
-        e.preventDefault;
-
-        // submit the answers to the appropriate route
-    });
+    let i = 0;
 
     //populate exam list
     $.ajax({
@@ -84,16 +84,10 @@ $(() => {
         });
     });
 
-    //Custom Bubblesheet Selection
-    let i = 0;
-    let $document = $(document);
-    let $mcButton = $('.mc-letter-btn');
-    let $collectButton = $('.collect');
-    let $qRow = $('.q-row');
+
 
     $mcButton.on('click', function(e) {
         e.preventDefault();
-        console.log('clicked');
         i = parseInt($(this).parent().siblings('.mc-bs-qnum').text()) - 1;
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
@@ -130,13 +124,41 @@ $(() => {
         }
     })
 
+    $gridSelect.on('change', function(e) {
+        e.preventDefault();
+        let $ansTd = $(this).parentsUntil('.q-row').siblings('.gi-answer');
+        $ansTd.empty();
+        let ansStr = $(this).parentsUntil('.gi-bs-choices').find('.gi-select').find(':selected').text();
+        console.log(ansStr);
+        $ansTd.text(ansStr);
+    })
+
     $collectButton.on('click', function (e) {
         e.preventDefault();
         let ansStr = $('.mc-body').find('.mc-answer').text();
+        let giRows = $('.mc-body').find('.gi-answer');
+        let giArr = [];
+        for(i=0; i < giRows.length; i++) {
+            giArr.push(giRows[i].textContent)
+        }
         let ansArr = ansStr.split('');
-        console.log(ansArr);
+        allAnswersArr = ansArr.concat(giArr);
+        console.log(allAnswersArr);
+        let id = $mcTable.data('test-id');
+        let section = $mcTable.data('test-section');
+        let data = [];
+        allAnswersArr.forEach((value, index) => {
+            let obj = {
+                'StudentId': 1,
+                'TestId': id,
+                'section': section,
+                'question_number': index+1,
+                'answer_response': value,
+            };
+            data.push(obj);
+        });
+        console.log(data);
+
     });
-
-
 
 });

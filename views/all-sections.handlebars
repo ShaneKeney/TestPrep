@@ -1,0 +1,95 @@
+<h3>{{details.name}} - {{details.type}}</h3>
+
+<div class="row">
+    <div class="col-xl-3 col-lg-6">
+
+        <h3>Reading Section</h3>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="{{questions.0.dataValues.section}}">
+            <tbody class="mc-body">
+                {{#each questions}}
+                    {{#if reading}}
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+                    {{/if}}
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="col-xl-3 col-lg-6">
+        <h3>Writing Section</h3>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="{{questions.0.dataValues.section}}">
+            <tbody class="mc-body">
+                {{#each questions}}
+                    {{#if writing}}
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+                    {{/if}}
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-xl-3 col-lg-6">
+        <h3>MathNC Section</h3>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="{{questions.0.dataValues.section}}">
+            <tbody class="mc-body">
+
+                {{#each questions}}
+
+                    {{#if mathNC}}
+
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+
+                    {{/if}}
+
+                {{/each}}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <h3>MathC Section</h3>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="{{questions.0.dataValues.section}}">
+            <tbody class="mc-body">
+
+                {{#each questions}}
+
+                    {{#if mathC}}
+
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+
+                    {{/if}}
+
+                {{/each}}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

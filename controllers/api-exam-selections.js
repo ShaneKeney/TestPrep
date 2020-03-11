@@ -18,51 +18,85 @@ module.exports = (app) => {
     });
 
     app.get('/api/exams/:testID/questions/:section', (req, res) => {
-        db.Test.findAll({
-            where: { id: req.params.testID },
-            include: {
-                model: db.Question,
-                where: {
-                    section: req.params.section
-                }
-            },
-            order: [
-                [db.Question, 'question_number', 'ASC']
-            ]
-        }).then((results) => {
-
-            // HELPER FUNCTION SO THAT WE CAN USE
-            // {{#if mc}} AND {{#if num}}
-            // FOR QUESTION TYPES
-            // INSIDE bubblesheet.handlebars
-            const questionsArr = [];
-            results[0].Questions.forEach(question => {
-                if (question.dataValues.question_type === 'mc') {
-                    questionsArr.push({
-                        dataValues: question.dataValues,
-                        mc: true,
-                    });
-                } else if (question.dataValues.question_type === 'num'
-                    || question.dataValues.question_type === 'array'
-                    || question.dataValues.question_type === 'range') {
-                    questionsArr.push({
-                        dataValues: question.dataValues,
-                        num: true
-                    });
-                }
-            });
-            // END HELPER
-            let sectionName = questionsArr[0].dataValues.section.substr(0, 1).toUpperCase() + questionsArr[0].dataValues.section.substr(1);
-            const data = {
-                details: {
-                    name: results[0].exam,
-                    section: sectionName,
-                    type: results[0].type.toUpperCase()
+        if (req.params.section === 'all') {
+            db.Test.findAll({
+                where: { id: req.params.testID },
+                include: {
+                    model: db.Question
                 },
-                questions: questionsArr
-            };
-            res.render('bubblesheet', data);
-        });
+                order: [
+                    [db.Question, 'question_number', 'ASC']
+                ]
+            }).then( results => {
+
+                const questionsArr = populateQuestionArray(results[0].Questions);
+
+                let sectionName = questionsArr[0].dataValues.section.substr(0, 1).toUpperCase() + questionsArr[0].dataValues.section.substr(1);
+                const data = {
+                    details: {
+                        name: results[0].exam,
+                        section: sectionName,
+                        type: results[0].type.toUpperCase()
+                    },
+                    questions: questionsArr
+                };
+                res.render('all-sections', data);
+
+
+            });
+        } else {
+            db.Test.findAll({
+                where: { id: req.params.testID },
+                include: {
+                    model: db.Question,
+                    where: {
+                        section: req.params.section
+                    }
+                },
+                order: [
+                    [db.Question, 'question_number', 'ASC']
+                ]
+            }).then((results) => {
+    
+                const questionsArr = populateQuestionArray(results[0].Questions);
+
+                let sectionName = questionsArr[0].dataValues.section.substr(0, 1).toUpperCase() + questionsArr[0].dataValues.section.substr(1);
+                const data = {
+                    details: {
+                        name: results[0].exam,
+                        section: sectionName,
+                        type: results[0].type.toUpperCase()
+                    },
+                    questions: questionsArr
+                };
+                res.render('bubblesheet', data);
+            });
+        }
+
+        // HELPER FUNCTION FOR
+        // SELECTORS SUCH AS
+        // {{#if mc}} AND {{#if num}}
+        // FOR QUESTION TYPES
+        // INSIDE bubblesheet.handlebars
+        const populateQuestionArray = questionArr => {
+            const questionsArr = [];
+            questionArr.forEach(question => {
+                questionsArr.push({
+                    dataValues: question.dataValues,
+                    writing: question.dataValues.section === 'writing',
+                    reading: question.dataValues.section === 'reading',
+                    mathNC: question.dataValues.section === 'mathNC',
+                    mathC: question.dataValues.section === 'mathC',
+                    mc: question.dataValues.question_type === 'mc',
+                    num: question.dataValues.question_type === 'num'
+                            || question.dataValues.question_type === 'array'
+                            || question.dataValues.question_type === 'range'
+                });
+            });
+
+            return questionsArr;
+        }
+        
     });
 
     app.get('/api/exams/:userId', (req, res) => {

@@ -100,7 +100,9 @@
                         </tr>
                         <tr>
                             <td>{{correctTagWrong2Count}}/{{tagWrong2Count}}</td>
-                            <td>{{tagWrong2Missed}}</td>
+                            {{#if tagWrong2Missed}}
+                            <td>({{tagWrong2Missed}})</td>
+                            {{/if}}
                         </tr>
                     </tbody>
                 </table>
@@ -127,35 +129,44 @@
                     </thead>
                     <tbody>
                         {{#each ../questionList}}
-                        {{#ifEquals dataValues.modSection ../dataValues.section}}
-                        <tr>
-                            <td class="py-0{{#if ../omitted}} bg-warning 
-                                {{else if ../wrong}} bg-danger
-                                {{/if}}">
-                                <small>
-                                    {{../dataValues.question_number}}
-                                </small>
-                            </td>
-                            <td class="py-0">
-                                <small>
-                                    {{../dataValues.studentAnswer}}
-                                </small>
-                            </td>
-                            {{!-- put in if else for making the answer '+' if it is the same as the student's answer --}}
-                            <td class="py-0">
-                                <small>{{../dataValues.ans_actual}}</small>
+                            {{#ifEquals dataValues.modSection ../dataValues.section}}
+                                {{#ifNotEqual ../dataValues.modSection ../dataValues.section}}
+                                    {{#ifEquals ../dataValues.question_number 1}}
+                                    <tr>
+                                        <td colspan="5">
+                                            {{toUpperCase ../dataValues.section}}
+                                        </td>
+                                    </tr>
+                                    {{/ifEquals }}
+                                {{/ifNotEqual}}
+                            <tr>
+                                <td class="py-0{{#if ../omitted}} bg-warning 
+                                    {{else if ../wrong}} bg-danger
+                                    {{/if}}">
+                                    <small>
+                                        {{../dataValues.question_number}}
+                                    </small>
                                 </td>
-                            <td class="py-0">
-                                <small>{{../dataValues.difficulty}}</small>
+                                <td class="py-0">
+                                    <small>
+                                        {{../dataValues.studentAnswer}}
+                                    </small>
                                 </td>
-                            <td class="py-0">
-                                <small>
-                                    {{../dataValues.tag_category}} > {{../dataValues.tag_group}} >
-                                    {{../dataValues.tag}}
-                                </small>
-                            </td>
-                        </tr>
-                        {{/ifEquals}}
+                                {{!-- put in if else for making the answer '+' if it is the same as the student's answer --}}
+                                <td class="py-0">
+                                    <small>{{../dataValues.ans_actual}}</small>
+                                    </td>
+                                <td class="py-0">
+                                    <small>{{../dataValues.difficulty}}</small>
+                                    </td>
+                                <td class="py-0">
+                                    <small>
+                                        {{../dataValues.tag_category}} > {{../dataValues.tag_group}} >
+                                        {{../dataValues.tag}}
+                                    </small>
+                                </td>
+                            </tr>
+                            {{/ifEquals}}
                         {{/each}}
                     </tbody>
                 </table>

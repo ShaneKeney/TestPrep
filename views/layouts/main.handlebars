@@ -6,14 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- CSS Files -->
-  {{!-- <link rel="stylesheet" href="/assets/css/bootstrap-4.4.1.min.css"> --}}
   <link rel="stylesheet" href="/assets/css/fontawesome-free-5.12.1.all.min.css">
-  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/custom.css">
 
-  <title>Test Prep Scoring</title>
+  <title>BubbleBase.io</title>
 </head>
-<body>
+<body class="main-body">
   {{> nav/navbar}}
 
   <div class="container-fluid">
@@ -22,10 +20,9 @@
               {{> nav/side-nav}}
               {{> auth-modals/register}}
               {{> auth-modals/signin}}
-              {{> nav/user-exams-nav}}
           </div>
 
-          <div class="col-lg-9 col-md-8">
+          <div class="col-lg-9 col-md-8 mainbg pt-4">
           
             {{{ body }}}
 

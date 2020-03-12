@@ -1,0 +1,52 @@
+.vertical-text {
+    transform: rotate(270deg);
+}
+
+
+th.rotated-titles {
+    height: 95px;
+    white-space: nowrap;
+
+    div {
+        transform: 
+        /* Magic Numbers */
+        translate(0px, 5px)
+        /* 45 is really 360 - 45 */
+        rotate(270deg);
+        width: 30px;
+
+        span {
+            padding: 5px 10px;
+        }
+    }
+}
+
+.qnumber,
+.qresponse,
+.qanswer,
+.qdifficulty {
+    width: 30px;
+    text-align: center;
+}
+
+
+
+.sat-report {
+    h4 {
+        margin-top: .5rem;
+    }
+}
+
+.table-borderless {
+    table, td, tr {
+        border: 0;
+    }
+}
+
+td,th {
+    line-height: 1.2rem ;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color:  #e1e4e8;
+ }

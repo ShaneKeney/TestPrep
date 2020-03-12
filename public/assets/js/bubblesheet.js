@@ -98,6 +98,8 @@ $(() => {
         e.preventDefault();
         let testID = $examSelect.find(':selected').data('test-id');
         let section = $sectionSelect.find(':selected').data('section');
+        const sections = ['reading', 'writing', 'mathNC', 'mathC'];
+        if (!sections.includes(section)) section = 'all';
         routeURL = `/api/exams/${testID}/questions/${section}`;
         $makeBubbleBtn.removeAttr('href').attr({
             'href': routeURL

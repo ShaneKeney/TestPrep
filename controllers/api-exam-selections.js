@@ -3,7 +3,6 @@ const isAuthenticated = require('../middleware/auth');
 module.exports = (app) => {
 
     app.get('/api/exams/sections/:testID', isAuthenticated, (req, res) => {
-        console.log(1);
         db.Question.findAll({
             where: {
                 TestId: req.params.testID

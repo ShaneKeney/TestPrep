@@ -18,6 +18,27 @@ $(() => {
     //     $(numChoices).append(colEl);
     // }
 
+    $('#logout-button').on('click', e => {
+        e.preventDefault();
+
+        // get token to log out
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/users/logout',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            success: function(res) {
+                console.log('Logout success!')
+                setCookie('user', '', 1);
+            }
+        })
+    })
+
     $('#signin-form').on('submit', e => {
         e.preventDefault();
 
@@ -28,7 +49,15 @@ $(() => {
 
         $.post('/api/users/login', userData)
         .then(function(res) {
-            console.log(res)
+            //set cookie with user information to use for user functions
+            let user = { ...res };
+            delete user.user.createdAt;
+            delete user.user.updatedAt;
+
+            let userCookie = JSON.stringify(user);
+            setCookie('user', userCookie, 1);
+            console.log(getCookie('user'));
+
         })
         .catch(function(err) {
             console.log(err)
@@ -97,6 +126,10 @@ $(() => {
         $('#regErrorText').text(''); 
         resetRegisterFields();
     })
+
+    $('#signClose').on('click', function() {
+        resetSignInFields();
+    })
 });
 
 function resetRegisterFields() {
@@ -109,4 +142,32 @@ function resetRegisterFields() {
 
     $('#register-modal').modal('hide');
     $('#regErrorText').val('');
+}
+
+function resetSignInFields() {
+    $('#signin-password').val('');
+    $('#signin-email').val('');
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
 }

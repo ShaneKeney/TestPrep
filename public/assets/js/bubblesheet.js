@@ -11,10 +11,6 @@ $(() => {
     let $collectButton = $('.collect');
     let routeURL;
     let i = 0;
-    //Regex
-    let Slash = new RegExp('\/', 'g');
-    let Numerator = new RegExp('[0-9]{1,2}(?=\/)', 'g');
-    let Denominator = new RegExp('[0-9]{1,2}(?!\/)$', 'g');
 
     // get a cookie by it's name
     function getCookie(name) {
@@ -23,8 +19,11 @@ $(() => {
         if (parts.length == 2) return parts.pop().split(";").shift();
     }
     var user = getCookie('user');
+    var userParsed = JSON.parse(user);
     // get id and user name from the cookie object
     var authToken = JSON.parse(user).token;
+
+    
 
     //populate exam list
     $.ajax({
@@ -98,6 +97,8 @@ $(() => {
         e.preventDefault();
         let testID = $examSelect.find(':selected').data('test-id');
         let section = $sectionSelect.find(':selected').data('section');
+        const sections = ['reading', 'writing', 'mathNC', 'mathC'];
+        if (!sections.includes(section)) section = 'all';
         routeURL = `/api/exams/${testID}/questions/${section}`;
         $makeBubbleBtn.removeAttr('href').attr({
             'href': routeURL
@@ -202,7 +203,7 @@ $(() => {
         let data = [];
         allAnswersArr.forEach((value, index) => {
             let obj = {
-                'StudentId': 2,
+                'StudentId': userParsed.user.id,
                 'TestId': id,
                 'section': section,
                 'question_number': index + 1,
@@ -226,22 +227,17 @@ $(() => {
     async function fractionToDecimal(array) {
         let outputArr = [];
         array.forEach(num => {
-            console.log(num);
-            if (Slash.test(num)) {
-                console.log('inside true slash');
-                let numerator = Numerator.exec(num);
-                let denominator = Denominator.exec(num);
-                console.log(numerator);
-                console.log(denominator);
-                let numInt = parseInt(numerator[0]);
-                let denomInt = parseInt(denominator[0]);
-                console.log(numInt);
-                console.log(denomInt);
-                let ans = numInt / denomInt;
-                console.log(ans);
+            if (num.includes('/')) {
+                console.log(num);
+                let numDenomArr = num.split('/');
+                let numerator = parseInt(numDenomArr[0]);
+                let denominator = parseInt(numDenomArr[1]);
+                let ans = numerator / denominator;
                 outputArr.push(Math.round(1000 * ans) / 1000);
-            } else {
+            } else if (num.indexOf('/') === -1) {
                 outputArr.push(num);
+            } else {
+                outputArr.push(" ");
             }
         });
         return outputArr;

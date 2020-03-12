@@ -28,7 +28,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         phone: {
-            type: DataTypes.STRING,
+            type: DataTypes.BIGINT,
         },
         tokens: {
             type: DataTypes.STRING,

@@ -34,7 +34,7 @@ module.exports = (app) => {
                     mathC: question.dataValues.section === 'mathC',
                     mc: question.dataValues.question_type === 'mc',
                     num: question.dataValues.question_type === 'num'
-                            || question.dataValues.question_type === 'array'
+                            || question.dataValues.question_type === 'arr'
                             || question.dataValues.question_type === 'range'
                 });
             });

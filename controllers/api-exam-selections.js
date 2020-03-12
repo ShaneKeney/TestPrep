@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = (app) => {
 
     app.get('/api/exams/sections/:testID', (req, res) => {
-
+        console.log(1);
         db.Question.findAll({
             where: {
                 TestId: req.params.testID
@@ -18,6 +18,30 @@ module.exports = (app) => {
     });
 
     app.get('/api/exams/:testID/questions/:section', (req, res) => {
+        // HELPER FUNCTION FOR
+        // SELECTORS SUCH AS
+        // {{#if mc}} AND {{#if num}}
+        // FOR QUESTION TYPES
+        // INSIDE bubblesheet.handlebars
+        const populateQuestionArray = questionArr => {
+            const questionsArr = [];
+            questionArr.forEach(question => {
+                questionsArr.push({
+                    dataValues: question.dataValues,
+                    writing: question.dataValues.section === 'writing',
+                    reading: question.dataValues.section === 'reading',
+                    mathNC: question.dataValues.section === 'mathNC',
+                    mathC: question.dataValues.section === 'mathC',
+                    mc: question.dataValues.question_type === 'mc',
+                    num: question.dataValues.question_type === 'num'
+                            || question.dataValues.question_type === 'arr'
+                            || question.dataValues.question_type === 'range'
+                });
+            });
+
+            return questionsArr;
+        };
+
         if (req.params.section === 'all') {
             db.Test.findAll({
                 where: { id: req.params.testID },
@@ -57,7 +81,6 @@ module.exports = (app) => {
                     [db.Question, 'question_number', 'ASC']
                 ]
             }).then((results) => {
-    
                 const questionsArr = populateQuestionArray(results[0].Questions);
 
                 let sectionName = questionsArr[0].dataValues.section.substr(0, 1).toUpperCase() + questionsArr[0].dataValues.section.substr(1);
@@ -72,34 +95,9 @@ module.exports = (app) => {
                 res.render('bubblesheet', data);
             });
         }
-
-        // HELPER FUNCTION FOR
-        // SELECTORS SUCH AS
-        // {{#if mc}} AND {{#if num}}
-        // FOR QUESTION TYPES
-        // INSIDE bubblesheet.handlebars
-        const populateQuestionArray = questionArr => {
-            const questionsArr = [];
-            questionArr.forEach(question => {
-                questionsArr.push({
-                    dataValues: question.dataValues,
-                    writing: question.dataValues.section === 'writing',
-                    reading: question.dataValues.section === 'reading',
-                    mathNC: question.dataValues.section === 'mathNC',
-                    mathC: question.dataValues.section === 'mathC',
-                    mc: question.dataValues.question_type === 'mc',
-                    num: question.dataValues.question_type === 'num'
-                            || question.dataValues.question_type === 'array'
-                            || question.dataValues.question_type === 'range'
-                });
-            });
-
-            return questionsArr;
-        }
-        
     });
 
-    app.get('/api/exams/:userId', (req, res) => {
+    app.get('/api/prevexams/:userId', (req, res) => {
         db.SectionResultsDetails.findAll({
             where: {
                 StudentId: req.params.userId
@@ -148,3 +146,5 @@ module.exports = (app) => {
             });
     });
 };
+
+

@@ -9,7 +9,10 @@ module.exports = (app) => {
     app.get('/reports/:StudentId/:TestId/:section', (req, res) => {
         const StudentId = req.params.StudentId;
         const TestId = req.params.TestId;
-        const sectionFilter = req.params.section;
+        var sectionFilter = req.params.section;
+        if(sectionFilter === 'mathNC' || sectionFilter === 'mathC') {
+            sectionFilter = 'math';
+        }
         var resultDetails;
         var sectionList;
         var questionList;
@@ -133,7 +136,7 @@ module.exports = (app) => {
                                                 }
                                             });
                                             if (sectionList.length === 0) {
-                                                throw new Error(`the section: ${sectionFilter} does not exist for the test with ID: ${TestId}1)`);
+                                                throw new Error(`the section: ${sectionFilter} does not exist for the test with ID: ${TestId})`);
                                             }
                                         }
                                         sectionList.forEach(sectionRecord => {
@@ -178,7 +181,7 @@ module.exports = (app) => {
                                                     if (q.dataValues.tag_category === sectionRecord.sortedTagsWrong[iter]
                                                         && q.dataValues.modSection === section
                                                         && q.wrong === true) {
-                                                        wrongNums.push(' '+q.dataValues.question_number);
+                                                        wrongNums.push(' ' + q.dataValues.question_number);
                                                     }
                                                 });
                                                 return wrongNums;
@@ -220,12 +223,12 @@ module.exports = (app) => {
                                             questionList: questionList,
                                             sectionList: sectionList
                                         });
+                                    }).catch(err => {
+                                        console.log(err);
+                                        res.status(500).send();
                                     });
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                res.status(500).send();
                             });
+
                     });
             });
 

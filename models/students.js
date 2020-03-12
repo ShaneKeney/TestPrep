@@ -28,9 +28,9 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         phone: {
-            type: DataTypes.STRING,
+            type: DataTypes.BIGINT,
         },
-        tokens: { 
+        tokens: {
             type: DataTypes.STRING,
             defaultValue: null
         }
@@ -53,14 +53,23 @@ module.exports = function (sequelize, DataTypes) {
 
     Students.prototype.generateAuthToken = async function() {
         const user = this;
-        console.log(user.dataValues)
-        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET); //TODO: change this to process.env 
-        console.log(token);
+
+        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET); //TODO: change this to process.env
         user.tokens = token;
         await user.save();
 
         return user.tokens;
-    }
+    };
+
+    Students.prototype.toJSON = function() {
+        const userArray = this.dataValues;
+        const userObject = { ...userArray };
+
+        delete userObject.tokens;
+        delete userObject.password;
+
+        return userObject;
+    };
 
     Students.findByCredentials = async (email, password) => {
         const userArray = await Students.findAll({
@@ -72,17 +81,17 @@ module.exports = function (sequelize, DataTypes) {
         const user = userArray[0];
 
         if(!user) {
-            throw new Error('Unable to login')
+            throw new Error('Unable to login');
         }
 
         const isMatch = await bcrypt.compare(password, user.dataValues.password);
         if(!isMatch) {
-            console.log('Password mismatch')
+            console.log('Password mismatch');
             throw new Error('Unable to login!');
         }
 
         return user;
-    }
+    };
 
     return Students;
 };

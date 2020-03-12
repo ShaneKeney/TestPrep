@@ -8,7 +8,6 @@ const isAuthenticated = require('../middleware/auth');
 router.post('/api/register', async (req, res) => {
     // check to see if password & confirm match else send error
     if (req.body.password !== req.body.confirmPassword) {
-        console.log('Passwords do not match');
         res.status(401).send('PASS_MISMATCH');
     }
 
@@ -26,7 +25,6 @@ router.post('/api/register', async (req, res) => {
         const token = await newUser.generateAuthToken();
         res.status(201).send({ user: newUser, token });
     } catch (e) {
-        console.log(e);
         res.status(400).send(e);
     }
 });
@@ -36,7 +34,6 @@ router.post('/api/users/login', async (req, res) => {
         const user = await db.Students.findByCredentials(req.body.email, req.body.password);
 
         const token = await user.generateAuthToken();
-        console.log('before res.send')
         res.send({ user, token });
     } catch(err) {
         res.status(400).send();
@@ -59,7 +56,7 @@ router.get('/api/users/me', isAuthenticated, async (req, res) => {
 });
 
 // TODO: Hook up update profile functionality on front end
-router.patch('users/me', isAuthenticated, async (req, res) => {
+router.patch('/api/users/me', isAuthenticated, async (req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['first_name', 'last_name', 'email', 'phone', 'password'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));

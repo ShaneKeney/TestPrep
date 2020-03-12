@@ -55,7 +55,6 @@ module.exports = function (sequelize, DataTypes) {
         const user = this;
 
         const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET); //TODO: change this to process.env
-        console.log(token);
         user.tokens = token;
         await user.save();
 
@@ -69,7 +68,6 @@ module.exports = function (sequelize, DataTypes) {
         delete userObject.tokens;
         delete userObject.password;
 
-        console.log(userObject);
         return userObject;
     };
 

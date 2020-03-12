@@ -42,6 +42,17 @@ router.post('/api/users/login', async (req, res) => {
     }
 });
 
+router.post('/api/users/logout', isAuthenticated, async (req, res) => {
+    try {
+        req.user.tokens = null;
+        await req.user.save();
+
+        res.send();
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
 router.get('/api/users/me', isAuthenticated, async (req, res) => {
     res.send(req.user);
 });

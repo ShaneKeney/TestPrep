@@ -23,7 +23,7 @@ router.post('/api/register', async (req, res) => {
             password: hashedPassword
         });
         const token = await newUser.generateAuthToken();
-        res.status(201).send({ user: newUser, token });
+        res.status(200).send({ user: newUser, token });
     } catch (e) {
         res.status(400).send(e);
     }
@@ -34,7 +34,7 @@ router.post('/api/users/login', async (req, res) => {
         const user = await db.Students.findByCredentials(req.body.email, req.body.password);
 
         const token = await user.generateAuthToken();
-        res.send({ user, token });
+        res.status(200).send({ user, token });
     } catch(err) {
         res.status(400).send();
     }
@@ -45,7 +45,7 @@ router.post('/api/users/logout', isAuthenticated, async (req, res) => {
         req.user.tokens = null;
         await req.user.save();
 
-        res.sendStatus(204);
+        res.status(204).send();
     } catch (err) {
         res.status(500).send();
     }

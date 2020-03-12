@@ -44,7 +44,7 @@ $.ajax({
 });
 
 // put the user's name on the page
-$('#formControlInput1').val(userName);
+$('#formControlInput1').text(userName);
 // once user selects a previously completed test
 $('#formControlSelect1').on('input', function (event) {
     event.preventDefault();

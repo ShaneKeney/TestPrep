@@ -36,6 +36,7 @@ require('./controllers/html-app-routes.js')(app);
 // // require('./controllers/html-user-routes.js')(app);
 require('./controllers/api-exam-routes.js')(app);
 require('./controllers/api-exam-selections')(app);
+require('./controllers/api-post-results')(app);
 app.use(userRoutes);
 
 // Default route for testing and setup:

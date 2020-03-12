@@ -1,10 +1,6 @@
 /* eslint-disable camelcase */
 module.exports = function (sequelize, DataTypes) {
     var SectionResultsDetails = sequelize.define('SectionResultsDetails', {
-        exam: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
         section: {
             type: DataTypes.STRING,
             allowNull: false

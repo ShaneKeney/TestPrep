@@ -11,6 +11,10 @@ $(() => {
     let $collectButton = $('.collect');
     let routeURL;
     let i = 0;
+    //Regex
+    let Slash = new RegExp('\/', 'g');
+    let Numerator = new RegExp('[0-9]{1,2}(?=\/)', 'g');
+    let Denominator = new RegExp('[0-9]{1,2}(?!\/)$', 'g');
 
     //populate exam list
     $.ajax({
@@ -88,7 +92,9 @@ $(() => {
 
     $mcButton.on('click', function (e) {
         e.preventDefault();
+        $(this).focus();
         i = parseInt($(this).parent().siblings('.mc-bs-qnum').text()) - 1;
+        $qRow = $(this).parentsUntil('.mc-column').find('.q-row');
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
             $(this).parent().siblings('.mc-answer').text(' ');
@@ -104,18 +110,23 @@ $(() => {
         let key = event.which || event.keyCode;
         switch (key) {
             case 65:
+            case 49:
                 $qRow.eq(i).find('.mc-letter-btn').eq(0).trigger('click');
                 break;
-            case 66:
+            case 66: 
+            case 50:
                 $qRow.eq(i).find('.mc-letter-btn').eq(1).trigger('click');
                 break;
             case 67:
+            case 51:
                 $qRow.eq(i).find('.mc-letter-btn').eq(2).trigger('click');
                 break;
             case 68:
+            case 52:
                 $qRow.eq(i).find('.mc-letter-btn').eq(3).trigger('click');
                 break;
             case 8:
+            case 46:
                 i--;
                 if (i < 0) { i = 0; }
                 $qRow.eq(i).find('.mc-letter-btn').parent().children().removeClass('selected');
@@ -129,23 +140,46 @@ $(() => {
         let $ansTd = $(this).parentsUntil('.q-row').siblings('.gi-answer');
         $ansTd.empty();
         let ansStr = $(this).parentsUntil('.gi-bs-choices').find('.gi-select').find(':selected').text();
-        console.log(ansStr);
         $ansTd.text(ansStr);
     })
 
-    $collectButton.on('click', function (e) {
+    $collectButton.on('click', async function (e) {
         e.preventDefault();
-        let ansStr = $('.mc-body').find('.mc-answer').text();
-        let giRows = $('.mc-body').find('.gi-answer');
-        let giArr = [];
-        for (i = 0; i < giRows.length; i++) {
-            giArr.push(giRows[i].textContent)
-        }
+        let section = $(this).data('test-section');
+        let results = await collectAns(section);
+        console.log(results);
+        $.ajax('/api/results', {
+            method: 'POST',
+            data: JSON.stringify(results),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function() {
+              alert("Error");
+            },
+            success: function() {
+              alert("OK");
+            }
+        }).then(function() {
+            console.log("Entered Results");
+            // location.reload();
+        });
+    });
+
+    async function collectAns(section) {
+        let $mcTable = $(`.mc-bubblesheet[data-test-section="${section}"]`);
+        let ansStr = $mcTable.find('.mc-answer').text();
+        let giRows = $mcTable.find('.gi-answer');
+        let giArrFractions = [];
+        let giArrDecimals = [];
+        giArrFractions = await collectGridInAnswers(giRows);
+        // for (i = 0; i < giRows.length; i++) {
+        //     giArrFractions.push(giRows[i].textContent)
+        // }
+        giArrDecimals = await fractionToDecimal(giArrFractions);
         let ansArr = ansStr.split('');
-        allAnswersArr = ansArr.concat(giArr);
+        let allAnswersArr = ansArr.concat(giArrDecimals);
         console.log(allAnswersArr);
         let id = $mcTable.data('test-id');
-        let section = $mcTable.data('test-section');
         let data = [];
         allAnswersArr.forEach((value, index) => {
             let obj = {
@@ -157,9 +191,44 @@ $(() => {
             };
             data.push(obj);
         });
-        console.log(data);
+        return data;
+    };
 
-    });
+    async function collectGridInAnswers (rows) {
+        console.log("inside collect")
+        let outputArr = []
+        for (i = 0; i < rows.length; i++) {
+            outputArr.push(rows[i].textContent)
+        }
+        console.log(outputArr);
+        return outputArr;
+    }  
+
+    async function fractionToDecimal(array) {
+        let outputArr = [];
+        array.forEach(num => {
+            console.log(num);
+            if (Slash.test(num)) {
+                console.log('inside true slash');
+                let numerator = Numerator.exec(num);
+                let denominator = Denominator.exec(num);
+                console.log(numerator);
+                console.log(denominator);
+                let numInt = parseInt(numerator[0]);
+                let denomInt = parseInt(denominator[0]);
+                console.log(numInt);
+                console.log(denomInt);
+                let ans = numInt / denomInt;
+                console.log(ans);
+                outputArr.push(Math.round(1000*ans)/1000);
+            } else {
+                outputArr.push(num);
+            }        
+        });
+        return outputArr;
+    };
+
+    
     $(document).ready(() => {
         if (localStorage.getItem('prevAnswers') !== null) {
             var prevAnswers = JSON.parse(localStorage.getItem('prevAnswers'));

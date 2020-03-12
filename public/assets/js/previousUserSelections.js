@@ -41,8 +41,9 @@ $('#formControlSelect2').on('input',function(event) {
 
 $('#allSections, #thisSection').on('click',function(event){
     // need to make the user and test parameters dynamic after it works
-    var userId = 1;
-    var testId = 1;
+    var endAddr = location.href.split('reports/');
+    var userId = endAddr[1].split('/')[0];
+    var testId = endAddr[1].split('/')[1];
     var section = $(this).attr('data-section');
     if (!section) section = 'all';
     event.preventDefault();

@@ -35,6 +35,7 @@ $(() => {
             success: function(res) {
                 console.log('Logout success!')
                 setCookie('user', '', 1);
+                location.reload();
             }
         })
     })
@@ -57,8 +58,7 @@ $(() => {
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
             console.log(getCookie('user'));
-            $('#signin-modal').modal('toggle');
-
+            location.reload();
         })
         .catch(function(err) {
             console.log(err)

@@ -45,7 +45,7 @@ router.post('/api/users/logout', isAuthenticated, async (req, res) => {
         req.user.tokens = null;
         await req.user.save();
 
-        res.sendStatus();
+        res.sendStatus(204);
     } catch (err) {
         res.status(500).send();
     }

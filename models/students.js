@@ -63,7 +63,6 @@ module.exports = function (sequelize, DataTypes) {
     };
 
     Students.prototype.toJSON = function() {
-        console.log('entered toJSON')
         const userArray = this.dataValues;
         const userObject = { ...userArray };
 

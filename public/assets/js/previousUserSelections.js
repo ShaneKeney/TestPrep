@@ -1,22 +1,35 @@
 const examsEl = $('#formControlSelect1');
 const sectionsEl = $('#formControlSelect2');
+var userId;
+var userName;
 
+// get a cookie by it's name
 function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
-var user = JSON.parse(getCookie('user')).user;
-var userId = user.id;
-var userName = user.first_name + ' ' + user.last_name;
+var user = getCookie('user');
+// this if block may not be needed if the entire page 
+// becomes only valid when user is logged in
+if (user) {
+    // get id and user name from the cookie object
+    user = JSON.parse(user).user;
+    userId = user.id;
+    userName = user.first_name + ' ' + user.last_name;
+    $('#prevExamSection').show();
+    
+} else {
+    $('#prevExamSection').hide();
+}
 
-
+// go and get the list of exams this user has already taken
 var urlPreviousExam = '/api/prevexams/' + userId;
-
 $.ajax({
     method: 'GET',
     url: urlPreviousExam
 }).then(tests => {
+    // update selections based on returned list of exams
     if (tests.length === 0) {
         examsEl.children('option').text('None Taken Yet');
     }
@@ -25,8 +38,9 @@ $.ajax({
     });
 });
 
+// put the user's name on the page
 $('#formControlInput1').val(userName);
-
+// once user selects a previously completed test
 $('#formControlSelect1').on('input', function (event) {
     event.preventDefault();
     if ($(this).children('option:selected').attr('data-testid')) {

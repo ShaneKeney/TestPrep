@@ -1,16 +1,31 @@
 const examsEl = $('#formControlSelect1');
 const sectionsEl = $('#formControlSelect2');
-var userId = 2;
+
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
+var user = JSON.parse(getCookie('user')).user;
+var userId = user.id;
+var userName = user.first_name + ' ' + user.last_name;
+
+
 var urlPreviousExam = '/api/prevexams/' + userId;
 
 $.ajax({
     method: 'GET',
     url: urlPreviousExam
 }).then(tests => {
+    if (tests.length === 0) {
+        examsEl.children('option').text('None Taken Yet');
+    }
     tests.forEach(e => {
         examsEl.append($('<option>').attr("data-testid", e.testID).text(e.exam));
     });
 });
+
+$('#formControlInput1').val(userName);
 
 $('#formControlSelect1').on('input', function (event) {
     event.preventDefault();
@@ -26,11 +41,12 @@ $('#formControlSelect1').on('input', function (event) {
         url: urlPreviousSections
     }).then(sections => {
         sections.forEach(e => {
-            console.log(e);
             sectionsEl.append($('<option>').text(e));
         });
     });
 });
+
+
 
 $('#formControlSelect2').on('input', function (event) {
     event.preventDefault();

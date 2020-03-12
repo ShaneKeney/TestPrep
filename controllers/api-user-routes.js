@@ -23,12 +23,11 @@ router.post('/api/register', async (req, res) => {
             phone: req.body.phone,
             password: hashedPassword
         });
-
         const token = await newUser.generateAuthToken();
         res.status(201).send({ user: newUser, token });
     } catch (e) {
         console.log(e);
-        res.status(400).send(e)
+        res.status(400).send(e);
     }
 });
 
@@ -37,11 +36,11 @@ router.post('/api/users/login', async (req, res) => {
         const user = await db.Students.findByCredentials(req.body.email, req.body.password);
 
         const token = await user.generateAuthToken();
-        res.send({ user, token })
-    } catch (err) {
+        res.send({ user, token });
+    } catch(err) {
         res.status(400).send();
     }
-})
+});
 
 router.get('/api/users/me', isAuthenticated, async (req, res) => {
     res.send(req.user);

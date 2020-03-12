@@ -24,3 +24,11 @@ td,th {
 #regErrorText {
     color: red;
 }
+
+.side-nav .custom-select {
+    width: 95%;
+}
+
+.all-sections-table {
+    margin-bottom: 1.5rem;
+}

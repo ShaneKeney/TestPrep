@@ -1,9 +1,9 @@
-<h3>{{details.name}} -- {{details.type}}</h3>
+<h3>{{details.name}} - {{details.section}} - {{details.type}}</h3>
 
 {{!-- <div id="bubbleContainer" class="container">
     <form id="answer-sheet" class="mt-5"> --}}
 
-    <table class="mc-bubblesheet">
+    <table class="mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="{{questions.0.dataValues.section}}">
         <tbody class="mc-body">
 
             {{#each questions}}

@@ -57,6 +57,7 @@ $(() => {
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
             console.log(getCookie('user'));
+            resetSignInFields();
         })
         .catch(function(err) {
             console.log(err)
@@ -146,6 +147,7 @@ function resetRegisterFields() {
 function resetSignInFields() {
     $('#signin-password').val('');
     $('#signin-email').val('');
+    $('#signin-modal').modal('hide');
 }
 
 function setCookie(cname, cvalue, exdays) {

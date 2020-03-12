@@ -3,9 +3,7 @@ const Students = require('../models/students');
 const db = require('../models');
 
 const isAuthenticated = async (req, res, next) => {
-    console.log('isAuth middleware enter');
     try {
-        console.log('isAuth');
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userArray = await db.Students.findAll({

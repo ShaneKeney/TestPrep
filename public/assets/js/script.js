@@ -57,6 +57,7 @@ $(() => {
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
             console.log(getCookie('user'));
+            $('#signin-modal').modal('toggle');
 
         })
         .catch(function(err) {

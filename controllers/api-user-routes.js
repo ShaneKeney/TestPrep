@@ -7,7 +7,7 @@ const isAuthenticated = require('../middleware/auth');
 
 router.post('/api/register', async (req, res) => {
     // check to see if password & confirm match else send error
-    if(req.body.password !== req.body.confirmPassword) {
+    if (req.body.password !== req.body.confirmPassword) {
         console.log('Passwords do not match');
         res.status(401).send('PASS_MISMATCH');
     }
@@ -23,10 +23,10 @@ router.post('/api/register', async (req, res) => {
             phone: req.body.phone,
             password: hashedPassword
         });
-        
+
         const token = await newUser.generateAuthToken();
         res.status(201).send({ user: newUser, token });
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         res.status(400).send(e)
     }
@@ -38,7 +38,7 @@ router.post('/api/users/login', async (req, res) => {
 
         const token = await user.generateAuthToken();
         res.send({ user, token })
-    } catch(err) {
+    } catch (err) {
         res.status(400).send();
     }
 })

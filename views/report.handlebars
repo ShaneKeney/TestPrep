@@ -6,7 +6,7 @@
         class="btn btn-outline-primary mx-2 btn-sm">This Section</button>
 
 </div>
-<div class="container mt-3">
+<div class="sat-report container mt-3">
     <div class="row bg-secondary m-1">
         <h4 class="px-2">
             Section Summary - {{toUpperCase ../questionList.0.dataValues.Test.dataValues.type}} -
@@ -21,7 +21,7 @@
                 </h4>
             </div>
             <div class="row">
-                <table class="table table-bordered table-striped my-1 border font-weight-bolder">
+                <table class="table-borderless table table-striped my-1 font-weight-bolder">
                     <thead>
                         <tr>
                             <th class="w-25">Score</td>
@@ -45,7 +45,7 @@
                 <h4 class="px-2">Difficulty Summary</h4>
             </div>
             <div class="row">
-                <table class="table table-bordered table-striped my-1 text-center border">
+                <table class="table-borderless table table-striped my-1 text-center">
                     <thead>
                         <tr>
                             <th>Easy</th>
@@ -60,9 +60,9 @@
                             <td>{{hardPercent}}%</td>
                         </tr>
                         <tr>
-                            <td>{{easyCorrect}}/{{easyCount}}</td>
-                            <td>{{medCorrect}}/{{medCount}}</td>
-                            <td>{{hardCorrect}}/{{hardCount}}</td>
+                            <td><strong>{{easyCorrect}}</strong>/{{easyCount}}</td>
+                            <td><strong>{{medCorrect}}</strong>/{{medCount}}</td>
+                            <td><strong>{{hardCorrect}}</strong>/{{hardCount}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -70,8 +70,8 @@
             <div class="row bg-secondary mt-3">
                 <h4 class="px-2">Top Questions</h4>
             </div>
-            <div class="row border mt-1">
-                <table class="table table-bordered table-striped mb-0 text-center">
+            <div class="row mt-1">
+                <table class="table-borderless table table-striped mb-0 text-center">
                     <thead>
                         <tr>
                             <th colspan="2" class="mt-0">{{sortedTagsWrong.[0]}}</th>
@@ -79,11 +79,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Number Correct</td>
+                            <td># Correct</td>
                             <td>Questions Missed</td>
                         </tr>
                         <tr>
-                            <td class="w-25">{{correctTagWrong1Count}}/{{tagWrong1Count}}</td>
+                            <td class="w-25"><strong>{{correctTagWrong1Count}}</strong>/{{tagWrong1Count}}</td>
                             <td>
                                 {{#if tagWrong1Missed}}
                                 ({{tagWrong1Missed}})
@@ -93,8 +93,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row border mt-2">
-                <table class="table table-bordered table-striped mb-0 text-center">
+            <div class="row mt-2">
+                <table class="table-borderless table table-striped mb-0 text-center">
                     <thead>
                         <tr>
                             <th colspan="2" class="mt-0">{{sortedTagsWrong.[1]}}</th>
@@ -102,11 +102,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Number Correct</td>
+                            <td># Correct</td>
                             <td>Questions Missed</td>
                         </tr>
                         <tr>
-                            <td class="w-25">{{correctTagWrong2Count}}/{{tagWrong2Count}}</td>
+                            <td class="w-25"><strong>{{correctTagWrong2Count}}</strong>/{{tagWrong2Count}}</td>
                             {{#if tagWrong2Missed}}
                             <td>({{tagWrong2Missed}})</td>
                             {{/if}}
@@ -124,14 +124,14 @@
                 </h4>
             </div>
             <div class="row">
-                <table class="table table-bordered table-striped my-1">
+                <table class="table-borderless table table-striped my-1">
                     <thead class="thead-light my-5">
                         <tr class="my-5">
-                            <th>Q*</th>
-                            <th>R*</th>
-                            <th>A*</th>
-                            <th>D*</th>
-                            <th>Tags</th>
+                            <th class="rotated-titles"><div><span>Questions</span></div></th>
+                            <th class="rotated-titles"><div><span>Response</span></div></th>
+                            <th class="rotated-titles"><div><span>Answer</span></div></th>
+                            <th class="rotated-titles"><div><span>Difficulty</span></div></th>
+                            <th class="rotated-titles"><div><span>Tags</span></div></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,26 +147,26 @@
                         {{/ifEquals }}
                         {{/ifNotEqual}}
                         <tr>
-                            <td class="py-0{{#if ../omitted}} bg-warning 
+                            <td class="qnumber py-0{{#if ../omitted}} bg-warning 
                                     {{else if ../wrong}} bg-danger
                                     {{/if}}">
                                 <small>
                                     {{../dataValues.question_number}}
                                 </small>
                             </td>
-                            <td class="py-0">
+                            <td class="qresponse py-0">
                                 <small>
                                     {{../dataValues.studentAnswer}}
                                 </small>
                             </td>
                             {{!-- put in if else for making the answer '+' if it is the same as the student's answer --}}
-                            <td class="py-0">
+                            <td class="qanswer py-0">
                                 <small>{{../dataValues.ans_actual}}</small>
                             </td>
-                            <td class="py-0">
+                            <td class="qdifficulty py-0">
                                 <small>{{../dataValues.difficulty}}</small>
                             </td>
-                            <td class="py-0">
+                            <td class="qtags py-0">
                                 <small>
                                     {{../dataValues.tag_category}} > {{../dataValues.tag_group}} >
                                     {{../dataValues.tag}}
@@ -177,7 +177,7 @@
                         {{/each}}
                     </tbody>
                 </table>
-                <p class="d-block">* Q = Question; * R = Response; * A = Answer; * D = Difficulty</p>
+                {{!-- <p class="d-block">* Q = Question; * R = Response; * A = Answer; * D = Difficulty</p> --}}
             </div>
         </div>
     </div>

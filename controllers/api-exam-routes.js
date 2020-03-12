@@ -14,15 +14,15 @@ module.exports = (app) => {
             });
     });
 
-    // get list of questions for a specific exam and section
-    app.get('/api/exams', isAuthenticated, (req, res) => {
-        db.Test.findAll({
-            include: [db.Question]
-        })
-            .then(questions => {
-                res.json(questions);
-            });
-    });
+    // // get list of questions for a specific exam and section
+    // app.get('/api/exams', isAuthenticated, (req, res) => {
+    //     db.Test.findAll({
+    //         include: [db.Question]
+    //     })
+    //         .then(questions => {
+    //             res.json(questions);
+    //         });
+    // });
 
     // get list of questions for a specific exam and section
     app.get('/api/questions/:testID/:section', isAuthenticated, (req, res) => {

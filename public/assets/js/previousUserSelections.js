@@ -2,6 +2,7 @@ const examsEl = $('#formControlSelect1');
 const sectionsEl = $('#formControlSelect2');
 var userId;
 var userName;
+var authToken;
 
 // get a cookie by it's name
 function getCookie(name) {
@@ -14,6 +15,7 @@ var user = getCookie('user');
 // becomes only valid when user is logged in
 if (user) {
     // get id and user name from the cookie object
+    authToken = JSON.parse(user).token;
     user = JSON.parse(user).user;
     userId = user.id;
     userName = user.first_name + ' ' + user.last_name;
@@ -27,7 +29,10 @@ if (user) {
 var urlPreviousExam = '/api/prevexams/' + userId;
 $.ajax({
     method: 'GET',
-    url: urlPreviousExam
+    url: urlPreviousExam,
+    headers: {
+        'Authorization': `Bearer ${authToken}`
+    }
 }).then(tests => {
     // update selections based on returned list of exams
     if (tests.length === 0) {
@@ -53,7 +58,10 @@ $('#formControlSelect1').on('input', function (event) {
         var urlPreviousSections = `/api/sections/${userId}/${testId}`;
         $.ajax({
             method: 'GET',
-            url: urlPreviousSections
+            url: urlPreviousSections,
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
         }).then(sections => {
             // populate each section name
             sections.forEach(e => {
@@ -105,7 +113,10 @@ $('#allSections, #thisSection').on('click', function (event) {
     function getPrevSections() {
         $.ajax({
             method: 'GET',
-            url: `/api/prevSections/${userId}/${testId}`
+            url: `/api/prevSections/${userId}/${testId}`,
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
         }).then(response => {
             // save the answers to local storage so it can be retrieved after page load
             localStorage.setItem('prevAnswers', JSON.stringify(response));

@@ -1,7 +1,7 @@
 const examsEl = $('#formControlSelect1');
 const sectionsEl = $('#formControlSelect2');
 var userId = 2;
-var urlPreviousExam = '/api/exams/' + userId;
+var urlPreviousExam = '/api/prevexams/' + userId;
 
 $.ajax({
     method: 'GET',
@@ -20,7 +20,7 @@ $('#formControlSelect1').on('input', function (event) {
         $('#formSections').addClass('d-none');
     }
     var testId = $(this).children('option:selected').attr('data-testid');
-    var urlPreviousSections = `/api/sections/${userId}/${testId}`
+    var urlPreviousSections = `/api/sections/${userId}/${testId}`;
     $.ajax({
         method: 'GET',
         url: urlPreviousSections
@@ -28,8 +28,8 @@ $('#formControlSelect1').on('input', function (event) {
         sections.forEach(e => {
             console.log(e);
             sectionsEl.append($('<option>').text(e));
-        })
-    })
+        });
+    });
 });
 
 $('#formControlSelect2').on('input',function(event) {
@@ -37,4 +37,21 @@ $('#formControlSelect2').on('input',function(event) {
     var testId = $('#formControlSelect1 > option:selected').attr("data-testid");
     var section = $(this).children('option:selected').text();
     location.replace(`/reports/${userId}/${testId}/${section}`);
-})
+});
+
+$('#allSections, #thisSection').on('click',function(event){
+    // need to make the user and test parameters dynamic after it works
+    var userId = 1;
+    var testId = 1;
+    var section = $(this).attr('data-section');
+    if (!section) section = 'all';
+    event.preventDefault();
+    $.ajax({
+        method: 'GET',
+        url: `/api/prevSections/${userId}/${testId}`
+    }).then(response=>{
+         localStorage.setItem('prevAnswers',JSON.stringify(response));
+        console.log(response);
+        location.replace(`/api/exams/${testId}/questions/${section}`);
+    });
+});

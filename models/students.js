@@ -54,7 +54,7 @@ module.exports = function (sequelize, DataTypes) {
     Students.prototype.generateAuthToken = async function() {
         const user = this;
 
-        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET); //TODO: change this to process.env
+        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET);
         user.tokens = token;
         await user.save();
 

@@ -1,19 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light border">
-  <a class="navbar-brand" href="/"><i class="fas fa-home"></i> Home</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-nav">
+  <a class="bubblebase navbar-brand" href="/"><i class="fas fa-database"></i></i>ubbleBase.io</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto user-login-nav">
       <li class="nav-item active">
-        <button type="button" class="btn btn-secondary mr-2 mt-2" id="logout-button">Log Out</button>
+        <a id="logout-button"></i>Question Database</a>
+      </li>
+      <li class="nav-item active">
+        <a id="logout-button"><i class="fas fa-sign-out-alt"></i> Log Out</a>
       </li>
       <li class="nav-item">
-        <button type="button" class="btn btn-success mr-2 mt-2" data-toggle="modal" data-target="#signin-modal">Sign In</button>
+        <a data-toggle="modal" data-target="#signin-modal"><i class="fas fa-sign-in-alt"></i> Sign In</a>
       </li>
       <li class="nav-item">
-        <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#register-modal">Register</button>
+        <a data-toggle="modal" data-target="#register-modal"><i class="fas fa-user-graduate"></i> Register</a>
       </li>
     </ul>
   </div>

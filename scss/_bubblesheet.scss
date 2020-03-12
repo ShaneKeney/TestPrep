@@ -1,4 +1,30 @@
-.mcbtn {
+// .mcbtn {
+//     border-radius: 50%;
+//     padding-right: 1rem;
+//     background-color: #ffffff;
+// }
+
+.mc-letter-btn {
     border-radius: 50%;
-    padding-right: 1rem;
+    background-color:#ffffff;
+    border: none;
+    height: 2rem;
+    width: 2rem;
+    margin: 0.2rem;
+}
+
+.mc-letter-btn.selected {
+    background-color:#61e08b;
+}
+
+#regErrorText {
+    color: red;
+}
+
+.side-nav .custom-select {
+    width: 95%;
+}
+
+.all-sections-table {
+    margin-bottom: 1.5rem;
 }

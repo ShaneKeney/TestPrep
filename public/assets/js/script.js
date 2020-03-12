@@ -35,6 +35,7 @@ $(() => {
             success: function(res) {
                 console.log('Logout success!')
                 setCookie('user', '', 1);
+                location.reload();
             }
         })
     })

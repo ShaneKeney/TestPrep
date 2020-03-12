@@ -18,9 +18,8 @@ $(() => {
     //     $(numChoices).append(colEl);
     // }
 
-    $('#logout-button').on('click', e => {
+    $('.logout-button').on('click', e => {
         e.preventDefault();
-
         // get token to log out
         let user = JSON.parse(getCookie('user'));
         let authToken = user.token;
@@ -98,21 +97,27 @@ $(() => {
 
             userData.phone = registerPhone;
 
-            return registerPhone.length === 10 ? true : false;
+            return (registerPhone.length === 10 || registerPhone.length == 0) ? true : false;
         }
 
         if (userData.password === userData.confirmPassword && validateEmail()) {
             $.post('/api/register', userData)
             .then(function(res) {
-                console.log(res); //log the response to see what is happening
+                let user = { ...res };
+                delete user.user.createdAt;
+                delete user.user.updatedAt;
+
+                let userCookie = JSON.stringify(user);
+                setCookie('user', userCookie, 1);
+                console.log(getCookie('user'));
                 resetRegisterFields();
+                location.reload();
             })
             .catch(function(err) {
                 if(err.responseJSON.errors[0].message === "students.email must be unique") {
                     $('#regErrorText').text('Email already registered'); 
                 }
             });
-            location.reload();
         } else {
             if (userData.password !== userData.confirmPassword) 
                 $('#password-mismatch').removeClass('d-none');

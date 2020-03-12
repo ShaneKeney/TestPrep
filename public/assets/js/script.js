@@ -57,7 +57,6 @@ $(() => {
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
             console.log(getCookie('user'));
-
         })
         .catch(function(err) {
             console.log(err)
@@ -102,7 +101,7 @@ $(() => {
 
         if (userData.password === userData.confirmPassword && validateEmail() && validatePhone()) {
             $.post('/api/register', userData)
-            .then(function(res) {
+            .then(async function(res) {
                 console.log(res); //log the response to see what is happening
                 resetRegisterFields();
             })

@@ -36,6 +36,7 @@ router.post('/api/users/login', async (req, res) => {
         const user = await db.Students.findByCredentials(req.body.email, req.body.password);
 
         const token = await user.generateAuthToken();
+        console.log('before res.send')
         res.send({ user, token });
     } catch(err) {
         res.status(400).send();

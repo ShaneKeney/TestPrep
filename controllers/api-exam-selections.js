@@ -1,8 +1,8 @@
 const db = require('../models');
-
+const isAuthenticated = require('../middleware/auth');
 module.exports = (app) => {
 
-    app.get('/api/exams/sections/:testID', (req, res) => {
+    app.get('/api/exams/sections/:testID', isAuthenticated, (req, res) => {
         console.log(1);
         db.Question.findAll({
             where: {
@@ -17,7 +17,7 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/api/exams/:testID/questions/:section', (req, res) => {
+    app.get('/api/exams/:testID/questions/:section', isAuthenticated, (req, res) => {
         // HELPER FUNCTION FOR
         // SELECTORS SUCH AS
         // {{#if mc}} AND {{#if num}}
@@ -97,7 +97,7 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/prevexams/:userId', (req, res) => {
+    app.get('/api/prevexams/:userId', isAuthenticated, (req, res) => {
         db.SectionResultsDetails.findAll({
             where: {
                 StudentId: req.params.userId
@@ -128,7 +128,7 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/api/sections/:userId/:testId', (req,res)=>{
+    app.get('/api/sections/:userId/:testId', isAuthenticated, (req,res)=>{
         db.Question.findAll({
             where: {
                 TestId: req.params.testId

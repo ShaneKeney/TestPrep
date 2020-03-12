@@ -44,24 +44,30 @@ $('#formControlInput1').val(userName);
 $('#formControlSelect1').on('input', function (event) {
     event.preventDefault();
     if ($(this).children('option:selected').attr('data-testid')) {
+        // show or hide the test section area based on having selected a valid test
         $('#formSections').removeClass('d-none');
+
+        // get the test id of the selection 
+        var testId = $(this).children('option:selected').attr('data-testid');
+        // query the database for the list of sections in that test
+        var urlPreviousSections = `/api/sections/${userId}/${testId}`;
+        $.ajax({
+            method: 'GET',
+            url: urlPreviousSections
+        }).then(sections => {
+            // populate each section name
+            sections.forEach(e => {
+                sectionsEl.append($('<option>').text(e));
+            });
+        });
     } else {
         $('#formSections').addClass('d-none');
     }
-    var testId = $(this).children('option:selected').attr('data-testid');
-    var urlPreviousSections = `/api/sections/${userId}/${testId}`;
-    $.ajax({
-        method: 'GET',
-        url: urlPreviousSections
-    }).then(sections => {
-        sections.forEach(e => {
-            sectionsEl.append($('<option>').text(e));
-        });
-    });
 });
 
 
-
+// upon user selection of a test section (or all)
+// redirect to the report page
 $('#formControlSelect2').on('input', function (event) {
     event.preventDefault();
     var testId = $('#formControlSelect1 > option:selected').attr("data-testid");
@@ -69,13 +75,22 @@ $('#formControlSelect2').on('input', function (event) {
     location.replace(`/reports/${userId}/${testId}/${section}`);
 });
 
+
+///////////////////////////////////////////////////
+// FOR REPORT PAGE Partial
+
+// allows user to go back to previous
+// tests with all of their original answers filled in
 $('#allSections, #thisSection').on('click', function (event) {
     event.preventDefault();
+    // get user id and test id from the current address
     var endAddr = location.href.split('reports/');
     var userId = endAddr[1].split('/')[0];
     var testId = endAddr[1].split('/')[1];
     var section = $(this).attr('data-section');
     if (!section) section = 'all';
+    // if user chooses math, display a modal to ask if they want
+    // calc or no calc math.
     if (section === 'math') {
         $('#mathModal').modal();
         $('.mathChoice').on('click', function (event) {
@@ -86,14 +101,15 @@ $('#allSections, #thisSection').on('click', function (event) {
     } else {
         getPrevSections();
     }
-
+    // get all of the user's previous answers for that test
     function getPrevSections() {
         $.ajax({
             method: 'GET',
             url: `/api/prevSections/${userId}/${testId}`
         }).then(response => {
+            // save the answers to local storage so it can be retrieved after page load
             localStorage.setItem('prevAnswers', JSON.stringify(response));
-            console.log(response);
+            // redirect to the bubblesheet page
             location.replace(`/api/exams/${testId}/questions/${section}`);
         });
     }

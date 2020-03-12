@@ -16,10 +16,23 @@ $(() => {
     let Numerator = new RegExp('[0-9]{1,2}(?=\/)', 'g');
     let Denominator = new RegExp('[0-9]{1,2}(?!\/)$', 'g');
 
+    // get a cookie by it's name
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+    var user = getCookie('user');
+    // get id and user name from the cookie object
+    var authToken = JSON.parse(user).token;
+
     //populate exam list
     $.ajax({
         method: 'GET',
-        url: '/api/exams'
+        url: '/api/exams',
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        }
     }).then(results => {
         results.forEach(test => {
             let $option = $('<option>')
@@ -38,7 +51,7 @@ $(() => {
     //populate section list
     $examSelect.on('change', function (event) {
         event.preventDefault();
-        console.log($examSelect.val());
+        console.log(authToken);
 
         var testID = $(this).find(':selected').data('test-id');
         let sectionAPIquery = `/api/exams/sections/${testID}`
@@ -46,7 +59,10 @@ $(() => {
 
         $.ajax({
             method: 'GET',
-            url: sectionAPIquery
+            url: sectionAPIquery,
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
         }).then(sections => {
             $sectionSelect.removeClass('d-none');
             routeURL = `/api/exams/${testID}/questions/all`;
@@ -113,7 +129,7 @@ $(() => {
             case 49:
                 $qRow.eq(i).find('.mc-letter-btn').eq(0).trigger('click');
                 break;
-            case 66: 
+            case 66:
             case 50:
                 $qRow.eq(i).find('.mc-letter-btn').eq(1).trigger('click');
                 break;
@@ -153,13 +169,16 @@ $(() => {
             data: JSON.stringify(results),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            error: function() {
-              alert("Error");
+            error: function () {
+                alert("Error");
             },
-            success: function() {
-              alert("OK");
+            success: function () {
+                alert("OK");
+            },
+            headers: {
+                'Authorization': `Bearer ${authToken}`
             }
-        }).then(function() {
+        }).then(function () {
             console.log("Entered Results");
             // location.reload();
         });
@@ -194,7 +213,7 @@ $(() => {
         return data;
     };
 
-    async function collectGridInAnswers (rows) {
+    async function collectGridInAnswers(rows) {
         console.log("inside collect")
         let outputArr = []
         for (i = 0; i < rows.length; i++) {
@@ -202,7 +221,7 @@ $(() => {
         }
         console.log(outputArr);
         return outputArr;
-    }  
+    }
 
     async function fractionToDecimal(array) {
         let outputArr = [];
@@ -220,15 +239,15 @@ $(() => {
                 console.log(denomInt);
                 let ans = numInt / denomInt;
                 console.log(ans);
-                outputArr.push(Math.round(1000*ans)/1000);
+                outputArr.push(Math.round(1000 * ans) / 1000);
             } else {
                 outputArr.push(num);
-            }        
+            }
         });
         return outputArr;
     };
 
-    
+
     $(document).ready(() => {
         if (localStorage.getItem('prevAnswers') !== null) {
             var prevAnswers = JSON.parse(localStorage.getItem('prevAnswers'));
@@ -236,7 +255,7 @@ $(() => {
                 var section = v.section;
                 var qNum = v.question_number;
                 var answ = v.answer_response;
-                if(answ === 'A' || answ === 'B' || answ === 'C' || answ === 'D') {
+                if (answ === 'A' || answ === 'B' || answ === 'C' || answ === 'D') {
                     $(`#${section}-${qNum} > td > .ltr-btn-${answ}`).addClass('selected');
                     $(`#${section}-${qNum} > td.mc-answer`).text(answ);
                 } else {

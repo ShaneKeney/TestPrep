@@ -99,9 +99,9 @@ $(() => {
             return registerPhone.length === 10 ? true : false;
         }
 
-        if (userData.password === userData.confirmPassword && validateEmail() && validatePhone()) {
+        if (userData.password === userData.confirmPassword && validateEmail()) {
             $.post('/api/register', userData)
-            .then(async function(res) {
+            .then(function(res) {
                 console.log(res); //log the response to see what is happening
                 resetRegisterFields();
             })

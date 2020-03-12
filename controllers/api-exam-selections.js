@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = (app) => {
 
     app.get('/api/exams/sections/:testID', (req, res) => {
-
+        console.log(1);
         db.Question.findAll({
             where: {
                 TestId: req.params.testID
@@ -97,7 +97,7 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/exams/:userId', (req, res) => {
+    app.get('/api/prevexams/:userId', (req, res) => {
         db.SectionResultsDetails.findAll({
             where: {
                 StudentId: req.params.userId
@@ -146,3 +146,5 @@ module.exports = (app) => {
             });
     });
 };
+
+

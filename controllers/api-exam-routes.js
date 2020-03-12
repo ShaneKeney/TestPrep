@@ -37,4 +37,16 @@ module.exports = (app) => {
                 res.json(questions);
             });
     });
+
+    app.get('/api/prevSections/:userId/:testId', (req,res)=>{
+        // search the results table for any previously taken sections
+        db.SectionResultsDetails.findAll({
+            where: {
+                TestId: req.params.testId,
+                StudentId: req.params.userId
+            }
+        }).then(prevAnswers=>{
+            res.json(prevAnswers);
+        });
+    });
 };

@@ -86,10 +86,10 @@ $(() => {
 
 
 
-    $mcButton.on('click', function(e) {
+    $mcButton.on('click', function (e) {
         e.preventDefault();
         i = parseInt($(this).parent().siblings('.mc-bs-qnum').text()) - 1;
-        if ( $(this).hasClass('selected') ) {
+        if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
             $(this).parent().siblings('.mc-answer').text(' ');
         } else {
@@ -124,7 +124,7 @@ $(() => {
         }
     })
 
-    $gridSelect.on('change', function(e) {
+    $gridSelect.on('change', function (e) {
         e.preventDefault();
         let $ansTd = $(this).parentsUntil('.q-row').siblings('.gi-answer');
         $ansTd.empty();
@@ -138,7 +138,7 @@ $(() => {
         let ansStr = $('.mc-body').find('.mc-answer').text();
         let giRows = $('.mc-body').find('.gi-answer');
         let giArr = [];
-        for(i=0; i < giRows.length; i++) {
+        for (i = 0; i < giRows.length; i++) {
             giArr.push(giRows[i].textContent)
         }
         let ansArr = ansStr.split('');
@@ -152,7 +152,7 @@ $(() => {
                 'StudentId': 1,
                 'TestId': id,
                 'section': section,
-                'question_number': index+1,
+                'question_number': index + 1,
                 'answer_response': value,
             };
             data.push(obj);
@@ -160,5 +160,24 @@ $(() => {
         console.log(data);
 
     });
+    $(document).ready(() => {
+        if (localStorage.getItem('prevAnswers') !== null) {
+            var prevAnswers = JSON.parse(localStorage.getItem('prevAnswers'));
+            prevAnswers.forEach(v => {
+                var section = v.section;
+                var qNum = v.question_number;
+                var answ = v.answer_response;
+                if(answ === 'A' || answ === 'B' || answ === 'C' || answ === 'D') {
+                    $(`#${section}-${qNum} > td > .ltr-btn-${answ}`).addClass('selected');
+                    $(`#${section}-${qNum} > td.mc-answer`).text(answ);
+                } else {
 
+                }
+
+            })
+            // this is to clean up, but then page reload won't populate
+            // possibly should be a more permanent object, it would have the user and test ids...
+            localStorage.removeItem('prevAnswers');
+        }
+    });
 });

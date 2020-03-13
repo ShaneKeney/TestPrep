@@ -3,6 +3,7 @@
 
 // Require db models
 const db = require('../models');
+const isAuthenticated = require('../middleware/auth');
 
 module.exports = (app) => {
     // get get report of exam results taken by a student

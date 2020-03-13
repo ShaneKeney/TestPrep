@@ -1,9 +1,8 @@
 const db = require('../models');
-
+const isAuthenticated = require('../middleware/auth');
 module.exports = (app) => {
 
-    app.get('/api/exams/sections/:testID', (req, res) => {
-        console.log(1);
+    app.get('/api/exams/sections/:testID', isAuthenticated, (req, res) => {
         db.Question.findAll({
             where: {
                 TestId: req.params.testID
@@ -96,8 +95,8 @@ module.exports = (app) => {
             });
         }
     });
-
-    app.get('/api/prevexams/:userId', (req, res) => {
+    // get a list of the tests a user has already started or finished from the results table
+    app.get('/api/prevexams/:userId', isAuthenticated, (req, res) => {
         db.SectionResultsDetails.findAll({
             where: {
                 StudentId: req.params.userId
@@ -106,7 +105,9 @@ module.exports = (app) => {
                 [db.Sequelize.fn('DISTINCT', db.Sequelize.col('TestId')), 'TestId']
             ]
         })
+            // with that list get the test names from the Test table
             .then((testIds) => {
+                // get the test ids out of the object and into an array to search the db with
                 var testIdArr = [];
                 testIds.forEach(element => {
                     testIdArr.push(element.dataValues.TestId);
@@ -116,6 +117,7 @@ module.exports = (app) => {
                         id: testIdArr
                     }
                 }).then(tests => {
+                    // with resulting list of tests, create an array with objects of test names and ids
                     var examArr = [];
                     tests.forEach(e => {
                         examArr.push({
@@ -123,12 +125,14 @@ module.exports = (app) => {
                             testID: e.dataValues.id
                         });
                     });
+                    // send the array to the front end
                     res.json(examArr);
                 });
             });
     });
 
-    app.get('/api/sections/:userId/:testId', (req,res)=>{
+    // get all sections for a specific test (user param not yet in use)
+    app.get('/api/sections/:userId/:testId', isAuthenticated, (req,res)=>{
         db.Question.findAll({
             where: {
                 TestId: req.params.testId
@@ -138,10 +142,12 @@ module.exports = (app) => {
             ]
         })
             .then(sections=>{
+                // create just an array of section names to send back
                 var sectionsArr = [];
                 sections.forEach(e=>{
                     sectionsArr.push(e.dataValues.section);
                 });
+                // should also then get the list of actual sections started/completed by that user
                 res.json(sectionsArr);
             });
     });

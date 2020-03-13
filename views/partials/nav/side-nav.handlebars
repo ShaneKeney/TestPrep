@@ -1,22 +1,18 @@
-<div class="side-nav border rounded py-3 pl-3 mt-2">
+<div class="side-nav py-4 h-100">
 
-<ul class="nav flex-column">
-  <li class="nav-item">
-    <a class="nav-link active" href="#">Active</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-</ul>
+  <h4>Select a Test</h4>
+  <select id="exam-select" class="custom-select">
+    <option selected>Choose an Exam</option>
+  </select>
 
-<select id="exam-select" class="custom-select">
-  <option selected>Choose an Exam</option>
-</select>
+  <select id="section-select" class="custom-select d-none mt-3">
+    <option selected>All Sections</option>
+  </select>
 
-<select id="section-select" class="custom-select d-none mt-3">
-  <option selected>All Sections</option>
-</select>
+  <a id="makeBubbleBtn" class="btn btn-outline-primary mt-3 d-none" href="">Generate Bubblesheet</a>
 
-<a id="makeBubbleBtn" class="btn btn-outline-primary mt-3 d-none" href="">Generate Bubblesheet</a>
+<h4 class="mt-5">Testing History</h4>
+
+{{> nav/user-exams-nav}}
 
 </div>

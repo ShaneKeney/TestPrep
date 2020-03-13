@@ -7,7 +7,7 @@ const isAuthenticated = require('../middleware/auth');
 
 module.exports = (app) => {
     // get get report of exam results taken by a student
-    app.get('/reports/:StudentId/:TestId/:section', (req, res) => {
+    app.get('/reports/:StudentId/:TestId/:section', isAuthenticated, (req, res) => {
         const StudentId = req.params.StudentId;
         const TestId = req.params.TestId;
         var sectionFilter = req.params.section;

@@ -2,7 +2,7 @@ const db = require('../models');
 const isAuthenticated = require('../middleware/auth');
 module.exports = (app) => {
 
-    app.get('/bubblesheet', (req, res) => {
+    app.get('/bubblesheet', isAuthenticated, (req, res) => {
         res.render('index');
     });
 
@@ -20,7 +20,7 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/bubblesheet/exams/:testID/questions/:section', (req, res) => {
+    app.get('/bubblesheet/exams/:testID/questions/:section', isAuthenticated, (req, res) => {
         // HELPER FUNCTION FOR
         // SELECTORS SUCH AS
         // {{#if mc}} AND {{#if num}}

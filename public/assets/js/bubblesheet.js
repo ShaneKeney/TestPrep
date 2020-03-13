@@ -261,7 +261,7 @@ $(() => {
             })
             // this is to clean up, but then page reload won't populate
             // possibly should be a more permanent object, it would have the user and test ids...
-            localStorage.removeItem('prevAnswers');
+            // localStorage.removeItem('prevAnswers');
         }
     });
 });

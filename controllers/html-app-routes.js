@@ -92,9 +92,12 @@ module.exports = (app) => {
 
                                     // check the validity of the student's answer
                                     // set variables to store right/wrong/skipped
-                                    if (question.dataValues.studentAnswer === question.dataValues.ans_actual) {
+                                    if (question.dataValues.studentAnswer === question.dataValues.ans_actual || (
+                                        question.dataValues.question_type === 'arr'
+                                         && question.dataValues.ans_actual.split('').includes(question.dataValues.studentAnswer)
+                                    )) {
                                         // switch actual answer to a + symbol for easier reading of the report for accurate answers
-                                        question.dataValues.ans_actual = '+';
+                                        question.dataValues.ans_actual = '+';``
                                         question.wrong = false;
                                         question.omitted = false;
                                         // update the score count for the section

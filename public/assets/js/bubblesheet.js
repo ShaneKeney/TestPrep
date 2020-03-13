@@ -188,8 +188,8 @@ $(() => {
     });
 
     async function collectAns(section) {
-        let id = $mcTable.data('test-id');
         let $mcTable = $(`.mc-bubblesheet[data-test-section="${section}"]`);
+        let id = $mcTable.data('test-id');
         let ansStr = $mcTable.find('.mc-answer').text();
         let ansArr = ansStr.split('');
         let giRows = $mcTable.find('.gi-answer');

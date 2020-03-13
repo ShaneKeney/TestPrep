@@ -16,7 +16,7 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/api/exams/:testID/questions/:section', (req, res) => {
+    app.get('/bubblesheet/exams/:testID/questions/:section', (req, res) => {
         // HELPER FUNCTION FOR
         // SELECTORS SUCH AS
         // {{#if mc}} AND {{#if num}}
@@ -32,9 +32,7 @@ module.exports = (app) => {
                     mathNC: question.dataValues.section === 'mathNC',
                     mathC: question.dataValues.section === 'mathC',
                     mc: question.dataValues.question_type === 'mc',
-                    num: question.dataValues.question_type === 'num'
-                            || question.dataValues.question_type === 'arr'
-                            || question.dataValues.question_type === 'range'
+                    num: question.dataValues.question_type === 'num' || question.dataValues.question_type === 'arr' || question.dataValues.question_type === 'range'
                 });
             });
 

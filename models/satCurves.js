@@ -1,13 +1,13 @@
-module.exports = function (seqeuelize, DataTypes) {
-    var SatScore = seqeuelize.define("SatScore", {
-        sat_test: {
+module.exports = function (sequelize, DataTypes) {
+    var SatCurve = sequelize.define('SatCurve', {
+        exam: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 len: [1, 50]
             }
         },
-        sat_section: {
+        section: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -32,14 +32,14 @@ module.exports = function (seqeuelize, DataTypes) {
         }
     });
 
-    SatScore.associate = function (models) {
-        models.SatScore.belongsTo(models.Test, {
-            onDelete: "CASCADE",
+    SatCurve.associate = function (models) {
+        models.SatCurve.belongsTo(models.Test, {
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }
         });
     };
 
-    return SatScore;
+    return SatCurve;
 };

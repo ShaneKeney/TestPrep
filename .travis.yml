@@ -1,0 +1,12 @@
+language: node_js
+node_js: "12"
+branches:
+  only:
+    - master
+    - staging
+    - development
+cache:
+  directories:
+    - node_modules
+scripts:
+  - npm run lint

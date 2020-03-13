@@ -5,6 +5,9 @@
         "node": true,
         "es6": true
     },
+    "parserOptions": { 
+        "ecmaVersion": 2018 
+    },
     "rules": {
         "no-duplicate-case":"error",
         "no-empty":"error",
@@ -12,7 +15,7 @@
         "no-func-assign": "error",
         "no-irregular-whitespace":"error",
         "no-unreachable": "error",
-        "curly": "error",
+        "curly": "warn",
         "dot-notation": "error",
         "eqeqeq": "error",
         "no-empty-function": "error",
@@ -21,14 +24,15 @@
         "no-trailing-spaces": "error",
         "default-case": "error",
         "no-fallthrough": "error",
-        "no-unused-vars": "error",
+        "no-unused-vars": "warn",
         "no-use-before-define": "error",
         "no-redeclare": "error",
-        "camelcase": "error",
+        "camelcase": 1,
         "brace-style": "error",
         "indent": [
-            "error",
-            4
+            2,
+            4,
+            { "SwitchCase": 1 }
         ],
         "quotes": [
             "error",

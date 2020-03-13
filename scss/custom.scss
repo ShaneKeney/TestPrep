@@ -1,0 +1,21 @@
+//////////////////////////////////////
+// OUR PARIAL IMPORTS GO HERE
+//////////////////////////////////////
+$theme-colors: (
+  "primary": #0074d9,
+  "secondary": #e1e4e8,
+  "danger": #e34c26,
+  "success": #61e08b,
+  "bg-dark": #24292e
+);
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans&display=swap');
+@import 'bubblesheet';
+@import 'globals';
+@import 'nav';
+@import 'reports';
+
+
+// Include all of Bootstrap
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+

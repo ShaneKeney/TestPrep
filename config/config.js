@@ -1,26 +1,20 @@
+require('dotenv').config();
+
 module.exports = {
     development: {
-      username: process.env.DBUSERNAME,
-      password: process.env.DBPASS,
-      database: process.env.DBNAME,
-      host: process.env.DBHOST,
-      dialect: "mysql",
-      operatorsAliases: false
+        username: process.env.DBUSERNAME,
+        password: process.env.DBPASS,
+        database: process.env.DBNAME,
+        host: process.env.DBHOST,
+        dialect: 'mysql',
+        operatorsAliases: false
     },
-    test: {
-      username: "root",
-      password: null,
-      database: "database_test",
-      host: "127.0.0.1",
-      dialect: "mysql",
-      operatorsAliases: false
+    staging: {
+        dialect: 'mysql',
+        operatorsAliases: false
     },
     production: {
-      username: "root",
-      password: null,
-      database: "database_production",
-      host: "127.0.0.1",
-      dialect: "mysql",
-      operatorsAliases: false
+        dialect: 'mysql',
+        operatorsAliases: false
     }
-  }
+};

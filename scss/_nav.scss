@@ -1,0 +1,25 @@
+.bubblebase {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.user-login-nav {
+    
+    li {
+        margin-right: 1rem;
+        cursor: pointer;
+
+        a {
+            color:#ffffff;
+        }
+
+        a:hover {
+            color:#ffffff;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+    }
+}
+
+.side-nav {
+    background-color: #ffffff;
+}

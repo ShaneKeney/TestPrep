@@ -1,10 +1,10 @@
 module.exports = function (seqeuelize, DataTypes) {
-    var Test = seqeuelize.define("Test", {
+    var Test = seqeuelize.define('Test', {
         type: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        name: {
+        exam: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -13,17 +13,14 @@ module.exports = function (seqeuelize, DataTypes) {
         }
     });
 
-    Test.associate = function(models) {
+    Test.associate = function (models) {
         models.Test.hasMany(models.Question, {
-          onDelete: "CASCADE"
+            onDelete: 'CASCADE'
         });
-    };
-
-    Test.associate = function(models) {
-        models.Test.hasMany(models.SatScore, {
-            onDelete: "CASCADE"
+        models.Test.hasMany(models.SatCurve, {
+            onDelete: 'CASCADE'
         });
     };
 
     return Test;
-}
+};

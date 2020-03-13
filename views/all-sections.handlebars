@@ -1,0 +1,103 @@
+<h3>{{details.name}} - {{details.type}}</h3>
+
+<div class="row">
+    <div class="col-xl-3 col-lg-6 mc-column">
+
+        <h5><i class="fas fa-book-open text-warning"></i> Reading Section</h5>
+        <button class="btn btn-outline-success mb-2 collect" data-test-section="reading">Submit Reading</button>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="reading">
+            <tbody class="mc-body">
+                {{#each questions}}
+                    {{#if reading}}
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+                    {{/if}}
+                {{/each}}
+            </tbody>
+        </table>
+        <button class="btn btn-outline-success mb-5 collect" data-test-section="reading">Submit Reading</button>
+    </div>
+
+
+    <div class="col-xl-3 col-lg-6 mc-column">
+        <h5><i class="fas fa-pencil-alt text-warning"></i> Writing Section</h5>
+        <button class="btn btn-outline-success mb-2 collect" data-test-section="writing">Submit Writing</button>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="writing">
+            <tbody class="mc-body">
+                {{#each questions}}
+                    {{#if writing}}
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+                    {{/if}}
+                {{/each}}
+            </tbody>
+        </table>
+        <button class="btn btn-outline-success mb-5 collect" data-test-section="writing">Submit Writing</button>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mc-column">
+        <h5><i class="fas fa-square-root-alt text-warning"></i> MathNC Section</h5>
+        <button class="btn btn-outline-success mb-2 collect" data-test-section="mathNC">Submit Math No Calc</button>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="mathNC">
+            <tbody class="mc-body">
+
+                {{#each questions}}
+
+                    {{#if mathNC}}
+
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+
+                    {{/if}}
+
+                {{/each}}
+
+            </tbody>
+        </table>
+        <button class="btn btn-outline-success mb-5 collect" data-test-section="mathNC">Submit Math No Calc</button>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mc-column">
+        <h5><i class="fas fa-calculator text-warning"></i> MathC Section</h5>
+        <button class="btn btn-outline-success mb-2 collect" data-test-section="mathC">Submit Math Calc</button>
+        <table class="all-sections-table mc-bubblesheet" data-test-id="{{questions.0.dataValues.TestId}}" data-test-section="mathC">
+            <tbody class="mc-body">
+
+                {{#each questions}}
+
+                    {{#if mathC}}
+
+                        {{#if mc}}
+                            {{> question-types/multiple-choice}}
+                        {{/if}}
+
+                        {{#if num}}
+                            {{> question-types/number}}
+                        {{/if}}
+
+                    {{/if}}
+
+                {{/each}}
+
+            </tbody>
+        </table>
+        <button class="btn btn-outline-success mb-5 collect" data-test-section="mathC">Submit Math Calc</button>
+    </div>
+</div>
+
+{{!-- <button class="btn btn-outline-success mb-5 collect">Collect Answers</button> --}}

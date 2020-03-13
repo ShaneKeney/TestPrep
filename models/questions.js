@@ -1,6 +1,6 @@
 module.exports = function (seqeuelize, DataTypes) {
-    var Question = seqeuelize.define("Question", {
-        key: {
+    var Question = seqeuelize.define('Question', {
+        exam: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -28,41 +28,19 @@ module.exports = function (seqeuelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isIn: [["e", "m", "h"]]
+                isIn: [['e', 'm', 'h']]
             }
         },
         question_type: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isIn: [["mc", "arr", "range"]]
+                isIn: [['mc', 'arr', 'range']]
             }
         },
-        answer_mc: {
+        ans_actual: {
             type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                isIn: [["A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f", "G", "g", "H", "h", "J", "j", "K", "k"]]
-            }
-        },
-        ans_num: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        ans_array: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                is: /^[0-9]([,][0-9]{1,3})$/
-            }
-        },
-        ans_min: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        ans_max: {
-            type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false
         },
         tag_category: {
             type: DataTypes.STRING,
@@ -89,7 +67,7 @@ module.exports = function (seqeuelize, DataTypes) {
 
     Question.associate = function (models) {
         models.Question.belongsTo(models.Test, {
-            onDelete: "CASCADE",
+            onDelete: 'CASCADE',
             foreignKey: {
                 allowNull: false
             }
@@ -97,4 +75,4 @@ module.exports = function (seqeuelize, DataTypes) {
     };
 
     return Question;
-}
+};

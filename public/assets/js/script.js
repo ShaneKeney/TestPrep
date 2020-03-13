@@ -22,10 +22,12 @@ $(() => {
         $('#register-button').addClass('d-none');
         $('#signin-button').addClass('d-none');
         $('.logout-button').removeClass('d-none');
+        $('#editUserButton').removeClass('d-none');
     } else {
         $('.logout-button').addClass('d-none');
         $('#register-button').removeClass('d-none'); //show
         $('#signin-button').removeClass('d-none'); //show
+        $('#editUserButton').addClass('d-none');
     }
 
     $('.logout-button').on('click', e => {
@@ -47,6 +49,7 @@ $(() => {
                 $('#register-button').removeClass('d-none');
                 $('#signin-button').removeClass('d-none');
                 $('.logout-button').addClass('d-none');
+                $('#editUserButton').addClass('d-none');
                 location = '/'
             }
         })
@@ -77,6 +80,25 @@ $(() => {
             //console.log(err)
         })
     });
+
+    $('#editUserButton').on('click', e => {
+        e.preventDefault();
+
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/me',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            success: function(res) {
+                populateUserInfo(res);
+            }
+        })
+    })
 
     $('#register-form').on('submit', e => {
         e.preventDefault();
@@ -191,4 +213,11 @@ function getCookie(cname) {
       }
     }
     return "";
+}
+
+function populateUserInfo(userInfo) {
+    $('#edit-firstName').val(userInfo.first_name)
+    $('#edit-lastName').val(userInfo.last_name)
+    $('#edit-email').val(userInfo.email)
+    $('#edit-phone').val(userInfo.phone)
 }

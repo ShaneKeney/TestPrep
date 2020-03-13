@@ -183,7 +183,7 @@ $(() => {
                 'Authorization': `Bearer ${authToken}`
             }
         }).then(function () {
-            //console.log("Entered Results");
+            console.log("Entered Results");
             // location.reload();
         });
     });
@@ -253,7 +253,7 @@ $(() => {
                 } else {
                      let ansNumArr = answ.split('');
                      ansNumArr.forEach((num,i)=>{
-                         $(`tr#${section}-${qNum} .gi-pos-${i}`).val(num)
+                         $(`tr#${section}-${qNum} .gi-pos-${i+1}`).val(num)
                      })
                 }
 

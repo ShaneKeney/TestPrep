@@ -11,7 +11,7 @@ module.exports = (app) => {
         const StudentId = req.params.StudentId;
         const TestId = req.params.TestId;
         var sectionFilter = req.params.section;
-        if(sectionFilter === 'mathNC' || sectionFilter === 'mathC') {
+        if (sectionFilter === 'mathNC' || sectionFilter === 'mathC') {
             sectionFilter = 'math';
         }
         var resultDetails;
@@ -92,12 +92,17 @@ module.exports = (app) => {
 
                                     // check the validity of the student's answer
                                     // set variables to store right/wrong/skipped
-                                    if (question.dataValues.studentAnswer === question.dataValues.ans_actual || (
-                                        question.dataValues.question_type === 'arr'
-                                         && question.dataValues.ans_actual.split('').includes(question.dataValues.studentAnswer)
-                                    )) {
+                                    if (question.dataValues.studentAnswer === question.dataValues.ans_actual
+                                        ||
+                                        (question.dataValues.question_type === 'arr'
+                                            && question.dataValues.ans_actual.split('').includes(question.dataValues.studentAnswer))
+                                        ||
+                                        (question.dataValues.question_type === 'range' && parseFloat(question.dataValues.studentAnswer) >
+                                            parseFloat(question.dataValues.ans_actual.split(',')[0]) && parseFloat(question.dataValues.studentAnswer) <
+                                            parseFloat(question.dataValues.ans_actual.split(',')[1]))
+                                    ) {
                                         // switch actual answer to a + symbol for easier reading of the report for accurate answers
-                                        question.dataValues.ans_actual = '+';``
+                                        question.dataValues.ans_actual = '+';
                                         question.wrong = false;
                                         question.omitted = false;
                                         // update the score count for the section

@@ -12,30 +12,33 @@
           <div class="form-group">
             <label for="register-firstName">First Name:</label>
             <input type="text" class="form-control" id="register-firstName">
+            <p id="invalid-register-firstName" class="text-danger d-none">Please enter your first name.</p>
           </div>
           <div class="form-group">
             <label for="register-lastName">Last Name:</label>
             <input type="text" class="form-control" id="register-lastName">
+            <p id="invalid-register-lastName" class="text-danger d-none">Please enter your last name.</p>
           </div>
           <div class="form-group">
             <label for="register-email">Email address</label>
             <input type="email" class="form-control" id="register-email">
-            <p id="invalid-email" class="text-danger d-none">Please enter a valid email address.</p>
+            <p id="invalid-register-email" class="text-danger d-none">Please enter a valid email address.</p>
           </div>
           <div class="form-group">
             <label for="register-phone">Phone Number</label>
             <input type="tel" class="form-control" id="register-phone">
-            <p id="invalid-phone" class="text-danger d-none">Please enter a valid 10 digit phone number.</p>
+            <p id="invalid-register-phone" class="text-danger d-none">Please enter a valid 10 digit phone number.</p>
           </div>
           <div class="form-group">
             <label for="register-password">Password</label>
             <input type="password" class="form-control" id="register-password">
+            <p id="password-register-blank" class="text-danger d-none">Please enter a password.</p>
           </div>
           <div class="form-group">
-            <label for="confirm-password">Confirm Your Password</label>
-            <input type="password" class="form-control" id="confirm-password">
+            <label for="confirm-register-password">Confirm Your Password</label>
+            <input type="password" class="form-control" id="confirm-register-password">
+            <p id="password-register-mismatch" class="text-danger d-none">Your passwords do not match.</p>
           </div>
-          <p id="password-mismatch" class="text-danger d-none">Your passwords do not match.</p>
         </div>
         <div class="modal-footer">
           <button type="button" id="regClose" class="btn btn-secondary" data-dismiss="modal">Close</button>

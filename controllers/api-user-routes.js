@@ -57,12 +57,12 @@ router.get('/api/users/me', isAuthenticated, async (req, res) => {
 
 // TODO: Hook up update profile functionality on front end
 router.patch('/api/users/me', isAuthenticated, async (req, res) => {
-    if(req.body.password === req.body.confirmPassword) {
-        delete req.body.confirmPassword;
+    // if(req.body.password === req.body.confirmPassword) {
+    //     delete req.body.confirmPassword;
         req.body.password = await bcrypt.hash(req.body.password, 8);
-    } else {
-        return res.status(400).send({ error: 'Passwords do not match'});
-    }
+    // } else {
+    //     return res.status(400).send({ error: 'Passwords do not match'});
+    // }
 
     const updates = Object.keys(req.body);
     const allowedUpdates = ['first_name', 'last_name', 'email', 'phone', 'password'];

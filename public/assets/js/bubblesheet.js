@@ -251,13 +251,16 @@ $(() => {
                     $(`#${section}-${qNum} > td > .ltr-btn-${answ}`).addClass('selected');
                     $(`#${section}-${qNum} > td.mc-answer`).text(answ);
                 } else {
-
+                     let ansNumArr = answ.split('');
+                     ansNumArr.forEach((num,i)=>{
+                         $(`tr#${section}-${qNum} .gi-pos-${i}`).val(num)
+                     })
                 }
 
             })
             // this is to clean up, but then page reload won't populate
             // possibly should be a more permanent object, it would have the user and test ids...
-            // localStorage.removeItem('prevAnswers');
+            localStorage.removeItem('prevAnswers');
         }
     });
 });

@@ -15,7 +15,7 @@ $(document).ready(() => {
         $('.logout-button').addClass('d-none');
         $('#register-button').removeClass('d-none'); //show
         $('#signin-button').removeClass('d-none'); //show
-        $('#editUserButton').removeClass('d-none');
+        $('#editUserButton').addClass('d-none');
         $('.unauth-modal').modal('show');
         // $('.unauth-modal').removeClass('d-none');
     }
@@ -81,6 +81,7 @@ $(document).ready(() => {
     $('#editUserButton').on('click', e => {
         e.preventDefault();
 
+        console.log()
         let user = JSON.parse(getCookie('user'));
         let authToken = user.token;
 
@@ -91,7 +92,8 @@ $(document).ready(() => {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             },
-            success: function (res) {
+            success: function(res) {
+                resetErrorMesssages();
                 populateUserInfo(res);
             }
         })
@@ -161,45 +163,29 @@ $(document).ready(() => {
             confirmPassword: $('#confirm-edit-password').val().trim()
         }
 
-        // if(!patchUser.password && !patchUser.confirmPassword) {
-        //     delete patchUser.password;
-        //     delete patchUser.confirmPassword;
-        // }
-
-        if (patchUser.first_name !== ''
-            && patchUser.last_name !== ''
-            && patchUser.password !== ''
-            && patchUser.newPassword === patchUser.confirmPassword
-            && validateEmail(patchUser.email)
-            && validatePhone(patchUser.phone).isValid) {
-            $.ajax({
-                type: 'PATCH',
-                url: '/api/users/me',
-                dataType: 'json',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
-                data: patchUser,
-                success: function (res) {
-                    console.log('Successful edit!')
-                }
-            })
-            location.reload();
-        } else {
-            if (patchUser.password === '')
-                $('#password-edit-blank').removeClass('d-none');
-            if (patchUser.first_name === '')
-                $('#invalid-edit-firstName').removeClass('d-none');
-            if (patchUser.last_name === '')
-                $('#invalid-edit-lastName').removeClass('d-none');
-            if (patchUser.newPassword !== patchUser.confirmPassword)
-                $('#password-edit-mismatch').removeClass('d-none');
-            if (!validateEmail(patchUser.email))
-                $('#invalid-edit-email').removeClass('d-none');
-            if (!validatePhone(patchUser.phone).isValid)
-                $('#invalid-edit-phone').removeClass('d-none');
-        }
-
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/users/me',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            data: patchUser,  
+            success: function(res) {
+                $('#edit-user-info-modal').modal('hide');
+                location.reload();
+            },
+            error: function(err) {
+                console.log(err)
+                if(err.responseText === 'PASS_MISMATCH') $('#current-password-edit-mismatch').removeClass('d-none')
+                if(err.responseText === 'FIRST_NAME_BLANK') $('#invalid-edit-firstName').removeClass('d-none');
+                if(err.responseText === 'LAST_NAME_BLANK') $('#invalid-edit-lastName').removeClass('d-none');
+                if(err.responseText === 'INVALID_EMAIL') $('#invalid-edit-email').removeClass('d-none');
+                if(err.responseText === 'NEW_PASS_MISMATCH') $('#password-edit-mismatch').removeClass('d-none');
+                if(err.responseText === 'INVALID_PHONE') $('#invalid-edit-phone').removeClass('d-none');
+            }
+        })
+        
     })
 
     $('#regClose').on('click', function () {
@@ -296,5 +282,18 @@ function populateUserInfo(userInfo) {
     $('#edit-lastName').val(userInfo.last_name)
     $('#edit-email').val(userInfo.email)
     $('#edit-phone').val(userInfo.phone)
+    $('#edit-password').val('')
+    $('#edit-new-password').val('')
+    $('#confirm-edit-password').val('')
+}
+
+function resetErrorMesssages() {
+    $('#password-edit-blank').addClass('d-none');
+    $('#invalid-edit-firstName').addClass('d-none');
+    $('#invalid-edit-lastName').addClass('d-none');
+    $('#password-edit-mismatch').addClass('d-none');
+    $('#invalid-edit-email').addClass('d-none');
+    $('#invalid-edit-phone').addClass('d-none');
+    $('#current-password-edit-mismatch').addClass('d-none');
 }
 

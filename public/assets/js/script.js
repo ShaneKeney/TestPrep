@@ -2,21 +2,30 @@ const numArr = ['', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const phoneArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 
-$(() => {
+$(document).ready(() => {
     let userCookie = getCookie('user');
-    if (userCookie.user) {
+    if (userCookie) {
         $('#register-button').addClass('d-none');
         $('#signin-button').addClass('d-none');
         $('.logout-button').removeClass('d-none');
         $('#editUserButton').removeClass('d-none');
+        $('.unauth-modal').addClass('d-none');
         $('.unauth-modal').modal('hide');
     } else {
         $('.logout-button').addClass('d-none');
         $('#register-button').removeClass('d-none'); //show
         $('#signin-button').removeClass('d-none'); //show
-        $('#editUserButton').addClass('d-none');
-        // $('.unauth-modal').modal('show');
+        $('#editUserButton').removeClass('d-none');
+        $('.unauth-modal').modal('show');
+        // $('.unauth-modal').removeClass('d-none');
     }
+
+
+    $('#unauth-modal-btn, #closeUnauth').on('click', () => {
+        $('.unauth-modal').addClass('d-none');
+        $('.unauth-modal').modal('toggle');
+    })
+
 
     $('.logout-button').on('click', e => {
         e.preventDefault();
@@ -289,8 +298,3 @@ function populateUserInfo(userInfo) {
     $('#edit-phone').val(userInfo.phone)
 }
 
-$(document).ready(() => {
-    $('#unauth-modal-btn, #closeUnauth').on('click', () => {
-        $('.unauth-modal').modal('toggle');
-    })
-});

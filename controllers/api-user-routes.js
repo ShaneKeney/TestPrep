@@ -35,7 +35,7 @@ router.post('/api/users/login', async (req, res) => {
 
         const token = await user.generateAuthToken();
         res.status(200).send({ user, token });
-    } catch(err) {
+    } catch (err) {
         res.status(400).send();
     }
 });
@@ -59,7 +59,7 @@ router.get('/api/users/me', isAuthenticated, async (req, res) => {
 router.patch('/api/users/me', isAuthenticated, async (req, res) => {
     // if(req.body.password === req.body.confirmPassword) {
     //     delete req.body.confirmPassword;
-        req.body.password = await bcrypt.hash(req.body.password, 8);
+    req.body.password = await bcrypt.hash(req.body.password, 8);
     // } else {
     //     return res.status(400).send({ error: 'Passwords do not match'});
     // }
@@ -68,15 +68,15 @@ router.patch('/api/users/me', isAuthenticated, async (req, res) => {
     const allowedUpdates = ['first_name', 'last_name', 'email', 'phone', 'password'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
-    if(!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!'});
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates!' });
     }
 
     try {
         updates.forEach((update) => req.user[update] = req.body[update]);
         await req.user.save();
         res.send(req.user);
-    } catch(err) {
+    } catch (err) {
         res.status(400).send(err);
     }
 });

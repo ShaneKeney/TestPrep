@@ -123,7 +123,7 @@ $('#allSections, #thisSection').on('click', function (event) {
             // save the answers to local storage so it can be retrieved after page load
             localStorage.setItem('prevAnswers', JSON.stringify(response));
             // redirect to the bubblesheet page
-            location.replace(`/api/exams/${testId}/questions/${section}`);
+            location.replace(`/bubblesheet/exams/${testId}/questions/${section}`);
         });
     }
 

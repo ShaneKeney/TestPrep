@@ -15,7 +15,7 @@
         "no-func-assign": "error",
         "no-irregular-whitespace":"error",
         "no-unreachable": "error",
-        "curly": "error",
+        "curly": "warn",
         "dot-notation": "error",
         "eqeqeq": "error",
         "no-empty-function": "error",

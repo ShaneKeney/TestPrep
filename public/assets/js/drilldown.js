@@ -1,34 +1,35 @@
 let filterTest;
-let filterSection;
+let filterSection = 'section=reading';
 let filterDiff;
-let filterTagCat;
+let filterTagCat = 'tag_category=Heart of Algebra';
 let filterTagGroup;
 
-let queryString = createQueryString(ARGS...);
+let queryString = createQueryString(filterTest, filterSection, filterDiff, filterTagCat, filterTagGroup);
+console.log(queryString);
 
 function createQueryString(test, section, diff, cat, group){
-    
-    let queryString;
+    let query = '/?';
     
     if (test !== undefined){
-        queryString += test;
+        query += test;
     }
 
     if (section !== undefined){
-        queryString += section
+        query += section + '&'
     }
 
     if (diff !== undefined){
-        queryString += diff
+        query += diff + '&'
     }
 
     if (cat !== undefined){
-        queryString += cat
+        query += cat + '&'
     }
 
     if (group !== undefined){
-        queryString += group
+        query += group + '&'
     }
 
-    return queryString;
+    queryFix = query.slice(0, query.length -1);
+    return queryFix;
 }

@@ -1,3 +1,5 @@
+USE enterDBNameHere;
+
 INSERT INTO Tests (type, exam, createdAt, updatedAt) VALUES ('sat', 'College Board Test 1', '2020/3/04 0:00', '2020/3/04 0:00');
 INSERT INTO Tests (type, exam, createdAt, updatedAt) VALUES ('sat', 'College Board Test 2', '2020/3/04 0:00', '2020/3/04 0:00');
 INSERT INTO Tests (type, exam, createdAt, updatedAt) VALUES ('sat', 'College Board Test 3', '2020/3/04 0:00', '2020/3/04 0:00');

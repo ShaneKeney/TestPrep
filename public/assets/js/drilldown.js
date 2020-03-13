@@ -11,7 +11,7 @@ function createQueryString(test, section, diff, cat, group){
     let query = '/?';
     
     if (test !== undefined){
-        query += test;
+        query += test + '&';
     }
 
     if (section !== undefined){

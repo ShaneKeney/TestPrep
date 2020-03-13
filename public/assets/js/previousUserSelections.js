@@ -68,6 +68,8 @@ function updatePreviousTests() {
                 }).then(sections => {
                     // populate each section name
                     sectionsEl.empty();
+                    sectionsEl.append($('<option>').text('---'))
+                    sectionsEl.append($('<option>').text('all'));
                     sections.forEach(e => {
                         sectionsEl.append($('<option>').text(e));
                     });
@@ -127,8 +129,28 @@ $('#allSections, #thisSection').on('click', function (event) {
                 'Authorization': `Bearer ${authToken}`
             }
         }).then(response => {
+            let prevAnswers = [];
+            if (localStorage.getItem('prevAnswers') !== null) {
+                prevAnswers = JSON.parse(localStorage.getItem('prevAnswers'));
+            }
+            let pushedPrev = false;
+            prevAnswers.forEach((v,i)=>{
+                if(v.testId === testId){
+                    v.responses = response
+                    pushedPrev = true;
+                } 
+            });
+            if (pushedPrev === false) {
+                prevAnswers.push( {
+                  testId: testId,
+                  userId: userId,
+                  responses: response
+              });
+            }
+            console.log(prevAnswers);
+
             // save the answers to local storage so it can be retrieved after page load
-            localStorage.setItem('prevAnswers', JSON.stringify(response));
+            localStorage.setItem('prevAnswers', JSON.stringify(prevAnswers));
             // redirect to the bubblesheet page
             location.replace(`/bubblesheet/exams/${testId}/questions/${section}`);
         });

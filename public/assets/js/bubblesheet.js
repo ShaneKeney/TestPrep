@@ -243,25 +243,31 @@ $(() => {
 
     $(document).ready(() => {
         if (localStorage.getItem('prevAnswers') !== null) {
+            let testID = $('.mc-bubblesheet.all-sections-table').attr('data-test-id');
             var prevAnswers = JSON.parse(localStorage.getItem('prevAnswers'));
-            prevAnswers.forEach(v => {
-                var section = v.section;
-                var qNum = v.question_number;
-                var answ = v.answer_response;
-                if (answ === 'A' || answ === 'B' || answ === 'C' || answ === 'D') {
-                    $(`#${section}-${qNum} > td > .ltr-btn-${answ}`).addClass('selected');
-                    $(`#${section}-${qNum} > td.mc-answer`).text(answ);
-                } else {
-                     let ansNumArr = answ.split('');
-                     ansNumArr.forEach((num,i)=>{
-                         $(`tr#${section}-${qNum} .gi-pos-${i+1}`).val(num)
-                     })
+            prevAnswers.forEach(test => {
+                if (test.testId === testID && test.userId === userParsed.user.id +'') {
+                    test.responses.forEach(v => {
+                        var section = v.section;
+                        var qNum = v.question_number;
+                        var answ = v.answer_response;
+                        if (answ === 'A' || answ === 'B' || answ === 'C' || answ === 'D') {
+                            $(`#${section}-${qNum} > td > .ltr-btn-${answ}`).addClass('selected');
+                            $(`#${section}-${qNum} > td.mc-answer`).text(answ);
+                        } else {
+                            console.log(answ);
+                            let ansNumArr = answ.split('');
+                            ansNumArr.forEach((num, i) => {
+                                $(`tr#${section}-${qNum} .gi-pos-${i + 1}`).val(num)
+                            })
+                        }
+                    })
                 }
-
             })
-            // this is to clean up, but then page reload won't populate
-            // possibly should be a more permanent object, it would have the user and test ids...
-            localStorage.removeItem('prevAnswers');
         }
+
+        // this is to clean up, but then page reload won't populate
+        // possibly should be a more permanent object, it would have the user and test ids...
+        // localStorage.removeItem('prevAnswers');
     });
 });

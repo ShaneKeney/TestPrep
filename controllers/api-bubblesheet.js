@@ -2,6 +2,10 @@ const db = require('../models');
 const isAuthenticated = require('../middleware/auth');
 module.exports = (app) => {
 
+    app.get('/bubblesheet', (req, res) => {
+        res.render('index');
+    });
+
     app.get('/api/exams/sections/:testID', isAuthenticated, (req, res) => {
         db.Question.findAll({
             where: {

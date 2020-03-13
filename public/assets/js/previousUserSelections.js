@@ -26,7 +26,7 @@ if (user) {
 }
 
 // go and get the list of exams this user has already taken
-var urlPreviousExam = '/api/prevexams/' + userId;
+var urlPreviousExam = '/api/prevexams';
 $.ajax({
     method: 'GET',
     url: urlPreviousExam,

@@ -34,7 +34,7 @@ $(() => {
             success: function(res) {
                 console.log('Logout success!')
                 setCookie('user', '', 1);
-                location.reload();
+                location = '/'
             }
         })
     })
@@ -58,6 +58,7 @@ $(() => {
             setCookie('user', userCookie, 1);
             console.log(getCookie('user'));
             resetSignInFields();
+            location.reload();
         })
         .catch(function(err) {
             console.log(err)

@@ -18,12 +18,16 @@ $(() => {
         var parts = value.split("; " + name + "=");
         if (parts.length == 2) return parts.pop().split(";").shift();
     }
-    var user = getCookie('user');
-    var userParsed = JSON.parse(user);
-    // get id and user name from the cookie object
-    var authToken = JSON.parse(user).token;
 
-    
+    let user, userParsed, authToken;
+    try {
+        user = getCookie('user');
+        userParsed = JSON.parse(user);
+        // get id and user name from the cookie object
+        authToken = JSON.parse(user).token;
+    } catch (err) {
+        console.log('cookie no exist!')
+    }
 
     //populate exam list
     $.ajax({

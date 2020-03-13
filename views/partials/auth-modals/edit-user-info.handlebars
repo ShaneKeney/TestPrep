@@ -12,10 +12,12 @@
           <div class="form-group">
             <label for="edit-firstName">First Name:</label>
             <input type="text" class="form-control" id="edit-firstName">
+            <p id="invalid-edit-firstName" class="text-danger d-none">Please enter your first name.</p>
           </div>
           <div class="form-group">
             <label for="edit-lastName">Last Name:</label>
             <input type="text" class="form-control" id="edit-lastName">
+            <p id="invalid-edit-lastName" class="text-danger d-none">Please enter your last name.</p>
           </div>
           <div class="form-group">
             <label for="edit-email">Email address</label>
@@ -28,18 +30,26 @@
             <p id="invalid-edit-phone" class="text-danger d-none">Please enter a valid 10 digit phone number.</p>
           </div>
           <div class="form-group">
-            <label for="edit-password">Password</label>
+            <label for="edit-password">Enter Your Password</label>
             <input type="password" class="form-control" id="edit-password">
+            <p id="password-edit-blank" class="text-danger d-none">Please enter your password to update your information.</p>
+            <p id="current-password-edit-mismatch" class="text-danger d-none">Your password must match the current password to edit.</p>
+          </div>
+          <p class="font-weight-bold">Update Your Password Here:</p>
+          <div class="form-group">
+            <label for="edit-new-password">New Password</label>
+            <input type="password" class="form-control" id="edit-new-password">
+            {{!-- <p id="password-edit-new-blank" class="text-danger d-none">Your new password cannot be blank.</p> --}}
           </div>
           <div class="form-group">
-            <label for="confirm-password">Confirm Your Password</label>
+            <label for="confirm-edit-password">Confirm Your New Password</label>
             <input type="password" class="form-control" id="confirm-edit-password">
+            <p id="password-edit-mismatch" class="text-danger d-none">Your passwords do not match.</p>
           </div>
-          <p id="password-edit-mismatch" class="text-danger d-none">Your passwords do not match.</p>
         </div>
         <div class="modal-footer">
-          <button type="button" id="regClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" id="editClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="saveProfileChanges" type="submit" class="btn btn-primary">Save</button>
         </div>
       </form>
     </div>

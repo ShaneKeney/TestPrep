@@ -28,28 +28,29 @@ $(() => {
     } catch (err) {
         //console.log('cookie no exist!')
     }
+    if (user) {
+        //populate exam list
+        $.ajax({
+            method: 'GET',
+            url: '/api/exams',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(results => {
+            results.forEach(test => {
+                let $option = $('<option>')
+                    .attr({
+                        'id': test.type + test.id,
+                        'data-test-id': test.id,
+                        'data-test-type': test.type,
+                    })
+                    .text(test.exam);
 
-    //populate exam list
-    $.ajax({
-        method: 'GET',
-        url: '/api/exams',
-        headers: {
-            'Authorization': `Bearer ${authToken}`
-        }
-    }).then(results => {
-        results.forEach(test => {
-            let $option = $('<option>')
-                .attr({
-                    'id': test.type + test.id,
-                    'data-test-id': test.id,
-                    'data-test-type': test.type,
-                })
-                .text(test.exam);
+                $examSelect.append($option);
+            });
 
-            $examSelect.append($option);
         });
-
-    });
+    }
 
     //populate section list
     $examSelect.on('change', function (event) {
@@ -68,7 +69,7 @@ $(() => {
             }
         }).then(sections => {
             $sectionSelect.removeClass('d-none');
-            routeURL = `/api/exams/${testID}/questions/all`;
+            routeURL = `/bubblesheet/exams/${testID}/questions/all`;
             $makeBubbleBtn.removeAttr('href').attr({
                 'href': routeURL
             });
@@ -103,12 +104,11 @@ $(() => {
         let section = $sectionSelect.find(':selected').data('section');
         const sections = ['reading', 'writing', 'mathNC', 'mathC'];
         if (!sections.includes(section)) section = 'all';
-        routeURL = `/api/exams/${testID}/questions/${section}`;
+        routeURL = `/bubblesheet/exams/${testID}/questions/${section}`;
         $makeBubbleBtn.removeAttr('href').attr({
             'href': routeURL
         });
     });
-
 
 
     $mcButton.on('click', function (e) {
@@ -168,7 +168,6 @@ $(() => {
         e.preventDefault();
         let section = $(this).data('test-section');
         let results = await collectAns(section);
-        ////console.log(results);
         $.ajax('/api/results', {
             method: 'POST',
             data: JSON.stringify(results),
@@ -191,19 +190,15 @@ $(() => {
 
     async function collectAns(section) {
         let $mcTable = $(`.mc-bubblesheet[data-test-section="${section}"]`);
+        let id = $mcTable.data('test-id');
         let ansStr = $mcTable.find('.mc-answer').text();
+        let ansArr = ansStr.split('');
         let giRows = $mcTable.find('.gi-answer');
         let giArrFractions = [];
         let giArrDecimals = [];
         giArrFractions = await collectGridInAnswers(giRows);
-        // for (i = 0; i < giRows.length; i++) {
-        //     giArrFractions.push(giRows[i].textContent)
-        // }
         giArrDecimals = await fractionToDecimal(giArrFractions);
-        let ansArr = ansStr.split('');
         let allAnswersArr = ansArr.concat(giArrDecimals);
-        //console.log(allAnswersArr);
-        let id = $mcTable.data('test-id');
         let data = [];
         allAnswersArr.forEach((value, index) => {
             let obj = {
@@ -219,12 +214,10 @@ $(() => {
     };
 
     async function collectGridInAnswers(rows) {
-        //console.log("inside collect")
         let outputArr = []
         for (i = 0; i < rows.length; i++) {
             outputArr.push(rows[i].textContent)
         }
-        ////console.log(outputArr);
         return outputArr;
     }
 
@@ -232,7 +225,6 @@ $(() => {
         let outputArr = [];
         array.forEach(num => {
             if (num.includes('/')) {
-                ////console.log(num);
                 let numDenomArr = num.split('/');
                 let numerator = parseInt(numDenomArr[0]);
                 let denominator = parseInt(numDenomArr[1]);
@@ -265,7 +257,7 @@ $(() => {
             })
             // this is to clean up, but then page reload won't populate
             // possibly should be a more permanent object, it would have the user and test ids...
-            localStorage.removeItem('prevAnswers');
+            // localStorage.removeItem('prevAnswers');
         }
     });
 });

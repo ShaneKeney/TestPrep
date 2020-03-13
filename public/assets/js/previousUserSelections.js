@@ -20,60 +20,60 @@ if (user) {
     userId = user.id;
     userName = user.first_name + ' ' + user.last_name;
     $('#prevExamSection').show();
-    
+
+    // go and get the list of exams this user has already taken
+    var urlPreviousExam = '/api/prevexams';
+    //console.log(urlPreviousExam)
+    $.ajax({
+        method: 'GET',
+        url: urlPreviousExam,
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        }
+    }).then(tests => {
+        //console.log('resolve')
+        // update selections based on returned list of exams
+        if (tests.length === 0) {
+            examsEl.children('option').text('None Taken Yet');
+        }
+        tests.forEach(e => {
+            examsEl.append($('<option>').attr("data-testid", e.testID).text(e.exam));
+        });
+    });
+
+    // put the user's name on the page
+    $('#formControlInput1').text(userName);
+    // once user selects a previously completed test
+    $('#formControlSelect1').on('input', function (event) {
+        event.preventDefault();
+        if ($(this).children('option:selected').attr('data-testid')) {
+            // show or hide the test section area based on having selected a valid test
+            $('#formSections').removeClass('d-none');
+
+            // get the test id of the selection 
+            var testId = $(this).children('option:selected').attr('data-testid');
+            // query the database for the list of sections in that test
+            var urlPreviousSections = `/api/sections/${userId}/${testId}`;
+            $.ajax({
+                method: 'GET',
+                url: urlPreviousSections,
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            }).then(sections => {
+                // populate each section name
+                sections.forEach(e => {
+                    sectionsEl.append($('<option>').text(e));
+                });
+            });
+        } else {
+            $('#formSections').addClass('d-none');
+        }
+    });
+
 } else {
     $('#prevExamSection').hide();
 }
-
-// go and get the list of exams this user has already taken
-var urlPreviousExam = '/api/prevexams';
-//console.log(urlPreviousExam)
-$.ajax({
-    method: 'GET',
-    url: urlPreviousExam,
-    headers: {
-        'Authorization': `Bearer ${authToken}`
-    }
-}).then(tests => {
-    //console.log('resolve')
-    // update selections based on returned list of exams
-    if (tests.length === 0) {
-        examsEl.children('option').text('None Taken Yet');
-    }
-    tests.forEach(e => {
-        examsEl.append($('<option>').attr("data-testid", e.testID).text(e.exam));
-    });
-});
-
-// put the user's name on the page
-$('#formControlInput1').val(userName);
-// once user selects a previously completed test
-$('#formControlSelect1').on('input', function (event) {
-    event.preventDefault();
-    if ($(this).children('option:selected').attr('data-testid')) {
-        // show or hide the test section area based on having selected a valid test
-        $('#formSections').removeClass('d-none');
-
-        // get the test id of the selection 
-        var testId = $(this).children('option:selected').attr('data-testid');
-        // query the database for the list of sections in that test
-        var urlPreviousSections = `/api/sections/${userId}/${testId}`;
-        $.ajax({
-            method: 'GET',
-            url: urlPreviousSections,
-            headers: {
-                'Authorization': `Bearer ${authToken}`
-            }
-        }).then(sections => {
-            // populate each section name
-            sections.forEach(e => {
-                sectionsEl.append($('<option>').text(e));
-            });
-        });
-    } else {
-        $('#formSections').addClass('d-none');
-    }
-});
 
 
 // upon user selection of a test section (or all)
@@ -123,7 +123,7 @@ $('#allSections, #thisSection').on('click', function (event) {
             // save the answers to local storage so it can be retrieved after page load
             localStorage.setItem('prevAnswers', JSON.stringify(response));
             // redirect to the bubblesheet page
-            location.replace(`/api/exams/${testId}/questions/${section}`);
+            location.replace(`/bubblesheet/exams/${testId}/questions/${section}`);
         });
     }
 

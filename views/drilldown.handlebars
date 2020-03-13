@@ -1,0 +1,27 @@
+<h3>Drill Down</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Test</th>
+            <th>Section</th>
+            <th>Q#</th>
+            <th>Difficulty</th>
+            <th>Answer</th>
+            <th>Tag Category</th>
+            <th>Tag Group</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each questions}}
+        <tr>
+            <td>{{dataValues.exam}}</td>
+            <td>{{dataValues.section}}</td>
+            <td>{{dataValues.question_number}}</td>
+            <td>{{dataValues.difficulty}}</td>
+            <td>{{dataValues.ans_actual}}</td>
+            <td>{{dataValues.tag_category}}</td>
+            <td>{{dataValues.tag_group}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

@@ -37,6 +37,7 @@ require('./controllers/html-app-routes.js')(app);
 require('./controllers/api-exam-routes.js')(app);
 require('./controllers/api-exam-selections')(app);
 require('./controllers/api-post-results')(app);
+require('./controllers/api-drilldown')(app);
 app.use(userRoutes);
 
 // Default route for testing and setup:
@@ -49,6 +50,6 @@ app.get('/', (req, res) => {
 // { force: true }
 db.sequelize.sync().then(function () {
     app.listen(PORT, function () {
-        console.log('App listening on PORT ' + PORT);
+        //console.log('App listening on PORT ' + PORT);
     });
 });

@@ -2,21 +2,18 @@ const numArr = ['', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const phoneArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 $(() => {
-    // const numChoices = $('.number-choices');
-
-    // for (let i = 0; i < 4; i++) {
-    //     const colEl = $('<div class="col-auto">');
-    //     const selEl = $('<select class="form-control">');
-        
-    //     numArr.forEach(item => {
-    //         const optionEl = $('<option>');
-    //         $(optionEl).text(item);
-    //         $(selEl).append(optionEl);
-    //     });
-
-    //     $(colEl).append(selEl);
-    //     $(numChoices).append(colEl);
-    // }
+    let userCookie = getCookie('user');
+    if(userCookie) {
+        $('#register-button').addClass('d-none');
+        $('#signin-button').addClass('d-none');
+        $('.logout-button').removeClass('d-none');
+        $('#editUserButton').removeClass('d-none');
+    } else {
+        $('.logout-button').addClass('d-none');
+        $('#register-button').removeClass('d-none'); //show
+        $('#signin-button').removeClass('d-none'); //show
+        $('#editUserButton').addClass('d-none');
+    }
 
     $('.logout-button').on('click', e => {
         e.preventDefault();
@@ -32,9 +29,13 @@ $(() => {
                 'Authorization': `Bearer ${authToken}`
             },
             success: function(res) {
-                console.log('Logout success!')
+                //console.log('Logout success!')
                 setCookie('user', '', 1);
-                location.reload();
+                $('#register-button').removeClass('d-none');
+                $('#signin-button').removeClass('d-none');
+                $('.logout-button').addClass('d-none');
+                $('#editUserButton').addClass('d-none');
+                location = '/'
             }
         })
     })
@@ -56,13 +57,33 @@ $(() => {
 
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
-            console.log(getCookie('user'));
+            //console.log(getCookie('user'));
             resetSignInFields();
+            location.reload();
         })
         .catch(function(err) {
-            console.log(err)
+            //console.log(err)
         })
     });
+
+    $('#editUserButton').on('click', e => {
+        e.preventDefault();
+
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/me',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            success: function(res) {
+                populateUserInfo(res);
+            }
+        })
+    })
 
     $('#register-form').on('submit', e => {
         e.preventDefault();
@@ -72,12 +93,12 @@ $(() => {
         $('#invalid-phone').addClass('d-none');
 
         const userData = {
-            firstName: $('#register-firstName').val().trim(),
-            lastName: $('#register-lastName').val().trim(),
-            email: $('#register-email').val().trim(),
-            phone: $('#register-phone').val().trim(),
-            password: $('#register-password').val().trim(),
-            confirmPassword: $('#confirm-password').val().trim()
+            firstName: $('#register-firstName').val(),
+            lastName: $('#register-lastName').val(),
+            email: $('#register-email').val(),
+            phone: $('#register-phone').val(),
+            password: $('#register-password').val(),
+            confirmPassword: $('#confirm-password').val()
         }
 
         const validateEmail = () => {
@@ -90,8 +111,8 @@ $(() => {
             userData.phone.split('').forEach(char => {
                 if (phoneArr.includes(char)) {
                     registerPhone += char;
-                    console.log(registerPhone);
-                    console.log(registerPhone.length);
+                    //console.log(registerPhone);
+                    //console.log(registerPhone.length);
                 }
             });
 
@@ -109,7 +130,7 @@ $(() => {
 
                 let userCookie = JSON.stringify(user);
                 setCookie('user', userCookie, 1);
-                console.log(getCookie('user'));
+                //console.log(getCookie('user'));
                 resetRegisterFields();
                 location.reload();
             })
@@ -127,6 +148,40 @@ $(() => {
                 $('#invalid-phone').removeClass('d-none');
         }
     });
+
+    $('#edit-user-form').on('submit', function(e) {
+        e.preventDefault();
+
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        let patchUser = { 
+            first_name: $('#edit-firstName').val(),
+            last_name: $('#edit-lastName').val(),
+            email: $('#edit-email').val(),
+            phone: $('#edit-phone').val(),
+            password: $('#edit-password').val(),
+            confirmPassword: $('#confirm-edit-password').val()
+        }
+
+        if(!patchUser.password && !patchUser.confirmPassword) {
+            delete patchUser.password;
+            delete patchUser.confirmPassword;
+        }
+        
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/users/me',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            data: patchUser,  
+            success: function(res) {
+                console.log('Successful edit!')
+            }
+        })
+    })
 
     $('#regClose').on('click', function() {
         $('#regErrorText').text(''); 
@@ -177,4 +232,11 @@ function getCookie(cname) {
       }
     }
     return "";
+}
+
+function populateUserInfo(userInfo) {
+    $('#edit-firstName').val(userInfo.first_name)
+    $('#edit-lastName').val(userInfo.last_name)
+    $('#edit-email').val(userInfo.email)
+    $('#edit-phone').val(userInfo.phone)
 }

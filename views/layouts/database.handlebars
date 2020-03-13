@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/assets/css/fontawesome-free-5.12.1.all.min.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+
+  <title>BubbleBase.io</title>
+</head>
+<body class="main-body">
+  {{> nav/navbar}}
+
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-lg-3 col-md-4">
+              {{> nav/filter-nav}}
+              {{> auth-modals/register}}
+              {{> auth-modals/signin}}
+          </div>
+
+          <div class="col-lg-9 col-md-8 mainbg pt-4">
+          
+            {{{ body }}}
+
+          </div>
+    </div>
+</div>
+
+  <!-- JavaScript Files -->
+  <script src="/assets/js/jquery-3.4.1.min.js"></script>
+  <script src="/assets/js/popper-1.16.0.min.js"></script>
+  <script src="/assets/js/bootstrap-4.4.1.min.js"></script>
+  <script src="/assets/js/script.js"></script>
+  <script src="/assets/js/bubblesheet.js"></script>
+  <script src="/assets/js/previousUserSelections.js"></script>
+</body>
+</html>

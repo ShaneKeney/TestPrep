@@ -96,10 +96,10 @@ module.exports = (app) => {
         }
     });
     // get a list of the tests a user has already started or finished from the results table
-    app.get('/api/prevexams/:userId', isAuthenticated, (req, res) => {
+    app.get('/api/prevexams', isAuthenticated, (req, res) => {
         db.SectionResultsDetails.findAll({
             where: {
-                StudentId: req.params.userId
+                StudentId: req.user.dataValues.id
             },
             attributes: [
                 [db.Sequelize.fn('DISTINCT', db.Sequelize.col('TestId')), 'TestId']

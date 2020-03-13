@@ -26,7 +26,8 @@ if (user) {
 }
 
 // go and get the list of exams this user has already taken
-var urlPreviousExam = '/api/prevexams/' + userId;
+var urlPreviousExam = '/api/prevexams';
+//console.log(urlPreviousExam)
 $.ajax({
     method: 'GET',
     url: urlPreviousExam,
@@ -34,6 +35,7 @@ $.ajax({
         'Authorization': `Bearer ${authToken}`
     }
 }).then(tests => {
+    //console.log('resolve')
     // update selections based on returned list of exams
     if (tests.length === 0) {
         examsEl.children('option').text('None Taken Yet');

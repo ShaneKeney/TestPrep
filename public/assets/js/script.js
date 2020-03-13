@@ -17,6 +17,18 @@ $(() => {
     //     $(colEl).append(selEl);
     //     $(numChoices).append(colEl);
     // }
+    let userCookie = getCookie('user');
+    if(userCookie) {
+        $('#register-button').addClass('d-none');
+        $('#signin-button').addClass('d-none');
+        $('.logout-button').removeClass('d-none');
+        $('#editUserButton').removeClass('d-none');
+    } else {
+        $('.logout-button').addClass('d-none');
+        $('#register-button').removeClass('d-none'); //show
+        $('#signin-button').removeClass('d-none'); //show
+        $('#editUserButton').addClass('d-none');
+    }
 
     $('.logout-button').on('click', e => {
         e.preventDefault();
@@ -32,9 +44,13 @@ $(() => {
                 'Authorization': `Bearer ${authToken}`
             },
             success: function(res) {
-                console.log('Logout success!')
+                //console.log('Logout success!')
                 setCookie('user', '', 1);
-                location.reload();
+                $('#register-button').removeClass('d-none');
+                $('#signin-button').removeClass('d-none');
+                $('.logout-button').addClass('d-none');
+                $('#editUserButton').addClass('d-none');
+                location = '/'
             }
         })
     })
@@ -56,13 +72,33 @@ $(() => {
 
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
-            console.log(getCookie('user'));
+            //console.log(getCookie('user'));
             resetSignInFields();
+            location.reload();
         })
         .catch(function(err) {
-            console.log(err)
+            //console.log(err)
         })
     });
+
+    $('#editUserButton').on('click', e => {
+        e.preventDefault();
+
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/me',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            success: function(res) {
+                populateUserInfo(res);
+            }
+        })
+    })
 
     $('#register-form').on('submit', e => {
         e.preventDefault();
@@ -90,8 +126,8 @@ $(() => {
             userData.phone.split('').forEach(char => {
                 if (phoneArr.includes(char)) {
                     registerPhone += char;
-                    console.log(registerPhone);
-                    console.log(registerPhone.length);
+                    //console.log(registerPhone);
+                    //console.log(registerPhone.length);
                 }
             });
 
@@ -109,7 +145,7 @@ $(() => {
 
                 let userCookie = JSON.stringify(user);
                 setCookie('user', userCookie, 1);
-                console.log(getCookie('user'));
+                //console.log(getCookie('user'));
                 resetRegisterFields();
                 location.reload();
             })
@@ -177,4 +213,11 @@ function getCookie(cname) {
       }
     }
     return "";
+}
+
+function populateUserInfo(userInfo) {
+    $('#edit-firstName').val(userInfo.first_name)
+    $('#edit-lastName').val(userInfo.last_name)
+    $('#edit-email').val(userInfo.email)
+    $('#edit-phone').val(userInfo.phone)
 }

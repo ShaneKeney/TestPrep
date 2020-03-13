@@ -48,7 +48,7 @@ module.exports = function (sequelize, DataTypes) {
 
     // Run code just before Student/User is created
     Students.beforeCreate(async (user, options) => {
-        //console.log(user);
+        ////console.log(user);
     });
 
     Students.prototype.generateAuthToken = async function() {
@@ -86,7 +86,7 @@ module.exports = function (sequelize, DataTypes) {
 
         const isMatch = await bcrypt.compare(password, user.dataValues.password);
         if(!isMatch) {
-            console.log('Password mismatch');
+            ////console.log('Password mismatch');
             throw new Error('Unable to login!');
         }
 

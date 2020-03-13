@@ -93,12 +93,12 @@ $(() => {
         $('#invalid-phone').addClass('d-none');
 
         const userData = {
-            firstName: $('#register-firstName').val().trim(),
-            lastName: $('#register-lastName').val().trim(),
-            email: $('#register-email').val().trim(),
-            phone: $('#register-phone').val().trim(),
-            password: $('#register-password').val().trim(),
-            confirmPassword: $('#confirm-password').val().trim()
+            firstName: $('#register-firstName').val(),
+            lastName: $('#register-lastName').val(),
+            email: $('#register-email').val(),
+            phone: $('#register-phone').val(),
+            password: $('#register-password').val(),
+            confirmPassword: $('#confirm-password').val()
         }
 
         const validateEmail = () => {
@@ -148,6 +148,40 @@ $(() => {
                 $('#invalid-phone').removeClass('d-none');
         }
     });
+
+    $('#edit-user-form').on('submit', function(e) {
+        e.preventDefault();
+
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        let patchUser = { 
+            first_name: $('#edit-firstName').val(),
+            last_name: $('#edit-lastName').val(),
+            email: $('#edit-email').val(),
+            phone: $('#edit-phone').val(),
+            password: $('#edit-password').val(),
+            confirmPassword: $('#confirm-edit-password').val()
+        }
+
+        if(!patchUser.password && !patchUser.confirmPassword) {
+            delete patchUser.password;
+            delete patchUser.confirmPassword;
+        }
+        
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/users/me',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            data: patchUser,  
+            success: function(res) {
+                console.log('Successful edit!')
+            }
+        })
+    })
 
     $('#regClose').on('click', function() {
         $('#regErrorText').text(''); 

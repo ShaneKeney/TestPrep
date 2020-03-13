@@ -15,7 +15,7 @@ $(document).ready(() => {
         $('.logout-button').addClass('d-none');
         $('#register-button').removeClass('d-none'); //show
         $('#signin-button').removeClass('d-none'); //show
-        $('#editUserButton').removeClass('d-none');
+        $('#editUserButton').addClass('d-none');
         $('.unauth-modal').modal('show');
         // $('.unauth-modal').removeClass('d-none');
     }
@@ -81,6 +81,7 @@ $(document).ready(() => {
     $('#editUserButton').on('click', e => {
         e.preventDefault();
 
+        console.log()
         let user = JSON.parse(getCookie('user'));
         let authToken = user.token;
 

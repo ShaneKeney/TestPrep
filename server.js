@@ -42,7 +42,7 @@ app.use(userRoutes);
 
 // Default route for testing and setup:
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', {layout: 'home'});
 });
 
 // Syncing our sequelize models and then starting our Express app

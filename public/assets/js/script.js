@@ -59,7 +59,7 @@ $(() => {
             setCookie('user', userCookie, 1);
             //console.log(getCookie('user'));
             resetSignInFields();
-            location.reload();
+            location.replace('/bubblesheet');
         })
         .catch(function(err) {
             //console.log(err)

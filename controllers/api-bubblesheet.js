@@ -2,6 +2,10 @@ const db = require('../models');
 const isAuthenticated = require('../middleware/auth');
 module.exports = (app) => {
 
+    app.get('/bubblesheet', (req, res) => {
+        res.render('index');
+    });
+
     app.get('/api/exams/sections/:testID', isAuthenticated, (req, res) => {
         db.Question.findAll({
             where: {
@@ -16,7 +20,7 @@ module.exports = (app) => {
             });
     });
 
-    app.get('/api/exams/:testID/questions/:section', (req, res) => {
+    app.get('/bubblesheet/exams/:testID/questions/:section', (req, res) => {
         // HELPER FUNCTION FOR
         // SELECTORS SUCH AS
         // {{#if mc}} AND {{#if num}}
@@ -32,9 +36,7 @@ module.exports = (app) => {
                     mathNC: question.dataValues.section === 'mathNC',
                     mathC: question.dataValues.section === 'mathC',
                     mc: question.dataValues.question_type === 'mc',
-                    num: question.dataValues.question_type === 'num'
-                            || question.dataValues.question_type === 'arr'
-                            || question.dataValues.question_type === 'range'
+                    num: question.dataValues.question_type === 'num' || question.dataValues.question_type === 'arr' || question.dataValues.question_type === 'range'
                 });
             });
 
@@ -96,10 +98,10 @@ module.exports = (app) => {
         }
     });
     // get a list of the tests a user has already started or finished from the results table
-    app.get('/api/prevexams/:userId', isAuthenticated, (req, res) => {
+    app.get('/api/prevexams', isAuthenticated, (req, res) => {
         db.SectionResultsDetails.findAll({
             where: {
-                StudentId: req.params.userId
+                StudentId: req.user.dataValues.id
             },
             attributes: [
                 [db.Sequelize.fn('DISTINCT', db.Sequelize.col('TestId')), 'TestId']

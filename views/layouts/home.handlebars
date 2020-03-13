@@ -16,17 +16,13 @@
 
   <div class="container-fluid">
       <div class="row">
-          <div class="col-lg-3 col-md-4">
-              {{> nav/side-nav}}
-              {{> auth-modals/register}}
-              {{> auth-modals/signin}}
-              {{> auth-modals/edit-user-info}}
-          </div>
-
-          <div class="col-lg-9 col-md-8 mainbg pt-4">
+          <div class="col mainbg pt-4">
           
             {{{ body }}}
 
+            {{> auth-modals/register}}
+            {{> auth-modals/signin}}
+            {{> auth-modals/edit-user-info}}
           </div>
     </div>
 </div>

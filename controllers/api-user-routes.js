@@ -23,7 +23,7 @@ router.post('/api/register', async (req, res) => {
             password: hashedPassword
         });
         const token = await newUser.generateAuthToken();
-        res.status(201).send({ user: newUser, token });
+        res.status(200).send({ user: newUser, token });
     } catch (e) {
         res.status(400).send(e);
     }
@@ -34,7 +34,7 @@ router.post('/api/users/login', async (req, res) => {
         const user = await db.Students.findByCredentials(req.body.email, req.body.password);
 
         const token = await user.generateAuthToken();
-        res.send({ user, token });
+        res.status(200).send({ user, token });
     } catch(err) {
         res.status(400).send();
     }
@@ -45,7 +45,7 @@ router.post('/api/users/logout', isAuthenticated, async (req, res) => {
         req.user.tokens = null;
         await req.user.save();
 
-        res.sendStatus(204);
+        res.status(204).send();
     } catch (err) {
         res.status(500).send();
     }
@@ -57,6 +57,13 @@ router.get('/api/users/me', isAuthenticated, async (req, res) => {
 
 // TODO: Hook up update profile functionality on front end
 router.patch('/api/users/me', isAuthenticated, async (req, res) => {
+    // if(req.body.password === req.body.confirmPassword) {
+    //     delete req.body.confirmPassword;
+        req.body.password = await bcrypt.hash(req.body.password, 8);
+    // } else {
+    //     return res.status(400).send({ error: 'Passwords do not match'});
+    // }
+
     const updates = Object.keys(req.body);
     const allowedUpdates = ['first_name', 'last_name', 'email', 'phone', 'password'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));

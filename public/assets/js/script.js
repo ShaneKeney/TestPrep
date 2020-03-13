@@ -2,25 +2,21 @@ const numArr = ['', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const phoneArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 $(() => {
-    // const numChoices = $('.number-choices');
+    let userCookie = getCookie('user');
+    if(userCookie) {
+        $('#register-button').addClass('d-none');
+        $('#signin-button').addClass('d-none');
+        $('.logout-button').removeClass('d-none');
+        $('#editUserButton').removeClass('d-none');
+    } else {
+        $('.logout-button').addClass('d-none');
+        $('#register-button').removeClass('d-none'); //show
+        $('#signin-button').removeClass('d-none'); //show
+        $('#editUserButton').addClass('d-none');
+    }
 
-    // for (let i = 0; i < 4; i++) {
-    //     const colEl = $('<div class="col-auto">');
-    //     const selEl = $('<select class="form-control">');
-        
-    //     numArr.forEach(item => {
-    //         const optionEl = $('<option>');
-    //         $(optionEl).text(item);
-    //         $(selEl).append(optionEl);
-    //     });
-
-    //     $(colEl).append(selEl);
-    //     $(numChoices).append(colEl);
-    // }
-
-    $('#logout-button').on('click', e => {
+    $('.logout-button').on('click', e => {
         e.preventDefault();
-
         // get token to log out
         let user = JSON.parse(getCookie('user'));
         let authToken = user.token;
@@ -33,9 +29,13 @@ $(() => {
                 'Authorization': `Bearer ${authToken}`
             },
             success: function(res) {
-                console.log('Logout success!')
+                //console.log('Logout success!')
                 setCookie('user', '', 1);
-                location.reload();
+                $('#register-button').removeClass('d-none');
+                $('#signin-button').removeClass('d-none');
+                $('.logout-button').addClass('d-none');
+                $('#editUserButton').addClass('d-none');
+                location = '/'
             }
         })
     })
@@ -57,74 +57,141 @@ $(() => {
 
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
-            console.log(getCookie('user'));
-            location.reload();
+            //console.log(getCookie('user'));
+            resetSignInFields();
+            location.replace('/bubblesheet');
         })
         .catch(function(err) {
-            console.log(err)
+            //console.log(err)
         })
     });
+
+    $('#editUserButton').on('click', e => {
+        e.preventDefault();
+
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/me',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            success: function(res) {
+                populateUserInfo(res);
+            }
+        })
+    })
 
     $('#register-form').on('submit', e => {
         e.preventDefault();
 
-        $('#password-mismatch').addClass('d-none');
-        $('#invalid-email').addClass('d-none');
-        $('#invalid-phone').addClass('d-none');
+        hideInvalidMessages('register');
+        const userData = getUserData('register');
 
-        const userData = {
-            firstName: $('#register-firstName').val().trim(),
-            lastName: $('#register-lastName').val().trim(),
-            email: $('#register-email').val().trim(),
-            phone: $('#register-phone').val().trim(),
-            password: $('#register-password').val().trim(),
-            confirmPassword: $('#confirm-password').val().trim()
-        }
-
-        const validateEmail = () => {
-            const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return emailRegex.test(userData.email);
-        }
-
-        const validatePhone = () => {
-            let registerPhone = '';
-            userData.phone.split('').forEach(char => {
-                if (phoneArr.includes(char)) {
-                    registerPhone += char;
-                    console.log(registerPhone);
-                    console.log(registerPhone.length);
-                }
-            });
-
-            userData.phone = registerPhone;
-
-            return registerPhone.length === 10 ? true : false;
-        }
-
-        if (userData.password === userData.confirmPassword && validateEmail() && validatePhone()) {
+        if (userData.firstName !== ''
+                && userData.lastName !== ''
+                && userData.password !== ''
+                && userData.password === userData.confirmPassword
+                && validateEmail(userData.email)
+                && validatePhone(userData.phone).isValid) {
             $.post('/api/register', userData)
             .then(function(res) {
-                console.log(res); //log the response to see what is happening
+                let user = { ...res };
+                delete user.user.createdAt;
+                delete user.user.updatedAt;
+
+                let userCookie = JSON.stringify(user);
+                setCookie('user', userCookie, 1);
+                //console.log(getCookie('user'));
                 resetRegisterFields();
+                location.reload();
             })
             .catch(function(err) {
                 if(err.responseJSON.errors[0].message === "students.email must be unique") {
                     $('#regErrorText').text('Email already registered'); 
                 }
             });
-            location.reload();
         } else {
-            if (userData.password !== userData.confirmPassword) 
-                $('#password-mismatch').removeClass('d-none');
-            if (!validateEmail())
-                $('#invalid-email').removeClass('d-none');
-            if (!validatePhone())
-                $('#invalid-phone').removeClass('d-none');
+            if (userData.password === '')
+                $('#password-register-blank').removeClass('d-none');
+            if (userData.firstName === '')
+                $('#invalid-register-firstName').removeClass('d-none');
+            if (userData.lastName === '')
+                $('#invalid-register-lastName').removeClass('d-none');
+            if (userData.password !== userData.confirmPassword)
+                $('#password-register-mismatch').removeClass('d-none');
+            if (!validateEmail(userData.email))
+                $('#invalid-register-email').removeClass('d-none');
+            if (!validatePhone(userData.phone).isValid)
+                $('#invalid-register-phone').removeClass('d-none');
         }
     });
 
+    $('#edit-user-form').on('submit', function(e) {
+        e.preventDefault();
+
+        hideInvalidMessages('edit');
+        // $('#password-edit-new-blank').addClass('d-none');
+
+        let user = JSON.parse(getCookie('user'));
+        let authToken = user.token;
+
+        let patchUser = { 
+            first_name: $('#edit-firstName').val().trim(),
+            last_name: $('#edit-lastName').val().trim(),
+            email: $('#edit-email').val().trim(),
+            phone: $('#edit-phone').val().trim(),
+            password: $('#edit-password').val().trim(),
+            newPassword: $('#edit-new-password').val().trim(),
+            confirmPassword: $('#confirm-edit-password').val().trim()
+        }
+
+        // if(!patchUser.password && !patchUser.confirmPassword) {
+        //     delete patchUser.password;
+        //     delete patchUser.confirmPassword;
+        // }
+        
+        if (patchUser.first_name !== ''
+                && patchUser.last_name !== ''
+                && patchUser.password !== ''
+                && patchUser.newPassword === patchUser.confirmPassword
+                && validateEmail(patchUser.email)
+                && validatePhone(patchUser.phone).isValid) {
+            $.ajax({
+                type: 'PATCH',
+                url: '/api/users/me',
+                dataType: 'json',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                },
+                data: patchUser,  
+                success: function(res) {
+                    console.log('Successful edit!')
+                }
+            })
+            location.reload();
+        } else {
+            if (patchUser.password === '')
+                $('#password-edit-blank').removeClass('d-none');
+            if (patchUser.first_name === '')
+                $('#invalid-edit-firstName').removeClass('d-none');
+            if (patchUser.last_name === '')
+                $('#invalid-edit-lastName').removeClass('d-none');
+            if (patchUser.newPassword !== patchUser.confirmPassword)
+                $('#password-edit-mismatch').removeClass('d-none');
+            if (!validateEmail(patchUser.email))
+                $('#invalid-edit-email').removeClass('d-none');
+            if (!validatePhone(patchUser.phone).isValid)
+                $('#invalid-edit-phone').removeClass('d-none');
+        }
+        
+    })
+
     $('#regClose').on('click', function() {
-        $('#regErrorText').text(''); 
+        $('#regErrorText').text('');
         resetRegisterFields();
     })
 
@@ -132,6 +199,44 @@ $(() => {
         resetSignInFields();
     })
 });
+
+const getUserData = formType => {
+    const userData = {
+        firstName: $(`#${formType}-firstName`).val().trim(),
+        lastName: $(`#${formType}-lastName`).val().trim(),
+        email: $(`#${formType}-email`).val().trim(),
+        phone: validatePhone($(`#${formType}-phone`).val().trim()).phoneNum,
+        password: $(`#${formType}-password`).val().trim(),
+        confirmPassword: $(`#confirm-${formType}-password`).val().trim()
+    }
+
+    return userData;
+}
+
+const validateEmail = emailAddress => {
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(emailAddress);
+}
+
+const validatePhone = inputNum => {
+    let phoneNum = '';
+    inputNum.split('').forEach(num => {
+        if (phoneArr.includes(num)) {
+            phoneNum += num;
+        }
+    });
+    const isValid = phoneNum.length === 10 || phoneNum.length === 0;
+    return { isValid, phoneNum }
+}
+
+const hideInvalidMessages = formType => {
+    $(`#invalid-${formType}-firstName`).addClass('d-none');
+    $(`#invalid-${formType}-lastName`).addClass('d-none');
+    $(`#invalid-${formType}-email`).addClass('d-none');
+    $(`#invalid-${formType}-phone`).addClass('d-none');
+    $(`#password-${formType}-blank`).addClass('d-none');
+    $(`#password-${formType}-mismatch`).addClass('d-none');
+}
 
 function resetRegisterFields() {
     $('#register-firstName').val('');
@@ -148,6 +253,7 @@ function resetRegisterFields() {
 function resetSignInFields() {
     $('#signin-password').val('');
     $('#signin-email').val('');
+    $('#signin-modal').modal('hide');
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -171,4 +277,11 @@ function getCookie(cname) {
       }
     }
     return "";
+}
+
+function populateUserInfo(userInfo) {
+    $('#edit-firstName').val(userInfo.first_name)
+    $('#edit-lastName').val(userInfo.last_name)
+    $('#edit-email').val(userInfo.email)
+    $('#edit-phone').val(userInfo.phone)
 }

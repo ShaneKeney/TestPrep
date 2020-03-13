@@ -4,7 +4,7 @@
 // Require db models
 const db = require('../models');
 const isAuthenticated = require('../middleware/auth');
-
+//comment for merge
 module.exports = (app) => {
     // get list of all exams
     app.get('/api/exams', isAuthenticated, (req, res) => {

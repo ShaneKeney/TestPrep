@@ -37,10 +37,6 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Students.associate = function (models) {
-        models.Students.hasMany(models.SectionResults, {
-            onDelete: 'CASCADE'
-        });
-
         models.Students.hasMany(models.SectionResultsDetails, {
             onDelete: 'CASCADE'
         });
@@ -48,13 +44,13 @@ module.exports = function (sequelize, DataTypes) {
 
     // Run code just before Student/User is created
     Students.beforeCreate(async (user, options) => {
-        //console.log(user);
+        ////console.log(user);
     });
 
     Students.prototype.generateAuthToken = async function() {
         const user = this;
 
-        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET); //TODO: change this to process.env
+        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET);
         user.tokens = token;
         await user.save();
 
@@ -86,7 +82,7 @@ module.exports = function (sequelize, DataTypes) {
 
         const isMatch = await bcrypt.compare(password, user.dataValues.password);
         if(!isMatch) {
-            console.log('Password mismatch');
+            ////console.log('Password mismatch');
             throw new Error('Unable to login!');
         }
 

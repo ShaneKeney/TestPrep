@@ -10,71 +10,78 @@ function getCookie(name) {
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
-var user = getCookie('user');
-// this if block may not be needed if the entire page 
-// becomes only valid when user is logged in
-if (user) {
-    // get id and user name from the cookie object
-    authToken = JSON.parse(user).token;
-    user = JSON.parse(user).user;
-    userId = user.id;
-    userName = user.first_name + ' ' + user.last_name;
-    $('#prevExamSection').show();
+function updatePreviousTests() {
+    var user = getCookie('user');
+    // this if block may not be needed if the entire page 
+    // becomes only valid when user is logged in
+    if (user) {
+        // get id and user name from the cookie object
+        authToken = JSON.parse(user).token;
+        user = JSON.parse(user).user;
+        userId = user.id;
+        userName = user.first_name + ' ' + user.last_name;
+        $('#prevExamSection').show();
 
-    // go and get the list of exams this user has already taken
-    var urlPreviousExam = '/api/prevexams';
-    //console.log(urlPreviousExam)
-    $.ajax({
-        method: 'GET',
-        url: urlPreviousExam,
-        headers: {
-            'Authorization': `Bearer ${authToken}`
-        }
-    }).then(tests => {
-        //console.log('resolve')
-        // update selections based on returned list of exams
-        if (tests.length === 0) {
-            examsEl.children('option').text('None Taken Yet');
-        }
-        tests.forEach(e => {
-            examsEl.append($('<option>').attr("data-testid", e.testID).text(e.exam));
-        });
-    });
+        // go and get the list of exams this user has already taken
+        var urlPreviousExam = '/api/prevexams';
+        //console.log(urlPreviousExam)
+        $.ajax({
+            method: 'GET',
+            url: urlPreviousExam,
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(tests => {
+            //console.log('resolve')
+            // update selections based on returned list of exams
+            if (tests.length === 0) {
+                examsEl.children('option').text('None Taken Yet');
+            } else {
+                examsEl.empty();
+                examsEl.append($('<option>').text('---'))
+                tests.forEach(e => {
 
-    // put the user's name on the page
-    $('#formControlInput1').text(userName);
-    // once user selects a previously completed test
-    $('#formControlSelect1').on('input', function (event) {
-        event.preventDefault();
-        if ($(this).children('option:selected').attr('data-testid')) {
-            // show or hide the test section area based on having selected a valid test
-            $('#formSections').removeClass('d-none');
-
-            // get the test id of the selection 
-            var testId = $(this).children('option:selected').attr('data-testid');
-            // query the database for the list of sections in that test
-            var urlPreviousSections = `/api/sections/${userId}/${testId}`;
-            $.ajax({
-                method: 'GET',
-                url: urlPreviousSections,
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            }).then(sections => {
-                // populate each section name
-                sections.forEach(e => {
-                    sectionsEl.append($('<option>').text(e));
+                    examsEl.append($('<option>').attr("data-testid", e.testID).text(e.exam));
                 });
-            });
-        } else {
-            $('#formSections').addClass('d-none');
-        }
-    });
+            }
+        });
 
-} else {
-    $('#prevExamSection').hide();
+        // put the user's name on the page
+        $('#formControlInput1').text(userName);
+        // once user selects a previously completed test
+        $('#formControlSelect1').on('input', function (event) {
+            event.preventDefault();
+            if ($(this).children('option:selected').attr('data-testid')) {
+                // show or hide the test section area based on having selected a valid test
+                $('#formSections').removeClass('d-none');
+
+                // get the test id of the selection 
+                var testId = $(this).children('option:selected').attr('data-testid');
+                // query the database for the list of sections in that test
+                var urlPreviousSections = `/api/sections/${userId}/${testId}`;
+                $.ajax({
+                    method: 'GET',
+                    url: urlPreviousSections,
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                }).then(sections => {
+                    // populate each section name
+                    sectionsEl.empty();
+                    sections.forEach(e => {
+                        sectionsEl.append($('<option>').text(e));
+                    });
+                });
+            } else {
+                $('#formSections').addClass('d-none');
+            }
+        });
+
+    } else {
+        $('#prevExamSection').hide();
+    }
 }
-
+updatePreviousTests();
 
 // upon user selection of a test section (or all)
 // redirect to the report page

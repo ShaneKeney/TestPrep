@@ -178,6 +178,7 @@ $(() => {
             },
             success: function () {
                 alert("OK");
+                updatePreviousTests();
             },
             headers: {
                 'Authorization': `Bearer ${authToken}`

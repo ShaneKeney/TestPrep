@@ -1,0 +1,47 @@
+<div class="side-nav py-4 h-100">
+
+    <h4>Filter Database</h4>
+
+    <h6 class="mt-3">Select a Test</h6>
+    <select id="exam-filter" class="custom-select">
+        <option>All Tests</option>
+        {{#each tests}}
+        <option data-filter='exam'>{{dataValues.exam}}</option>
+        {{/each}}
+    </select>
+
+    <h6 class="mt-3">Select a Section</h6>
+    {{#each sectionList}}
+    <div id="section-filter" class="custom-control custom-checkbox">
+        <input data-filter='section' type="checkbox" class="custom-control-input" id="{{dataValues.section}}">
+        <label class="custom-control-label" for="{{dataValues.section}}">{{dataValues.section}}</label>
+    </div>
+    {{/each}}
+
+    <h6 class="mt-3">Select a Difficulty</h6>
+    {{#each difficulty}}
+    <div id="section-filter" class="custom-control custom-checkbox">
+        <input data-filter='difficulty' type="checkbox" class="custom-control-input" id="{{dataValues.difficulty}}">
+        <label class="custom-control-label" for="{{dataValues.difficulty}}">{{dataValues.difficulty}}</label>
+    </div>
+    {{/each}}
+
+    <h6 class="mt-3">Select a Tag Category</h6>
+    <select id="tag-category-filter" class="custom-select">
+        <option>All Categories</option>
+        {{#each tagCategory}}
+        <option data-filter='tag_category'>{{dataValues.tag_category}}</option>
+        {{/each}}
+    </select>
+    
+    <h6 class="mt-3">Select a Tag Group</h6>
+    <select id="tag-group-filter" class="custom-select">
+        <option>All Groups</option>
+        {{#each tagGroup}}
+        <option data-filter='tag_group'>{{dataValues.tag_group}}</option>
+        {{/each}}
+    </select>
+
+    <a id="filter" class="btn btn-outline-primary mt-3" href="">Filter Table</a>
+
+</div>

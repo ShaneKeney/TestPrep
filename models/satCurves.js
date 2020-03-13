@@ -1,13 +1,13 @@
 module.exports = function (sequelize, DataTypes) {
     var SatCurve = sequelize.define('SatCurve', {
-        sat_test: {
+        exam: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 len: [1, 50]
             }
         },
-        sat_section: {
+        section: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {

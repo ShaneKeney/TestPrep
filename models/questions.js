@@ -1,6 +1,6 @@
 module.exports = function (seqeuelize, DataTypes) {
     var Question = seqeuelize.define('Question', {
-        key: {
+        exam: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -38,7 +38,7 @@ module.exports = function (seqeuelize, DataTypes) {
                 isIn: [['mc', 'arr', 'range']]
             }
         },
-        ans: {
+        ans_actual: {
             type: DataTypes.STRING,
             allowNull: false
         },

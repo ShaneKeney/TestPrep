@@ -13,7 +13,11 @@ function style() {
         //autoprefix things
         .pipe(prefix())
         // where do i save the compiled css
-        .pipe(gulp.dest('./public/css'));
+        .pipe(gulp.dest('./public/assets/css'));
+}
+function watch() {
+    gulp.watch('./scss/**/*.scss', style);
 }
 
 exports.style = style;
+exports.watch = watch;

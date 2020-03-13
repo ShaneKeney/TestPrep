@@ -5,6 +5,9 @@
         "node": true,
         "es6": true
     },
+    "parserOptions": { 
+        "ecmaVersion": 2018 
+    },
     "rules": {
         "no-duplicate-case":"error",
         "no-empty":"error",
@@ -28,7 +31,8 @@
         "brace-style": "error",
         "indent": [
             2,
-            4
+            4,
+            { "SwitchCase": 1 }
         ],
         "quotes": [
             "error",

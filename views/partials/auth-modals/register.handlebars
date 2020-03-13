@@ -10,12 +10,22 @@
       <form id="register-form">
         <div class="modal-body">
           <div class="form-group">
+            <label for="register-firstName">First Name:</label>
+            <input type="text" class="form-control" id="register-firstName">
+          </div>
+          <div class="form-group">
+            <label for="register-lastName">Last Name:</label>
+            <input type="text" class="form-control" id="register-lastName">
+          </div>
+          <div class="form-group">
             <label for="register-email">Email address</label>
             <input type="email" class="form-control" id="register-email">
+            <p id="invalid-email" class="text-danger d-none">Please enter a valid email address.</p>
           </div>
           <div class="form-group">
             <label for="register-phone">Phone Number</label>
             <input type="tel" class="form-control" id="register-phone">
+            <p id="invalid-phone" class="text-danger d-none">Please enter a valid 10 digit phone number.</p>
           </div>
           <div class="form-group">
             <label for="register-password">Password</label>
@@ -28,7 +38,7 @@
           <p id="password-mismatch" class="text-danger d-none">Your passwords do not match.</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" id="regClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Register</button>
         </div>
       </form>

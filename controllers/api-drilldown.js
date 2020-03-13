@@ -48,7 +48,7 @@ module.exports = (app) => {
         return tagGroups;
     }
 
-    app.get('/database', isAuthenticated, async function(req, res) {
+    app.get('/database', async function(req, res) {
 
         let testList = await distinctTests();
         let sectionList = await distinctSections();

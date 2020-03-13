@@ -17,6 +17,16 @@ $(() => {
     //     $(colEl).append(selEl);
     //     $(numChoices).append(colEl);
     // }
+    let userCookie = getCookie('user');
+    if(userCookie) {
+        $('#register-button').addClass('d-none');
+        $('#signin-button').addClass('d-none');
+        $('.logout-button').removeClass('d-none');
+    } else {
+        $('.logout-button').addClass('d-none');
+        $('#register-button').removeClass('d-none'); //show
+        $('#signin-button').removeClass('d-none'); //show
+    }
 
     $('.logout-button').on('click', e => {
         e.preventDefault();
@@ -34,6 +44,9 @@ $(() => {
             success: function(res) {
                 console.log('Logout success!')
                 setCookie('user', '', 1);
+                $('#register-button').removeClass('d-none');
+                $('#signin-button').removeClass('d-none');
+                $('.logout-button').addClass('d-none');
                 location = '/'
             }
         })

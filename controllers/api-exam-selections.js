@@ -99,7 +99,7 @@ module.exports = (app) => {
     app.get('/api/prevexams', isAuthenticated, (req, res) => {
         db.SectionResultsDetails.findAll({
             where: {
-                StudentId: req.user.id
+                StudentId: req.user.dataValues.id
             },
             attributes: [
                 [db.Sequelize.fn('DISTINCT', db.Sequelize.col('TestId')), 'TestId']

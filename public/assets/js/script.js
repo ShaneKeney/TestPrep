@@ -42,7 +42,7 @@ $(() => {
                 'Authorization': `Bearer ${authToken}`
             },
             success: function(res) {
-                console.log('Logout success!')
+                //console.log('Logout success!')
                 setCookie('user', '', 1);
                 $('#register-button').removeClass('d-none');
                 $('#signin-button').removeClass('d-none');
@@ -69,12 +69,12 @@ $(() => {
 
             let userCookie = JSON.stringify(user);
             setCookie('user', userCookie, 1);
-            console.log(getCookie('user'));
+            //console.log(getCookie('user'));
             resetSignInFields();
             location.reload();
         })
         .catch(function(err) {
-            console.log(err)
+            //console.log(err)
         })
     });
 
@@ -104,8 +104,8 @@ $(() => {
             userData.phone.split('').forEach(char => {
                 if (phoneArr.includes(char)) {
                     registerPhone += char;
-                    console.log(registerPhone);
-                    console.log(registerPhone.length);
+                    //console.log(registerPhone);
+                    //console.log(registerPhone.length);
                 }
             });
 
@@ -123,7 +123,7 @@ $(() => {
 
                 let userCookie = JSON.stringify(user);
                 setCookie('user', userCookie, 1);
-                console.log(getCookie('user'));
+                //console.log(getCookie('user'));
                 resetRegisterFields();
                 location.reload();
             })

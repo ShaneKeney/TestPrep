@@ -7,11 +7,11 @@ let denom = Denominator.exec(str);
 let numInt = parseInt(num[0]);
 let denomInt = parseInt(denom[0]);
 let ans = numInt / denomInt
-console.log(Slash.test(str));
-console.log(numInt);
-console.log(denomInt);
-console.log(ans);
-console.log(ans.toFixed(3));       
+//console.log(Slash.test(str));
+//console.log(numInt);
+//console.log(denomInt);
+//console.log(ans);
+//console.log(ans.toFixed(3));       
 
 giArr.forEach(num => {
     if (num.match){}
@@ -28,7 +28,7 @@ $collectButton.on('click', function (e) {
     }
     let ansArr = ansStr.split('');
     allAnswersArr = ansArr.concat(giArr);
-    console.log(allAnswersArr);
+    //console.log(allAnswersArr);
     let id = $mcTable.data('test-id');
     let section = $mcTable.data('test-section');
     let data = [];
@@ -42,7 +42,7 @@ $collectButton.on('click', function (e) {
         };
         data.push(obj);
     });
-    console.log(data);
+    //console.log(data);
 
 });
 

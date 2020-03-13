@@ -28,28 +28,29 @@ $(() => {
     } catch (err) {
         //console.log('cookie no exist!')
     }
+    if (user) {
+        //populate exam list
+        $.ajax({
+            method: 'GET',
+            url: '/api/exams',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(results => {
+            results.forEach(test => {
+                let $option = $('<option>')
+                    .attr({
+                        'id': test.type + test.id,
+                        'data-test-id': test.id,
+                        'data-test-type': test.type,
+                    })
+                    .text(test.exam);
 
-    //populate exam list
-    $.ajax({
-        method: 'GET',
-        url: '/api/exams',
-        headers: {
-            'Authorization': `Bearer ${authToken}`
-        }
-    }).then(results => {
-        results.forEach(test => {
-            let $option = $('<option>')
-                .attr({
-                    'id': test.type + test.id,
-                    'data-test-id': test.id,
-                    'data-test-type': test.type,
-                })
-                .text(test.exam);
+                $examSelect.append($option);
+            });
 
-            $examSelect.append($option);
         });
-
-    });
+    }
 
     //populate section list
     $examSelect.on('change', function (event) {
@@ -256,7 +257,7 @@ $(() => {
             })
             // this is to clean up, but then page reload won't populate
             // possibly should be a more permanent object, it would have the user and test ids...
-            localStorage.removeItem('prevAnswers');
+            // localStorage.removeItem('prevAnswers');
         }
     });
 });

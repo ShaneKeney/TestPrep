@@ -1,19 +1,31 @@
 const numArr = ['', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const phoneArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-$(() => {
+
+$(document).ready(() => {
     let userCookie = getCookie('user');
-    if(userCookie) {
+    if (userCookie) {
         $('#register-button').addClass('d-none');
         $('#signin-button').addClass('d-none');
         $('.logout-button').removeClass('d-none');
         $('#editUserButton').removeClass('d-none');
+        $('.unauth-modal').addClass('d-none');
+        $('.unauth-modal').modal('hide');
     } else {
         $('.logout-button').addClass('d-none');
         $('#register-button').removeClass('d-none'); //show
         $('#signin-button').removeClass('d-none'); //show
-        $('#editUserButton').addClass('d-none');
+        $('#editUserButton').removeClass('d-none');
+        $('.unauth-modal').modal('show');
+        // $('.unauth-modal').removeClass('d-none');
     }
+
+
+    $('#unauth-modal-btn, #closeUnauth').on('click', () => {
+        $('.unauth-modal').addClass('d-none');
+        $('.unauth-modal').modal('toggle');
+    })
+
 
     $('.logout-button').on('click', e => {
         e.preventDefault();
@@ -28,7 +40,7 @@ $(() => {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             },
-            success: function(res) {
+            success: function (res) {
                 //console.log('Logout success!')
                 setCookie('user', '', 1);
                 $('#register-button').removeClass('d-none');
@@ -49,21 +61,21 @@ $(() => {
         };
 
         $.post('/api/users/login', userData)
-        .then(function(res) {
-            //set cookie with user information to use for user functions
-            let user = { ...res };
-            delete user.user.createdAt;
-            delete user.user.updatedAt;
+            .then(function (res) {
+                //set cookie with user information to use for user functions
+                let user = { ...res };
+                delete user.user.createdAt;
+                delete user.user.updatedAt;
 
-            let userCookie = JSON.stringify(user);
-            setCookie('user', userCookie, 1);
-            //console.log(getCookie('user'));
-            resetSignInFields();
-            location.replace('/bubblesheet');
-        })
-        .catch(function(err) {
-            //console.log(err)
-        })
+                let userCookie = JSON.stringify(user);
+                setCookie('user', userCookie, 1);
+                //console.log(getCookie('user'));
+                resetSignInFields();
+                location.replace('/bubblesheet');
+            })
+            .catch(function (err) {
+                //console.log(err)
+            })
     });
 
     $('#editUserButton').on('click', e => {
@@ -93,28 +105,28 @@ $(() => {
         const userData = getUserData('register');
 
         if (userData.firstName !== ''
-                && userData.lastName !== ''
-                && userData.password !== ''
-                && userData.password === userData.confirmPassword
-                && validateEmail(userData.email)
-                && validatePhone(userData.phone).isValid) {
+            && userData.lastName !== ''
+            && userData.password !== ''
+            && userData.password === userData.confirmPassword
+            && validateEmail(userData.email)
+            && validatePhone(userData.phone).isValid) {
             $.post('/api/register', userData)
-            .then(function(res) {
-                let user = { ...res };
-                delete user.user.createdAt;
-                delete user.user.updatedAt;
+                .then(function (res) {
+                    let user = { ...res };
+                    delete user.user.createdAt;
+                    delete user.user.updatedAt;
 
-                let userCookie = JSON.stringify(user);
-                setCookie('user', userCookie, 1);
-                //console.log(getCookie('user'));
-                resetRegisterFields();
-                location.reload();
-            })
-            .catch(function(err) {
-                if(err.responseJSON.errors[0].message === "students.email must be unique") {
-                    $('#regErrorText').text('Email already registered'); 
-                }
-            });
+                    let userCookie = JSON.stringify(user);
+                    setCookie('user', userCookie, 1);
+                    //console.log(getCookie('user'));
+                    resetRegisterFields();
+                    location.reload();
+                })
+                .catch(function (err) {
+                    if (err.responseJSON.errors[0].message === "students.email must be unique") {
+                        $('#regErrorText').text('Email already registered');
+                    }
+                });
         } else {
             if (userData.password === '')
                 $('#password-register-blank').removeClass('d-none');
@@ -131,7 +143,7 @@ $(() => {
         }
     });
 
-    $('#edit-user-form').on('submit', function(e) {
+    $('#edit-user-form').on('submit', function (e) {
         e.preventDefault();
 
         hideInvalidMessages('edit');
@@ -140,7 +152,7 @@ $(() => {
         let user = JSON.parse(getCookie('user'));
         let authToken = user.token;
 
-        let patchUser = { 
+        let patchUser = {
             first_name: $('#edit-firstName').val().trim(),
             last_name: $('#edit-lastName').val().trim(),
             email: $('#edit-email').val().trim(),
@@ -175,12 +187,12 @@ $(() => {
         
     })
 
-    $('#regClose').on('click', function() {
+    $('#regClose').on('click', function () {
         $('#regErrorText').text('');
         resetRegisterFields();
     })
 
-    $('#signClose').on('click', function() {
+    $('#signClose').on('click', function () {
         resetSignInFields();
     })
 });
@@ -243,8 +255,8 @@ function resetSignInFields() {
 
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
@@ -252,14 +264,14 @@ function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
 }
@@ -283,3 +295,4 @@ function resetErrorMesssages() {
     $('#invalid-edit-phone').addClass('d-none');
     $('#current-password-edit-mismatch').addClass('d-none');
 }
+

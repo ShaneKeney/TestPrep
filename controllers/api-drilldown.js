@@ -58,14 +58,14 @@ module.exports = (app) => {
 
         let query = req.query;
 
-        console.log(query);
-        if (query.section) {
-            query.section = JSON.parse(query.section);
-        }
+        // console.log(query);
+        // if (query.section) {
+        //     query.section = JSON.parse(query.section);
+        // }
 
-        if (query.difficulty){
-            query.difficulty = JSON.parse(query.difficulty);
-        }
+        // if (query.difficulty){
+        //     query.difficulty = JSON.parse(query.difficulty);
+        // }
         // console.log(testList);
 
         db.Question.findAll({

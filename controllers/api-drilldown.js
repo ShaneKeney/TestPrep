@@ -59,8 +59,14 @@ module.exports = (app) => {
         let query = req.query;
 
         console.log(query);
+        if (query.section) {
+            query.section = JSON.parse(query.section);
+        }
 
-        console.log(testList);
+        if (query.difficulty){
+            query.difficulty = JSON.parse(query.difficulty);
+        }
+        // console.log(testList);
 
         db.Question.findAll({
             where: query,
@@ -70,6 +76,7 @@ module.exports = (app) => {
                 ['question_number', 'ASC']
             ]
         }).then((questions) => {
+            // console.log(questions);
             let obj = {
                 tests: testList,
                 sectionList: sectionList,

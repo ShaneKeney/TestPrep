@@ -255,7 +255,6 @@ $(() => {
                             $(`#${section}-${qNum} > td > .ltr-btn-${answ}`).addClass('selected');
                             $(`#${section}-${qNum} > td.mc-answer`).text(answ);
                         } else {
-                            console.log(answ);
                             let ansNumArr = answ.split('');
                             ansNumArr.forEach((num, i) => {
                                 $(`tr#${section}-${qNum} .gi-pos-${i + 1}`).val(num)

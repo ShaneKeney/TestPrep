@@ -6,7 +6,7 @@
     <select id="exam-filter" class="custom-select">
         <option>All Tests</option>
         {{#each tests}}
-        <option data-filter='exam'>{{dataValues.exam}}</option>
+        <option data-filter={{dataValues.id}}>{{dataValues.exam}}</option>
         {{/each}}
     </select>
 
@@ -20,7 +20,7 @@
 
     <h6 class="mt-3">Select a Difficulty</h6>
     {{#each difficulty}}
-    <div id="section-filter" class="custom-control custom-checkbox">
+    <div id="difficulty-filter" class="custom-control custom-checkbox">
         <input data-filter='difficulty' type="checkbox" class="custom-control-input" id="{{dataValues.difficulty}}">
         <label class="custom-control-label" for="{{dataValues.difficulty}}">{{dataValues.difficulty}}</label>
     </div>

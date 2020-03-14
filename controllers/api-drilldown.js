@@ -76,7 +76,6 @@ module.exports = (app) => {
                 ['question_number', 'ASC']
             ]
         }).then((questions) => {
-            // console.log(questions);
             let obj = {
                 tests: testList,
                 sectionList: sectionList,

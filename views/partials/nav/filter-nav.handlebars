@@ -6,7 +6,7 @@
     <select id="exam-filter" class="custom-select">
         <option>All Tests</option>
         {{#each tests}}
-        <option data-filter='exam'>{{dataValues.exam}}</option>
+        <option data-filter={{dataValues.id}}>{{dataValues.exam}}</option>
         {{/each}}
     </select>
 

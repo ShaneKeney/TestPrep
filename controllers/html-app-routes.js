@@ -96,6 +96,7 @@ module.exports = (app) => {
                                         ||
                                         (question.dataValues.question_type === 'arr'
                                             && question.dataValues.ans_actual.split('').includes(question.dataValues.studentAnswer))
+                                            && question.dataValues.studentAnswer !== ' '
                                         ||
                                         (question.dataValues.question_type === 'range' && parseFloat(question.dataValues.studentAnswer) >
                                             parseFloat(question.dataValues.ans_actual.split(',')[0]) && parseFloat(question.dataValues.studentAnswer) <

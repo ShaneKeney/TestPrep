@@ -48,7 +48,7 @@ module.exports = (app) => {
         return tagGroups;
     }
 
-    app.get('/database', isAuthenticated, async function(req, res) {
+    async function filterDB(req, cb) {
 
         let testList = await distinctTests();
         let sectionList = await distinctSections();
@@ -58,9 +58,15 @@ module.exports = (app) => {
 
         let query = req.query;
 
-        console.log(query);
+        // console.log(query);
+        // if (query.section) {
+        //     query.section = JSON.parse(query.section);
+        // }
 
-        console.log(testList);
+        // if (query.difficulty){
+        //     query.difficulty = JSON.parse(query.difficulty);
+        // }
+        // console.log(testList);
 
         db.Question.findAll({
             where: query,
@@ -79,10 +85,14 @@ module.exports = (app) => {
                 questions: questions,
                 layout: 'database'
             };
-            // console.log(obj);
-            // res.json(obj);
-            res.render('drilldown', obj);
+            cb(obj);
+        });
+    }
 
+    app.get('/database', isAuthenticated, async function(req, res) {
+        await filterDB(req, function(obj) {
+            res.render('drilldown', obj);
         });
     });
+
 };

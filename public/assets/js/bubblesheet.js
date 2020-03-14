@@ -257,7 +257,8 @@ $(() => {
                         } else {
                             let ansNumArr = answ.split('');
                             ansNumArr.forEach((num, i) => {
-                                $(`tr#${section}-${qNum} .gi-pos-${i + 1}`).val(num)
+                                $(`tr#${section}-${qNum} .gi-pos-${i + 1}`).val(num);
+                                $(`tr#${section}-${qNum} .gi-answer`).text(num);
                             })
                         }
                     })

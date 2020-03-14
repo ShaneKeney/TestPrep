@@ -48,7 +48,7 @@ module.exports = (app) => {
         return tagGroups;
     }
 
-    app.get('/database', isAuthenticated, async function(req, res) {
+    async function filterDB(req, cb) {
 
         let testList = await distinctTests();
         let sectionList = await distinctSections();
@@ -86,10 +86,14 @@ module.exports = (app) => {
                 questions: questions,
                 layout: 'database'
             };
-            // console.log(obj);
-            // res.json(obj);
-            res.render('drilldown', obj);
+            cb(obj);
+        });
+    }
 
+    app.get('/database', isAuthenticated, async function(req, res) {
+        await filterDB(req, function(obj) {
+            res.render('drilldown', obj);
         });
     });
+
 };

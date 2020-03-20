@@ -15,3 +15,6 @@ This app uses and requires [Node.js](https://nodejs.org/en/) and [MySQL](https:/
 5. Run the command `node .` to start the server. Doing so will allow [Sequelize](https://sequelize.org/) to create the database tables.
 6. Once the database tables have been created, use your preferred method run the `/seeds/allSeeds.sql` seed file to populate the database.
 7. Finally, navigate to `localhost:3000` to access the running application.
+
+## Live Demo
+https://test-prep-project2.herokuapp.com/
